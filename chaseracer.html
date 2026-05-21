@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>OUTRUNNERS — 과격한 추격 레이싱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Teko:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --neon-pink:#ff2d95;
+    --neon-cyan:#16e0ff;
+    --neon-purple:#9d4edd;
+    --neon-yellow:#ffe66d;
+    --bg-deep:#0a0420;
+    --danger:#ff3b3b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--bg-deep);font-family:'Rajdhani',sans-serif;color:#fff;}
+  #game{position:fixed;inset:0;}
+  canvas{display:block;}
+
+  /* ---------- HUD ---------- */
+  #hud{position:fixed;inset:0;pointer-events:none;z-index:10;}
+  .hud-corner{position:absolute;text-shadow:0 0 12px rgba(0,0,0,.8);}
+  #topleft{top:18px;left:22px;}
+  #topright{top:18px;right:22px;text-align:right;}
+  .label{font-family:'Rajdhani';font-weight:600;font-size:14px;letter-spacing:3px;
+    text-transform:uppercase;opacity:.7;color:var(--neon-cyan);}
+  .value{font-family:'Teko';font-weight:600;line-height:.9;}
+  #distVal{font-size:64px;color:#fff;text-shadow:0 0 18px var(--neon-cyan),0 0 4px #fff;}
+  #scoreVal{font-size:42px;color:var(--neon-yellow);text-shadow:0 0 16px var(--neon-yellow);}
+
+  /* speed gauge bottom-left */
+  #speedo{position:absolute;left:26px;bottom:26px;}
+  #speedNum{font-family:'Teko';font-weight:700;font-size:88px;line-height:.8;
+    color:#fff;text-shadow:0 0 22px var(--neon-pink);}
+  #speedUnit{font-family:'Rajdhani';font-weight:700;font-size:18px;letter-spacing:4px;color:var(--neon-pink);opacity:.85;}
+
+  /* health + boost bars bottom-right */
+  #bars{position:absolute;right:26px;bottom:30px;width:230px;}
+  .bar-row{margin-bottom:14px;}
+  .bar-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4px;}
+  .bar-name{font-family:'Rajdhani';font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase;}
+  .bar-track{height:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    border-radius:2px;overflow:hidden;position:relative;}
+  .bar-fill{height:100%;width:100%;transition:width .12s linear;border-radius:1px;}
+  #hpFill{background:linear-gradient(90deg,#ff3b3b,#ff8a3b);box-shadow:0 0 14px var(--danger);}
+  #boostFill{background:linear-gradient(90deg,var(--neon-cyan),#a6ff00);box-shadow:0 0 14px var(--neon-cyan);}
+  #hpName{color:#ff7a7a;} #boostName{color:var(--neon-cyan);}
+
+  /* warning flash */
+  #warn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-family:'Black Han Sans';font-size:46px;color:var(--danger);
+    text-shadow:0 0 30px var(--danger);opacity:0;letter-spacing:4px;}
+  #warn.show{animation:warnPulse .55s ease-out;}
+  @keyframes warnPulse{0%{opacity:0;transform:translate(-50%,-50%) scale(.6);}
+    30%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1);}}
+
+  .vignette{position:fixed;inset:0;pointer-events:none;z-index:9;
+    box-shadow:inset 0 0 220px 30px rgba(8,2,30,.85);}
+  #dmgFlash{position:fixed;inset:0;pointer-events:none;z-index:8;background:var(--danger);opacity:0;transition:opacity .1s;}
+
+  /* ---------- Screens ---------- */
+  .screen{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:24px;
+    background:radial-gradient(ellipse at 50% 38%,rgba(157,78,221,.28),rgba(10,4,32,.96) 70%);}
+  .screen.hidden{display:none;}
+  .game-title{font-family:'Black Han Sans';font-size:clamp(46px,11vw,118px);line-height:.92;
+    background:linear-gradient(180deg,#fff 0%,var(--neon-cyan) 45%,var(--neon-pink) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 26px rgba(255,45,149,.7));letter-spacing:1px;}
+  .game-sub{font-family:'Teko';font-weight:500;font-size:clamp(22px,4vw,34px);letter-spacing:10px;
+    color:var(--neon-cyan);margin-top:4px;text-shadow:0 0 18px var(--neon-cyan);text-transform:uppercase;}
+  .desc{max-width:540px;margin:26px auto 8px;font-size:17px;line-height:1.6;opacity:.92;font-weight:500;}
+  .keys{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:22px 0 6px;}
+  .keycap{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:13px;opacity:.85;letter-spacing:1px;}
+  .keycap b{font-family:'Teko';font-size:30px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--neon-cyan);border-radius:9px;color:var(--neon-cyan);box-shadow:0 0 14px rgba(22,224,255,.4) inset;}
+  .btn{margin-top:30px;font-family:'Black Han Sans';font-size:30px;letter-spacing:4px;
+    color:#0a0420;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+    border:none;padding:16px 56px;border-radius:50px;cursor:pointer;pointer-events:auto;
+    box-shadow:0 0 34px rgba(255,45,149,.55);transition:transform .12s,box-shadow .2s;}
+  .btn:hover{transform:scale(1.05);box-shadow:0 0 48px rgba(255,45,149,.85);}
+  .btn:active{transform:scale(.97);}
+
+  #over .big{font-family:'Black Han Sans';font-size:clamp(40px,9vw,84px);color:var(--danger);
+    text-shadow:0 0 36px var(--danger);letter-spacing:2px;}
+  .stats{display:flex;gap:48px;margin:30px 0 4px;flex-wrap:wrap;justify-content:center;}
+  .stat .s-num{font-family:'Teko';font-weight:700;font-size:64px;line-height:.85;color:#fff;text-shadow:0 0 20px var(--neon-cyan);}
+  .stat .s-lab{font-size:13px;letter-spacing:3px;opacity:.6;text-transform:uppercase;font-weight:600;}
+  #best{margin-top:14px;font-family:'Teko';font-size:26px;color:var(--neon-yellow);letter-spacing:2px;}
+
+  /* ---------- Touch controls ---------- */
+  #touch{position:fixed;inset:0;z-index:15;pointer-events:none;display:none;}
+  .tbtn{position:absolute;pointer-events:auto;width:84px;height:84px;border-radius:50%;
+    border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.07);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;font-family:'Teko';font-size:40px;color:#fff;
+    user-select:none;}
+  .tbtn:active{background:rgba(22,224,255,.3);}
+  #tLeft{left:24px;bottom:40px;} #tRight{left:128px;bottom:40px;}
+  #tBoost{right:24px;bottom:120px;width:96px;height:96px;color:var(--neon-cyan);border-color:var(--neon-cyan);font-size:24px;}
+  #tBrake{right:24px;bottom:30px;color:var(--neon-pink);border-color:var(--neon-pink);font-size:22px;}
+
+  #mute{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:21;pointer-events:auto;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;
+    border-radius:30px;padding:7px 18px;font-family:'Rajdhani';font-weight:700;letter-spacing:2px;
+    font-size:13px;cursor:pointer;}
+  .credit{position:fixed;bottom:10px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:3px;opacity:.4;z-index:22;}
+</style>
+</head>
+<body>
+<div id="game"></div>
+
+<div class="vignette"></div>
+<div id="dmgFlash"></div>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="hud-corner" id="topleft">
+    <div class="label">주행거리</div>
+    <div class="value" id="distVal">0<span style="font-size:26px;color:var(--neon-cyan)">m</span></div>
+  </div>
+  <div class="hud-corner" id="topright">
+    <div class="label">점수</div>
+    <div class="value" id="scoreVal">0</div>
+  </div>
+  <div id="speedo">
+    <span id="speedNum">0</span><br><span id="speedUnit">KM / H</span>
+  </div>
+  <div id="bars">
+    <div class="bar-row">
+      <div class="bar-top"><span class="bar-name" id="hpName">차체 내구도</span></div>
+      <div class="bar-track"><div class="bar-fill" id="hpFill"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-top"><span class="bar-name" id="boostName">부스트</span></div>
+      <div class="bar-track"><div class="bar-fill" id="boostFill"></div></div>
+    </div>
+  </div>
+  <div id="warn">⚠ 추격자 접근</div>
+</div>
+
+<!-- Touch -->
+<div id="touch">
+  <div class="tbtn" id="tLeft">◀</div>
+  <div class="tbtn" id="tRight">▶</div>
+  <div class="tbtn" id="tBoost">부스트</div>
+  <div class="tbtn" id="tBrake">감속</div>
+</div>
+
+<button id="mute">🔊 사운드</button>
+
+<!-- Start screen -->
+<div class="screen" id="start">
+  <div class="game-title">OUTRUNNERS</div>
+  <div class="game-sub">과격한 추격 레이싱</div>
+  <p class="desc">밤의 고속도로. 뒤에서 붉은 차들이 당신을 들이받으려 쫓아옵니다.<br>
+  교통 차량을 피하고, 추격자를 따돌리며 살아남으세요. 멀리 갈수록 더 거칠어집니다.</p>
+  <div class="keys">
+    <div class="keycap"><b>←</b>왼쪽</div>
+    <div class="keycap"><b>→</b>오른쪽</div>
+    <div class="keycap"><b>↑</b>부스트</div>
+    <div class="keycap"><b>↓</b>감속</div>
+  </div>
+  <button class="btn" id="startBtn">출발</button>
+</div>
+
+<!-- Game over -->
+<div class="screen hidden" id="over">
+  <div class="big" id="overTitle">CRASHED</div>
+  <div class="stats">
+    <div class="stat"><div class="s-num" id="finalDist">0</div><div class="s-lab">미터</div></div>
+    <div class="stat"><div class="s-num" id="finalScore">0</div><div class="s-lab">점수</div></div>
+    <div class="stat"><div class="s-num" id="finalTime">0</div><div class="s-lab">생존(초)</div></div>
+  </div>
+  <div id="best">최고 기록: 0 m</div>
+  <button class="btn" id="retryBtn">다시 도전</button>
+</div>
+
+<div class="credit">제작 · 과학이조선생 — OUTRUNNERS : A NEON CHASE</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============================================================
+   OUTRUNNERS — 3D 추격 레이싱
+   Three.js r128 / 단일 파일
+   ============================================================ */
+(function(){
+'use strict';
+
+// ---------- 기본 상수 ----------
+const ROAD_W   = 22;          // 도로 폭(좌우 경계 ±11)
+const PLAYER_HALF = 1.6;      // 충돌 박스 절반(가로)
+const PLAYER_LEN  = 3.2;      // 충돌 박스 절반(세로 길이 방향은 *0.5)
+const SEG_LEN  = 18;          // 도로 세그먼트 길이
+const SEG_COUNT= 26;          // 보이는 세그먼트 개수
+const KMH_PER_UNIT = 7.0;     // 내부 속도 -> km/h 표시 환산
+
+// ---------- 씬 / 카메라 / 렌더러 ----------
+const container = document.getElementById('game');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x120726);
+scene.fog = new THREE.Fog(0x1a0838, 60, 235);
+
+const camera = new THREE.PerspectiveCamera(72, innerWidth/innerHeight, 0.1, 700);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+container.appendChild(renderer.domElement);
+
+addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ---------- 조명 ----------
+scene.add(new THREE.AmbientLight(0x6a4fb0, 0.85));
+const moon = new THREE.DirectionalLight(0xb8c0ff, 0.9);
+moon.position.set(-40, 80, -30);
+scene.add(moon);
+const fill = new THREE.DirectionalLight(0xff3d8b, 0.5);
+fill.position.set(30, 20, 60);
+scene.add(fill);
+
+// ---------- 신스웨이브 하늘 + 태양 ----------
+(function buildSky(){
+  // 그라데이션 배경 (큰 평면)
+  const c = document.createElement('canvas'); c.width=16; c.height=256;
+  const g = c.getContext('2d');
+  const grad = g.createLinearGradient(0,0,0,256);
+  grad.addColorStop(0,'#1a0838');
+  grad.addColorStop(0.45,'#3a1063');
+  grad.addColorStop(0.62,'#7a1f7e');
+  grad.addColorStop(0.78,'#e83d6e');
+  grad.addColorStop(0.9,'#ff8a3d');
+  grad.addColorStop(1,'#ffd36e');
+  g.fillStyle=grad; g.fillRect(0,0,16,256);
+  const tex = new THREE.CanvasTexture(c);
+  const sky = new THREE.Mesh(
+    new THREE.PlaneGeometry(1400,520),
+    new THREE.MeshBasicMaterial({map:tex, depthWrite:false, fog:false})
+  );
+  sky.position.set(0,120,-360);
+  scene.add(sky);
+
+  // 줄무늬 태양
+  const sc = document.createElement('canvas'); sc.width=256; sc.height=256;
+  const sg = sc.getContext('2d');
+  const sgr = sg.createLinearGradient(0,0,0,256);
+  sgr.addColorStop(0,'#fff2a8'); sgr.addColorStop(0.5,'#ff7ac2'); sgr.addColorStop(1,'#ff2d95');
+  sg.fillStyle=sgr; sg.beginPath(); sg.arc(128,128,120,0,Math.PI*2); sg.fill();
+  sg.globalCompositeOperation='destination-out';
+  for(let i=0;i<8;i++){ const y=150+i*13; sg.fillRect(0,y, 256, 5+i*1.5); }
+  const stex = new THREE.CanvasTexture(sc);
+  const sun = new THREE.Mesh(
+    new THREE.PlaneGeometry(150,150),
+    new THREE.MeshBasicMaterial({map:stex, transparent:true, depthWrite:false, fog:false})
+  );
+  sun.position.set(0,78,-355);
+  scene.add(sun);
+
+  // 별
+  const starGeo = new THREE.BufferGeometry();
+  const sv=[];
+  for(let i=0;i<260;i++){ sv.push((Math.random()-0.5)*900, 120+Math.random()*220, -360-Math.random()*100); }
+  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(sv,3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color:0xffffff,size:1.4,fog:false,transparent:true,opacity:.8})));
+})();
+
+// ---------- 사이드 네온 그리드 평면(신스웨이브 바닥) ----------
+(function buildGrid(){
+  const grid = new THREE.GridHelper(1200, 120, 0x16e0ff, 0x9d4edd);
+  grid.position.y = -0.04;
+  grid.material.transparent = true;
+  grid.material.opacity = 0.28;
+  scene.add(grid);
+})();
+
+// ---------- 도로 세그먼트(재활용) ----------
+const roadGroup = new THREE.Group();
+scene.add(roadGroup);
+const segments = [];
+
+function makeSegment(z){
+  const seg = new THREE.Group();
+  // 노면
+  const road = new THREE.Mesh(
+    new THREE.PlaneGeometry(ROAD_W, SEG_LEN),
+    new THREE.MeshStandardMaterial({color:0x14122b, roughness:.95, metalness:.1})
+  );
+  road.rotation.x = -Math.PI/2;
+  seg.add(road);
+  // 갓길 네온 라인(좌/우)
+  for(const side of [-1,1]){
+    const edge = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.45, SEG_LEN),
+      new THREE.MeshBasicMaterial({color: side<0?0x16e0ff:0xff2d95})
+    );
+    edge.rotation.x=-Math.PI/2;
+    edge.position.set(side*(ROAD_W/2-0.3), 0.02, 0);
+    seg.add(edge);
+  }
+  // 차선 점선(가운데 3개)
+  for(const lx of [-ROAD_W/4, 0, ROAD_W/4]){
+    const dash = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.3, SEG_LEN*0.5),
+      new THREE.MeshBasicMaterial({color:0xfff1c2, transparent:true, opacity:.55})
+    );
+    dash.rotation.x=-Math.PI/2; dash.position.set(lx,0.02,0);
+    seg.add(dash);
+  }
+  // 가로 기둥(가끔) — 거리감
+  if(Math.random()<0.5){
+    for(const side of [-1,1]){
+      const pole = new THREE.Mesh(
+        new THREE.BoxGeometry(0.4,7,0.4),
+        new THREE.MeshStandardMaterial({color:0x2a1840, emissive:0x3a1f5a, emissiveIntensity:.4})
+      );
+      pole.position.set(side*(ROAD_W/2+3.5),3.5,0);
+      seg.add(pole);
+      const lamp = new THREE.Mesh(
+        new THREE.SphereGeometry(0.5,8,8),
+        new THREE.MeshBasicMaterial({color: side<0?0x16e0ff:0xff2d95})
+      );
+      lamp.position.set(side*(ROAD_W/2+3.0),6.8,0);
+      seg.add(lamp);
+    }
+  }
+  seg.position.z = z;
+  roadGroup.add(seg);
+  segments.push(seg);
+  return seg;
+}
+for(let i=0;i<SEG_COUNT;i++) makeSegment(i*SEG_LEN - SEG_LEN*4);
+
+// ---------- 차량 빌더 ----------
+function buildCar(bodyColor, glowColor, isPlayer){
+  const g = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({color:bodyColor, metalness:.7, roughness:.35,
+    emissive:glowColor, emissiveIntensity:isPlayer?.25:.45});
+  // 하부
+  const lower = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.9, 5.6), bodyMat);
+  lower.position.y=0.7; g.add(lower);
+  // 캐빈
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.5,0.85,2.7),
+    new THREE.MeshStandardMaterial({color:0x0a0a16, metalness:.6, roughness:.2,
+      emissive:glowColor, emissiveIntensity:.15}));
+  cabin.position.set(0,1.45,-0.2); g.add(cabin);
+  // 앞코 살짝
+  const nose = new THREE.Mesh(new THREE.BoxGeometry(2.9,0.55,1.0), bodyMat);
+  nose.position.set(0,0.6,3.0); g.add(nose);
+  // 언더글로우
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(3.6,6.2),
+    new THREE.MeshBasicMaterial({color:glowColor, transparent:true, opacity:.32, depthWrite:false}));
+  glow.rotation.x=-Math.PI/2; glow.position.y=0.06; g.add(glow);
+  // 바퀴
+  const wheelMat=new THREE.MeshStandardMaterial({color:0x05050a, roughness:.9});
+  const wheelGeo=new THREE.CylinderGeometry(0.62,0.62,0.5,14);
+  for(const wx of [-1.45,1.45]) for(const wz of [-1.9,1.9]){
+    const w=new THREE.Mesh(wheelGeo, wheelMat);
+    w.rotation.z=Math.PI/2; w.position.set(wx,0.55,wz); g.add(w);
+  }
+  // 라이트(앞/뒤)
+  const fl = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.3,0.15),
+    new THREE.MeshBasicMaterial({color:isPlayer?0xffffff:0xff5a5a}));
+  fl.position.set(-0.9,0.8,3.3); g.add(fl);
+  const fr = fl.clone(); fr.position.x=0.9; g.add(fr);
+  const tail = new THREE.Mesh(new THREE.BoxGeometry(2.4,0.22,0.12),
+    new THREE.MeshBasicMaterial({color:isPlayer?0xff2d95:0xff0000}));
+  tail.position.set(0,0.95,-2.85); g.add(tail);
+  return g;
+}
+
+// ---------- 플레이어 ----------
+const player = buildCar(0x16e0ff, 0x16e0ff, true);
+scene.add(player);
+const headlightL = new THREE.PointLight(0x9fe8ff, 0.7, 40);
+headlightL.position.set(0,2,8); player.add(headlightL);
+
+const P = {
+  x:0, z:0,
+  speed:24,            // 내부 속도(전진)
+  maxSpeed:46,
+  vx:0,                // 가로 속도
+  hp:100, boost:100, boostLock:false,
+  alive:true,
+  knockX:0, knockZ:0,  // 충돌 반동
+};
+
+// ---------- 적/교통 차량 풀 ----------
+const chasers = [];   // 추격자(붉은색, 능동 추적)
+const traffic = [];   // 일반 교통(피해야 할 장애물)
+
+function spawnChaser(){
+  const c = buildCar(0x2a0010, 0xff1a3c, false);
+  c.position.set((Math.random()-0.5)*ROAD_W*0.7, 0, P.z - (30+Math.random()*40));
+  const light = new THREE.PointLight(0xff2244, 1.0, 26);
+  light.position.set(0,2,-3); c.add(light);
+  scene.add(c);
+  chasers.push({mesh:c, x:c.position.x, z:c.position.z, speed:P.speed+4, vx:0, alive:true});
+}
+function spawnTraffic(){
+  const palette=[0xffe66d,0x7CFF6d,0xc77dff,0xffffff,0xff9e3d];
+  const col=palette[(Math.random()*palette.length)|0];
+  const t = buildCar(col, col, false);
+  const lane = (Math.floor(Math.random()*4)-1.5)*(ROAD_W/4.5);
+  t.position.set(lane,0,P.z + (90+Math.random()*120));
+  scene.add(t);
+  traffic.push({mesh:t, x:lane, z:t.position.z, speed:14+Math.random()*8, alive:true});
+}
+
+// ---------- 파티클(충돌 스파크) ----------
+const sparks=[];
+function burst(x,y,z,color){
+  for(let i=0;i<14;i++){
+    const s=new THREE.Mesh(new THREE.BoxGeometry(0.18,0.18,0.18),
+      new THREE.MeshBasicMaterial({color}));
+    s.position.set(x,y,z);
+    scene.add(s);
+    sparks.push({mesh:s, vx:(Math.random()-0.5)*0.9, vy:Math.random()*0.7+0.2,
+      vz:(Math.random()-0.5)*0.9, life:1});
+  }
+}
+
+// ---------- 입력 ----------
+const keys={left:false,right:false,up:false,down:false};
+addEventListener('keydown',e=>{
+  if(['ArrowLeft','KeyA'].includes(e.code))keys.left=true;
+  if(['ArrowRight','KeyD'].includes(e.code))keys.right=true;
+  if(['ArrowUp','KeyW'].includes(e.code))keys.up=true;
+  if(['ArrowDown','KeyS'].includes(e.code))keys.down=true;
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
+});
+addEventListener('keyup',e=>{
+  if(['ArrowLeft','KeyA'].includes(e.code))keys.left=false;
+  if(['ArrowRight','KeyD'].includes(e.code))keys.right=false;
+  if(['ArrowUp','KeyW'].includes(e.code))keys.up=false;
+  if(['ArrowDown','KeyS'].includes(e.code))keys.down=false;
+});
+// 터치
+function bindTouch(id,prop){
+  const el=document.getElementById(id);
+  const on=e=>{e.preventDefault();keys[prop]=true;};
+  const off=e=>{e.preventDefault();keys[prop]=false;};
+  el.addEventListener('touchstart',on,{passive:false});
+  el.addEventListener('touchend',off,{passive:false});
+  el.addEventListener('touchcancel',off,{passive:false});
+  el.addEventListener('mousedown',on); el.addEventListener('mouseup',off); el.addEventListener('mouseleave',off);
+}
+bindTouch('tLeft','left');bindTouch('tRight','right');bindTouch('tBoost','up');bindTouch('tBrake','down');
+if('ontouchstart' in window){ document.getElementById('touch').style.display='block'; }
+
+// ---------- 오디오(WebAudio 합성) ----------
+const Audio={ctx:null,engine:null,gain:null,muted:false};
+function initAudio(){
+  if(Audio.ctx) return;
+  try{
+    Audio.ctx=new (window.AudioContext||window.webkitAudioContext)();
+    Audio.engine=Audio.ctx.createOscillator();
+    Audio.engine.type='sawtooth';
+    Audio.engine.frequency.value=60;
+    Audio.gain=Audio.ctx.createGain();
+    Audio.gain.gain.value=0.05;
+    const lp=Audio.ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=600;
+    Audio.engine.connect(lp); lp.connect(Audio.gain); Audio.gain.connect(Audio.ctx.destination);
+    Audio.engine.start();
+  }catch(e){}
+}
+function crashSound(){
+  if(!Audio.ctx||Audio.muted)return;
+  const o=Audio.ctx.createOscillator(); const g=Audio.ctx.createGain();
+  o.type='square'; o.frequency.setValueAtTime(180,Audio.ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(40,Audio.ctx.currentTime+0.3);
+  g.gain.setValueAtTime(0.25,Audio.ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,Audio.ctx.currentTime+0.35);
+  o.connect(g); g.connect(Audio.ctx.destination); o.start(); o.stop(Audio.ctx.currentTime+0.35);
+}
+document.getElementById('mute').addEventListener('click',function(){
+  Audio.muted=!Audio.muted;
+  if(Audio.gain) Audio.gain.gain.value=Audio.muted?0:0.05;
+  this.textContent=Audio.muted?'🔇 사운드':'🔊 사운드';
+});
+
+// ---------- 게임 상태 ----------
+let state='start';      // start | play | over
+let dist=0, score=0, startTime=0, elapsed=0;
+let spawnChaseT=0, spawnTrafficT=0, difficulty=0;
+let best = 0;
+
+const $=id=>document.getElementById(id);
+
+function resetGame(){
+  // 정리
+  chasers.forEach(c=>scene.remove(c.mesh)); chasers.length=0;
+  traffic.forEach(t=>scene.remove(t.mesh)); traffic.length=0;
+  sparks.forEach(s=>scene.remove(s.mesh)); sparks.length=0;
+  P.x=0;P.z=0;P.speed=24;P.vx=0;P.hp=100;P.boost=100;P.boostLock=false;P.alive=true;P.knockX=0;P.knockZ=0;
+  player.position.set(0,0,0); player.rotation.set(0,0,0);
+  dist=0;score=0;difficulty=0;spawnChaseT=0;spawnTrafficT=1.5;
+  startTime=performance.now();
+  // 시작 교통 약간
+  for(let i=0;i<4;i++) spawnTraffic();
+}
+
+function startGame(){
+  initAudio();
+  if(Audio.ctx && Audio.ctx.state==='suspended') Audio.ctx.resume();
+  resetGame();
+  $('start').classList.add('hidden');
+  $('over').classList.add('hidden');
+  state='play';
+}
+$('startBtn').addEventListener('click',startGame);
+$('retryBtn').addEventListener('click',startGame);
+
+function gameOver(caught){
+  state='over';
+  P.alive=false;
+  elapsed=(performance.now()-startTime)/1000;
+  if(dist>best) best=dist;
+  $('overTitle').textContent = caught ? 'BUSTED!' : 'CRASHED';
+  $('finalDist').textContent=Math.floor(dist);
+  $('finalScore').textContent=Math.floor(score);
+  $('finalTime').textContent=elapsed.toFixed(1);
+  $('best').textContent='최고 기록: '+Math.floor(best)+' m';
+  $('over').classList.remove('hidden');
+}
+
+// ---------- 데미지 / 경고 효과 ----------
+let warnCD=0;
+function flashDamage(){
+  const f=$('dmgFlash'); f.style.opacity='0.5';
+  setTimeout(()=>f.style.opacity='0',90);
+}
+function showWarn(){
+  if(warnCD>0) return; warnCD=1.4;
+  const w=$('warn'); w.classList.remove('show'); void w.offsetWidth; w.classList.add('show');
+}
+
+// ---------- 충돌 판정(AABB, x-z 평면) ----------
+function hit(ax,az,aHalfX,aHalfZ, bx,bz,bHalfX,bHalfZ){
+  return Math.abs(ax-bx)<(aHalfX+bHalfX) && Math.abs(az-bz)<(aHalfZ+bHalfZ);
+}
+
+// ---------- 메인 루프 ----------
+let last=performance.now();
+function loop(now){
+  requestAnimationFrame(loop);
+  let dt=(now-last)/1000; last=now;
+  if(dt>0.05) dt=0.05;             // 프레임 튐 방지
+
+  if(state==='play') update(dt);
+  render(dt);
+  renderer.render(scene,camera);
+}
+
+function update(dt){
+  difficulty += dt;
+  warnCD = Math.max(0, warnCD-dt);
+
+  // --- 입력 -> 가로 이동 ---
+  const steer = 26;
+  if(keys.left)  P.vx += steer*dt;
+  if(keys.right) P.vx -= steer*dt;
+  if(!keys.left && !keys.right) P.vx *= 0.86;   // 마찰
+  P.vx = Math.max(-16, Math.min(16, P.vx));
+  P.x += P.vx*dt;
+
+  // 도로 경계
+  const limit = ROAD_W/2 - PLAYER_HALF;
+  if(P.x < -limit){P.x=-limit; P.vx*=-0.4;}
+  if(P.x >  limit){P.x= limit; P.vx*=-0.4;}
+
+  // --- 전진 속도(가속/부스트/감속) ---
+  let target = P.maxSpeed + difficulty*0.12;     // 시간이 갈수록 기본 빨라짐
+  if(keys.up && P.boost>0 && !P.boostLock){
+    target += 28; P.boost = Math.max(0, P.boost - 32*dt);
+    if(P.boost<=0) P.boostLock = true;          // 완전 소진 -> 재충전 대기
+  } else {
+    if(!keys.up) P.boost = Math.min(100, P.boost + 30*dt); // 손 뗐을 때만 충전
+    if(P.boost >= 20) P.boostLock = false;       // 20% 이상 차면 다시 사용 가능
+  }
+  if(keys.down){ target = 14; }
+  P.speed += (target - P.speed) * Math.min(1, dt*2.2);
+
+  // 반동 적용
+  P.x += P.knockX*dt; P.knockX*=0.9;
+  P.speed += P.knockZ*dt; P.knockZ*=0.85;
+  if(P.x<-limit)P.x=-limit; if(P.x>limit)P.x=limit;
+
+  // 전진
+  P.z += P.speed*dt;
+  dist += P.speed*dt*0.5;
+  score += P.speed*dt*0.18;
+
+  // 차체 표현(기울기/롤)
+  player.position.set(P.x,0,P.z);
+  player.rotation.y = -P.vx*0.018;
+  player.rotation.z = -P.vx*0.012;
+
+  // --- 스폰 타이밍 ---
+  const chaseEvery = Math.max(1.8, 4.5 - difficulty*0.025);
+  spawnChaseT -= dt;
+  if(spawnChaseT<=0 && chasers.length < Math.min(5, 1+Math.floor(difficulty/18))){
+    spawnChaser(); spawnChaseT = chaseEvery;
+  }
+  const trafficEvery = Math.max(0.5, 1.4 - difficulty*0.012);
+  spawnTrafficT -= dt;
+  if(spawnTrafficT<=0){ spawnTraffic(); spawnTrafficT = trafficEvery; }
+
+  // --- 추격자 AI ---
+  let nearChaser = Infinity;
+  for(const c of chasers){
+    if(!c.alive) continue;
+    // 플레이어 쪽으로 차선 변경
+    const dx = P.x - c.x;
+    c.vx += Math.sign(dx)*Math.min(Math.abs(dx),1)*22*dt;
+    c.vx *= 0.9; c.vx=Math.max(-15,Math.min(15,c.vx));
+    c.x += c.vx*dt;
+    // 속도: 플레이어보다 약간 빠르게 따라붙되 거리에 따라 가감
+    const gap = P.z - c.z;
+    let cs = P.speed + 3 + difficulty*0.03;
+    if(gap < 8) cs = P.speed - 2;          // 너무 붙으면 살짝 감속(밀당)
+    c.speed += (cs-c.speed)*Math.min(1,dt*2);
+    c.z += c.speed*dt;
+    c.mesh.position.set(c.x,0,c.z);
+    c.mesh.rotation.y = -c.vx*0.02;
+
+    nearChaser = Math.min(nearChaser, gap);
+
+    // 충돌 — 추격자가 플레이어를 들이받음
+    if(hit(P.x,P.z,PLAYER_HALF,PLAYER_LEN, c.x,c.z,1.5,2.8)){
+      P.hp -= 9;
+      P.knockX += Math.sign(P.x-c.x || (Math.random()-0.5))*40;
+      P.knockZ += (c.z>P.z? -10 : 18);    // 뒤에서 받으면 앞으로 밀림
+      burst(c.x,1, (P.z+c.z)/2, 0xff2d95);
+      crashSound(); flashDamage();
+      c.z = P.z - 9;                       // 살짝 떼어놓기
+      if(P.hp<=0){ gameOver(false); return; }
+    }
+    // 화면 뒤로 너무 멀어진 추격자 제거
+    if(c.z < P.z - 70){ scene.remove(c.mesh); c.alive=false; }
+  }
+  // 가까운 추격자 경고
+  if(nearChaser < 14) showWarn();
+
+  // --- 교통 차량 ---
+  for(const t of traffic){
+    if(!t.alive) continue;
+    t.z += t.speed*dt;
+    t.mesh.position.set(t.x,0,t.z);
+    // 충돌 — 정면/측면 추돌은 큰 피해
+    if(hit(P.x,P.z,PLAYER_HALF,PLAYER_LEN, t.x,t.z,1.5,2.8)){
+      P.hp -= 30;
+      P.speed *= 0.45;
+      P.knockX += Math.sign(P.x-t.x || (Math.random()-0.5))*30;
+      burst(t.x,1,(P.z+t.z)/2, 0xffe66d);
+      crashSound(); flashDamage();
+      t.alive=false; scene.remove(t.mesh);
+      if(P.hp<=0){ gameOver(false); return; }
+    }
+    if(t.z < P.z - 60){ scene.remove(t.mesh); t.alive=false; }
+  }
+  // --- 추격자 ↔ 교통 차량 충돌: 추격자 격파 ---
+  for(const c of chasers){
+    if(!c.alive) continue;
+    for(const t of traffic){
+      if(!t.alive) continue;
+      if(hit(c.x,c.z,1.5,2.8, t.x,t.z,1.5,2.8)){
+        const mx=(c.x+t.x)/2, mz=(c.z+t.z)/2;
+        burst(mx,1.2,mz, 0xff2d95);
+        burst(mx,1.0,mz, 0xffe66d);
+        burst(mx,1.6,mz, 0xffffff);
+        crashSound();
+        c.alive=false; scene.remove(c.mesh);
+        t.alive=false; scene.remove(t.mesh);
+        score += 60;            // 추격자 격파 보너스
+        break;
+      }
+    }
+  }
+
+  // 죽은 항목 정리
+  for(let i=chasers.length-1;i>=0;i--) if(!chasers[i].alive) chasers.splice(i,1);
+  for(let i=traffic.length-1;i>=0;i--) if(!traffic[i].alive) traffic.splice(i,1);
+
+  // --- 도로 세그먼트 재활용 ---
+  for(const seg of segments){
+    if(seg.position.z < P.z - SEG_LEN*5){
+      seg.position.z += SEG_LEN*SEG_COUNT;
+      // 가끔 기둥 토글 등은 생략(성능)
+    }
+  }
+
+  // --- 스파크 ---
+  for(let i=sparks.length-1;i>=0;i--){
+    const s=sparks[i];
+    s.mesh.position.x+=s.vx; s.mesh.position.y+=s.vy; s.mesh.position.z+=s.vz;
+    s.vy-=0.04; s.life-=dt*1.6;
+    s.mesh.material.opacity=Math.max(0,s.life);
+    s.mesh.material.transparent=true;
+    if(s.life<=0){ scene.remove(s.mesh); sparks.splice(i,1); }
+  }
+
+  // --- HUD ---
+  $('distVal').innerHTML = Math.floor(dist)+'<span style="font-size:26px;color:var(--neon-cyan)">m</span>';
+  $('scoreVal').textContent = Math.floor(score);
+  $('speedNum').textContent = Math.floor(P.speed*KMH_PER_UNIT);
+  $('hpFill').style.width = Math.max(0,P.hp)+'%';
+  $('boostFill').style.width = P.boost+'%';
+  $('boostFill').style.background = P.boostLock
+    ? 'linear-gradient(90deg,#ff6a3b,#ffd36e)'
+    : 'linear-gradient(90deg,var(--neon-cyan),#a6ff00)';
+  $('hpFill').style.background = P.hp<30
+    ? 'linear-gradient(90deg,#ff1a1a,#ff5a5a)'
+    : 'linear-gradient(90deg,#ff3b3b,#ff8a3b)';
+
+  // --- 엔진 사운드 피치 ---
+  if(Audio.engine && !Audio.muted){
+    Audio.engine.frequency.value = 50 + P.speed*3.2;
+  }
+}
+
+// ---------- 렌더 보조(카메라) ----------
+function render(dt){
+  // 추격 카메라: 플레이어 뒤에서 따라가며 좌우 흔들림
+  const camTargetX = P.x*0.4;
+  camera.position.x += (camTargetX - camera.position.x)*Math.min(1,dt*4);
+  camera.position.y = 7.2;
+  camera.position.z = P.z - 13;
+  camera.lookAt(P.x*0.5, 2.2, P.z + 18);
+  // 속도감: FOV 살짝 변동
+  const targetFov = 72 + Math.min(20,(P.speed-24)*0.6);
+  camera.fov += (targetFov - camera.fov)*Math.min(1,dt*3);
+  camera.updateProjectionMatrix();
+
+  // 바퀴/하늘 미세 애니메이션 생략(성능 우선)
+}
+
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
