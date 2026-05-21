@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>해누리 오락실 - Minecraft Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Jua&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     ⚙️  게임 추가는 맨 아래 <script> 의 GAME_DATA 만 수정!
+     ========================================================= */
+  :root{
+    --grass-top:#5fa83b; --grass-top-2:#4d8c2f;
+    --dirt:#8a5a3c; --dirt-dark:#6b4329;
+    --stone:#9d9d9d; --stone-lite:#bcbcbc; --stone-dark:#6e6e6e; --stone-darker:#4d4d4d;
+    --wood:#9c6b3f; --gold:#f9c22b; --emerald:#3ab87a; --redstone:#d63b3b; --diamond:#3fd6d0;
+    --ink:#2b2b2b; --text:#1f1f1f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:'Jua',sans-serif;color:var(--ink);image-rendering:pixelated;
+    min-height:100vh;overflow-x:hidden;position:relative;background:#79b6ff;
+  }
+
+  /* ===== 하늘(크로스페이드) ===== */
+  .sky{position:fixed;inset:0;z-index:-1;transition:opacity .9s ease}
+  .sky-day{background:linear-gradient(180deg,#79b6ff 0%,#a4d4ff 60%,#c9e6ff 100%)}
+  .sky-night{background:linear-gradient(180deg,#0b1437 0%,#1b2a5e 55%,#34406e 100%);opacity:0}
+  body.night .sky-day{opacity:0}
+  body.night .sky-night{opacity:1}
+
+  /* ===== 구름 ===== */
+  .clouds{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;transition:opacity .9s}
+  body.night .clouds{opacity:.35;filter:brightness(.6)}
+  .cloud{position:absolute;background:#fff;width:24px;height:24px;opacity:.85;
+    box-shadow:24px 0 #fff,48px 0 #fff,-24px 0 #fff,0 -24px #fff,24px -24px #fff,-24px -24px #fff,0 24px #f0f0f0;
+    animation:drift linear infinite}
+  .cloud.c1{top:8%;left:-10%;transform:scale(2.2);animation-duration:60s}
+  .cloud.c2{top:22%;left:-20%;transform:scale(1.5);animation-duration:90s}
+  .cloud.c3{top:40%;left:-15%;transform:scale(3);animation-duration:75s;opacity:.6}
+  .cloud.c4{top:62%;left:-25%;transform:scale(1.8);animation-duration:110s}
+  @keyframes drift{from{left:-25%}to{left:120%}}
+
+  /* ===== 해 / 달 / 별 ===== */
+  .sun,.moon{position:fixed;top:42px;right:64px;width:40px;height:40px;z-index:0;transition:opacity .9s}
+  .sun{background:var(--gold);
+    box-shadow:0 -12px var(--gold),0 12px var(--gold),-12px 0 var(--gold),12px 0 var(--gold),
+      0 0 0 4px rgba(249,194,43,.25),0 0 60px 20px rgba(249,194,43,.4);
+    animation:sunpulse 4s ease-in-out infinite}
+  @keyframes sunpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+  .moon{background:#e7ecf7;opacity:0;
+    box-shadow:0 -12px #e7ecf7,0 12px #e7ecf7,-12px 0 #e7ecf7,12px 0 #e7ecf7,
+      0 0 40px 14px rgba(231,236,247,.35), -10px 0 0 -1px #b9c2da}
+  body.night .sun{opacity:0}
+  body.night .moon{opacity:1}
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .9s}
+  body.night .stars{opacity:1}
+  .star{position:absolute;width:3px;height:3px;background:#fff;animation:twinkle 3s ease-in-out infinite}
+  @keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+
+  /* ===== 테마 토글 버튼 ===== */
+  .theme-btn{
+    position:fixed;top:18px;left:18px;z-index:20;cursor:pointer;
+    font-family:'Press Start 2P';font-size:10px;color:#fff;padding:12px 14px;
+    background:linear-gradient(180deg,var(--stone-lite),var(--stone) 50%,var(--stone-dark));
+    border:4px solid #000;
+    box-shadow:inset -4px -4px 0 var(--stone-darker),inset 4px 4px 0 #cfcfcf,4px 4px 0 rgba(0,0,0,.25);
+  }
+  .theme-btn:active{transform:translate(2px,2px)}
+  .theme-btn .lbl{text-shadow:1px 1px 0 #000}
+
+  .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:40px 20px 220px}
+
+  /* ===== 헤더 ===== */
+  header{text-align:center;margin-bottom:46px;padding-top:24px}
+  .logo{font-family:'Press Start 2P';font-size:clamp(26px,7vw,60px);line-height:1.3;color:#7d7d7d;
+    text-shadow:4px 4px 0 #3a3a3a,-2px -2px 0 #bdbdbd;letter-spacing:2px;
+    transform:perspective(400px) rotateX(8deg);animation:logobob 3s ease-in-out infinite}
+  .logo .grasstxt{color:#5fa83b;text-shadow:4px 4px 0 #2f6b1c,-2px -2px 0 #84d65a}
+  @keyframes logobob{0%,100%{transform:perspective(400px) rotateX(8deg) translateY(0)}50%{transform:perspective(400px) rotateX(8deg) translateY(-6px)}}
+  .subtitle{margin-top:24px;display:inline-block;font-family:'Press Start 2P';font-size:11px;color:#fff;
+    background:rgba(0,0,0,.55);padding:10px 18px;border:3px solid #000;
+    box-shadow:inset -3px -3px 0 rgba(0,0,0,.4),inset 3px 3px 0 rgba(255,255,255,.15);line-height:1.8}
+  .hud{display:flex;justify-content:center;align-items:center;gap:24px;margin-top:26px;flex-wrap:wrap}
+  .hearts{display:flex;gap:4px}
+  .heart{width:18px;height:18px;background:var(--redstone);
+    clip-path:polygon(50% 100%,0 35%,15% 15%,35% 15%,50% 30%,65% 15%,85% 15%,100% 35%);
+    animation:beat 1s ease-in-out infinite}
+  .heart:nth-child(2){animation-delay:.1s}.heart:nth-child(3){animation-delay:.2s}
+  .heart:nth-child(4){animation-delay:.3s}.heart:nth-child(5){animation-delay:.4s}
+  @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+  .xp{font-family:'Press Start 2P';font-size:9px;color:#fff;background:#000;padding:6px 12px;border:2px solid var(--emerald)}
+
+  /* ===== 카테고리 ===== */
+  .category{margin-bottom:46px;animation:rise .6s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .cat-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:14px 18px;border:4px solid #000;
+    background:linear-gradient(180deg,var(--grass-top),var(--grass-top-2) 40%,var(--dirt) 40%,var(--dirt-dark));
+    box-shadow:inset -4px -4px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.12),6px 6px 0 rgba(0,0,0,.2)}
+  .cat-icon{font-size:30px;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.4))}
+  .cat-title{font-family:'Press Start 2P';font-size:clamp(13px,2.6vw,18px);color:#fff;text-shadow:2px 2px 0 #000;flex:1}
+  .cat-count{font-family:'Press Start 2P';font-size:9px;color:#fff;background:rgba(0,0,0,.5);padding:6px 10px;border:2px solid rgba(255,255,255,.2)}
+
+  .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+
+  .game-btn{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);
+    background:linear-gradient(180deg,var(--stone-lite),var(--stone) 50%,var(--stone-dark));
+    border:4px solid #000;padding:16px;cursor:pointer;position:relative;overflow:hidden;
+    transition:transform .08s,filter .15s;
+    box-shadow:inset -4px -4px 0 var(--stone-darker),inset 4px 4px 0 #cfcfcf,4px 4px 0 rgba(0,0,0,.25)}
+  .game-btn::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1px);background-size:6px 6px;opacity:.5;pointer-events:none}
+  .game-btn:hover{filter:brightness(1.12);transform:translateY(-3px);
+    box-shadow:inset -4px -4px 0 var(--stone-darker),inset 4px 4px 0 #e0e0e0,6px 8px 0 rgba(0,0,0,.3)}
+  .game-btn:active{transform:translate(2px,2px);box-shadow:inset 4px 4px 0 var(--stone-darker),inset -2px -2px 0 #cfcfcf,2px 2px 0 rgba(0,0,0,.25)}
+  .gb-top{display:flex;align-items:center;gap:10px}
+  .gb-block{width:42px;height:42px;flex-shrink:0;border:3px solid #000;display:flex;align-items:center;justify-content:center;font-size:22px;
+    box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.3)}
+  .gb-title{font-size:19px;line-height:1.2;color:#1f1f1f;text-shadow:1px 1px 0 rgba(255,255,255,.4)}
+  .gb-desc{font-size:14px;color:#3a3a3a;line-height:1.4;opacity:.85}
+  .gb-go{margin-top:4px;align-self:flex-start;font-family:'Press Start 2P';font-size:8px;color:#fff;background:var(--emerald);padding:6px 10px;border:2px solid #000;box-shadow:inset -2px -2px 0 #237a4d}
+  .empty-slot{display:flex;align-items:center;justify-content:center;gap:8px;min-height:110px;
+    border:4px dashed rgba(0,0,0,.3);background:rgba(255,255,255,.25);color:rgba(0,0,0,.45);font-size:15px;text-align:center;padding:14px}
+
+  .help{margin-top:30px;background:var(--wood);
+    background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 2px,transparent 2px 26px),repeating-linear-gradient(0deg,transparent 0 24px,rgba(0,0,0,.18) 24px 26px);
+    border:4px solid #000;color:#fff;padding:20px 22px;
+    box-shadow:inset -4px -4px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.1),6px 6px 0 rgba(0,0,0,.2)}
+  .help h3{font-family:'Press Start 2P';font-size:12px;margin-bottom:12px;text-shadow:2px 2px 0 #000;color:var(--gold)}
+  .help p{font-size:15px;line-height:1.7;text-shadow:1px 1px 0 #000}
+  .help code{background:rgba(0,0,0,.4);padding:2px 7px;font-family:'Press Start 2P';font-size:9px;color:var(--diamond)}
+
+  /* ===== 바닥 + 나무집 ===== */
+  .ground{position:fixed;left:0;right:0;bottom:0;height:48px;z-index:1;border-top:4px solid #000;
+    background:linear-gradient(180deg,var(--grass-top) 0,var(--grass-top) 12px,var(--grass-top-2) 12px,var(--grass-top-2) 16px,var(--dirt) 16px,var(--dirt-dark) 100%)}
+  .ground::after{content:"";position:absolute;inset:16px 0 0;background-image:radial-gradient(rgba(0,0,0,.15) 2px,transparent 2px);background-size:14px 14px}
+
+  .mc-house{position:fixed;right:36px;bottom:40px;width:190px;height:190px;z-index:1;pointer-events:none;
+    filter:drop-shadow(6px 6px 0 rgba(0,0,0,.25));transition:filter .9s}
+  body.night .mc-house{filter:drop-shadow(6px 6px 0 rgba(0,0,0,.5)) brightness(.78)}
+  .win-glass{fill:#bfe8ff;transition:fill .9s}
+  body.night .win-glass{fill:#ffd86b}
+  .torch-flame{fill:#ffae42;transform-origin:center;animation:flick .35s steps(2) infinite}
+  body.night .torch-flame{filter:drop-shadow(0 0 5px #ffae42) drop-shadow(0 0 9px #ffd24a)}
+  @keyframes flick{0%{opacity:.85;transform:scaleY(1)}100%{opacity:1;transform:scaleY(1.15)}}
+
+  @media(max-width:760px){.mc-house{width:130px;height:130px;right:8px;bottom:42px;opacity:.92}}
+  @media(max-width:600px){.games{grid-template-columns:1fr}.sun,.moon{top:20px;right:20px;transform:scale(.7)}
+    .theme-btn{font-size:8px;padding:9px 10px}}
+</style>
+</head>
+<body>
+  <div class="sky sky-day"></div>
+  <div class="sky sky-night"></div>
+  <div class="stars" id="stars"></div>
+  <div class="clouds">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="cloud c4"></div>
+  </div>
+  <div class="sun"></div>
+  <div class="moon"></div>
+
+  <button class="theme-btn" id="themeBtn"><span class="lbl">🌙 밤으로</span></button>
+
+  <div class="wrap">
+    <header>
+      <div class="logo"><span class="grasstxt">해누리</span> 오락실</div>
+      <div class="subtitle">⛏ 두뇌를 깨우는 미니게임 월드 ⛏<br>버튼을 클릭해서 게임에 입장하세요!</div>
+      <div class="hud">
+        <div class="hearts"><div class="heart"></div><div class="heart"></div><div class="heart"></div><div class="heart"></div><div class="heart"></div></div>
+        <div class="xp">⭐ LV.1  XP ▮▮▮▯▯</div>
+      </div>
+    </header>
+    <main id="board"></main>
+    <div class="help">
+      <h3>📖 게임 추가하는 법</h3>
+      <p>이 파일을 코드 편집기로 열고 아래쪽 <code>GAME_DATA</code> 만 수정하세요.<br>
+        ✅ 카테고리의 <code>games</code> 목록에 <b>{ 제목, url, 설명, 아이콘, 색깔 }</b> 한 줄 추가 → 버튼 자동 생성<br>
+        ✅ <code>url</code> 을 빈칸 <b>""</b> 으로 두면 🔒 "준비 중" 슬롯으로 표시됩니다.</p>
+    </div>
+  </div>
+
+  <!-- 픽셀 나무집 -->
+  <svg class="mc-house" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+    <!-- 집 앞 잔디/흙 -->
+    <rect x="0" y="136" width="160" height="8" fill="#5fa83b"/>
+    <rect x="0" y="144" width="160" height="16" fill="#7a5230"/>
+    <!-- 지붕(다크오크 계단) -->
+    <rect x="8"  y="40" width="144" height="8" fill="#4a3420"/>
+    <rect x="16" y="32" width="128" height="8" fill="#5c4226"/>
+    <rect x="28" y="24" width="104" height="8" fill="#4a3420"/>
+    <rect x="44" y="16" width="72"  height="8" fill="#5c4226"/>
+    <rect x="60" y="8"  width="40"  height="8" fill="#4a3420"/>
+    <rect x="72" y="0"  width="16"  height="8" fill="#5c4226"/>
+    <!-- 벽(오크 판자) -->
+    <rect x="24" y="48" width="112" height="88" fill="#c89a5d"/>
+    <!-- 판자 가로 줄눈 -->
+    <rect x="24" y="64"  width="112" height="2" fill="#a87f48"/>
+    <rect x="24" y="80"  width="112" height="2" fill="#a87f48"/>
+    <rect x="24" y="96"  width="112" height="2" fill="#a87f48"/>
+    <rect x="24" y="112" width="112" height="2" fill="#a87f48"/>
+    <rect x="24" y="128" width="112" height="2" fill="#a87f48"/>
+    <!-- 모서리 통나무 기둥 -->
+    <rect x="24"  y="48" width="11" height="88" fill="#6e4f2e"/>
+    <rect x="125" y="48" width="11" height="88" fill="#6e4f2e"/>
+    <rect x="24"  y="48" width="11" height="6" fill="#866239"/>
+    <rect x="24"  y="118" width="11" height="6" fill="#866239"/>
+    <rect x="125" y="48" width="11" height="6" fill="#866239"/>
+    <rect x="125" y="118" width="11" height="6" fill="#866239"/>
+    <!-- 왼쪽 창문 -->
+    <rect x="42" y="62" width="24" height="26" fill="#3a2a18"/>
+    <rect x="45" y="65" width="18" height="20" class="win-glass"/>
+    <rect x="53" y="65" width="2"  height="20" fill="#3a2a18"/>
+    <rect x="45" y="74" width="18" height="2"  fill="#3a2a18"/>
+    <!-- 오른쪽 창문 -->
+    <rect x="96"  y="62" width="24" height="26" fill="#3a2a18"/>
+    <rect x="99"  y="65" width="18" height="20" class="win-glass"/>
+    <rect x="107" y="65" width="2"  height="20" fill="#3a2a18"/>
+    <rect x="99"  y="74" width="18" height="2"  fill="#3a2a18"/>
+    <!-- 문 -->
+    <rect x="70" y="96" width="24" height="40" fill="#3a2a18"/>
+    <rect x="72" y="98" width="20" height="38" fill="#5a3f24"/>
+    <rect x="82" y="100" width="2" height="34" fill="#3a2a18"/>
+    <circle cx="88" cy="118" r="2" fill="#2a1c0e"/>
+    <!-- 벽 횃불 -->
+    <rect x="62" y="98" width="3" height="14" fill="#7a5230"/>
+    <rect class="torch-flame" x="59" y="89" width="9" height="10"/>
+  </svg>
+
+  <div class="ground"></div>
+
+<script>
+/* =====================================================================
+   🎮  여기만 수정! GAME_DATA
+   - url 을 "" (빈칸) 으로 두면 "준비 중" 슬롯이 됩니다.
+   ===================================================================== */
+const BASE = "https://scienceisjo.github.io/brain-break-lab/";
+const GAME_DATA = {
+  categories: [
+    {
+      name: "두뇌 트레이닝",
+      icon: "🧠",
+      games: [
+        { title: "블록 블라스트", url: BASE+"blockblast", desc: "블록을 맞춰 터뜨리는 퍼즐", icon:"🧱", color:"#d63b3b" },
+        { title: "소닉 챌린지",   url: BASE+"sonic",      desc: "반응속도·기억력 두뇌게임 (터치 OK)", icon:"⚡", color:"#f9c22b" }
+      ]
+    },
+    {
+      name: "리듬 · 음악",
+      icon: "🎵",
+      games: [
+        { title: "드럼 마스터", url: BASE+"drum",   desc: "직접 두드리는 드럼 연주", icon:"🥁", color:"#9c6b3f" },
+        { title: "리듬 게임",   url: BASE+"rhythm", desc: "박자에 맞춰 두드려요", icon:"🎵", color:"#8a4fd6" }
+      ]
+    },
+    {
+      name: "액션 · 서바이벌",
+      icon: "⚔️",
+      games: [
+        { title: "체이스 레이서", url: BASE+"chaseracer", desc: "스릴 넘치는 자동차 추격전", icon:"🏎️", color:"#e0512f" },
+        { title: "헬리콥터",      url: BASE+"helicopter", desc: "벽을 피해 헬기를 조종!", icon:"🚁", color:"#3fd6d0" },
+        { title: "서바이벌",      url: BASE+"survival",   desc: "방과후 학교에서 살아남기", icon:"🏫", color:"#3ab87a" }
+      ]
+    }
+  ]
+};
+
+/* ---------- 렌더링 (수정 불필요) ---------- */
+function render(){
+  const board=document.getElementById('board'); board.innerHTML='';
+  GAME_DATA.categories.forEach((cat,ci)=>{
+    const ready=cat.games.filter(g=>g.url&&g.url.trim()!=='').length;
+    const sec=document.createElement('section');
+    sec.className='category'; sec.style.animationDelay=(ci*0.12)+'s';
+    sec.innerHTML=`<div class="cat-head"><span class="cat-icon">${cat.icon||'🎮'}</span>
+      <span class="cat-title">${cat.name}</span>
+      <span class="cat-count">${ready}/${cat.games.length} ▶</span></div><div class="games"></div>`;
+    const grid=sec.querySelector('.games');
+    cat.games.forEach(g=>{
+      const has=g.url&&g.url.trim()!=='';
+      if(has){
+        const a=document.createElement('a');
+        a.className='game-btn'; a.href=g.url; a.target='_blank'; a.rel='noopener';
+        a.innerHTML=`<div class="gb-top"><div class="gb-block" style="background:${g.color||'#9d9d9d'}">${g.icon||'🎮'}</div>
+          <div class="gb-title">${g.title}</div></div>
+          <div class="gb-desc">${g.desc||''}</div><div class="gb-go">▶ PLAY</div>`;
+        grid.appendChild(a);
+      }else{
+        const d=document.createElement('div'); d.className='game-btn empty-slot';
+        d.innerHTML=`🔒 <b>${g.title}</b><br><span style="font-size:13px">준비 중 (링크 추가 예정)</span>`;
+        grid.appendChild(d);
+      }
+    });
+    board.appendChild(sec);
+  });
+}
+render();
+
+/* ---------- 별 생성 + 밤/낮 토글 ---------- */
+(function(){
+  const sky=document.getElementById('stars');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div'); s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*70+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    const sz=Math.random()<.3?4:2; s.style.width=sz+'px'; s.style.height=sz+'px';
+    sky.appendChild(s);
+  }
+})();
+const btn=document.getElementById('themeBtn');
+btn.addEventListener('click',()=>{
+  const night=document.body.classList.toggle('night');
+  btn.querySelector('.lbl').textContent=night?'☀️ 낮으로':'🌙 밤으로';
+});
+</script>
+</body>
+</html>
