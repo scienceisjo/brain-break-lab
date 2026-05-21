@@ -227,7 +227,9 @@ const fill = new THREE.DirectionalLight(0xff3d8b, 0.5);
 fill.position.set(30, 20, 60);
 scene.add(fill);
 
-// ---------- 신스웨이브 하늘 + 태양 ----------
+// ---------- 신스웨이브 하늘 + 태양 (플레이어를 따라다니는 환경 그룹) ----------
+const env = new THREE.Group();
+scene.add(env);
 (function buildSky(){
   // 그라데이션 배경 (큰 평면)
   const c = document.createElement('canvas'); c.width=16; c.height=256;
@@ -242,11 +244,11 @@ scene.add(fill);
   g.fillStyle=grad; g.fillRect(0,0,16,256);
   const tex = new THREE.CanvasTexture(c);
   const sky = new THREE.Mesh(
-    new THREE.PlaneGeometry(1400,520),
+    new THREE.PlaneGeometry(1500,560),
     new THREE.MeshBasicMaterial({map:tex, depthWrite:false, fog:false})
   );
-  sky.position.set(0,120,-360);
-  scene.add(sky);
+  sky.position.set(0,150,340);          // 플레이어 앞쪽(+Z) 지평선
+  env.add(sky);
 
   // 줄무늬 태양
   const sc = document.createElement('canvas'); sc.width=256; sc.height=256;
@@ -258,23 +260,25 @@ scene.add(fill);
   for(let i=0;i<8;i++){ const y=150+i*13; sg.fillRect(0,y, 256, 5+i*1.5); }
   const stex = new THREE.CanvasTexture(sc);
   const sun = new THREE.Mesh(
-    new THREE.PlaneGeometry(150,150),
+    new THREE.PlaneGeometry(160,160),
     new THREE.MeshBasicMaterial({map:stex, transparent:true, depthWrite:false, fog:false})
   );
-  sun.position.set(0,78,-355);
-  scene.add(sun);
+  sun.position.set(0,62,335);
+  env.add(sun);
 
   // 별
   const starGeo = new THREE.BufferGeometry();
   const sv=[];
-  for(let i=0;i<260;i++){ sv.push((Math.random()-0.5)*900, 120+Math.random()*220, -360-Math.random()*100); }
+  for(let i=0;i<260;i++){ sv.push((Math.random()-0.5)*900, 120+Math.random()*230, 250+Math.random()*120); }
   starGeo.setAttribute('position', new THREE.Float32BufferAttribute(sv,3));
-  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color:0xffffff,size:1.4,fog:false,transparent:true,opacity:.8})));
+  env.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color:0xffffff,size:1.5,fog:false,transparent:true,opacity:.85})));
 })();
 
 // ---------- 사이드 네온 그리드 평면(신스웨이브 바닥) ----------
+const GRID_CELL = 1200/120;   // 그리드 칸 크기 = 10
+let grid;
 (function buildGrid(){
-  const grid = new THREE.GridHelper(1200, 120, 0x16e0ff, 0x9d4edd);
+  grid = new THREE.GridHelper(1200, 120, 0x16e0ff, 0x9d4edd);
   grid.position.y = -0.04;
   grid.material.transparent = true;
   grid.material.opacity = 0.28;
@@ -503,6 +507,8 @@ function resetGame(){
   player.position.set(0,0,0); player.rotation.set(0,0,0);
   dist=0;score=0;difficulty=0;spawnChaseT=0;spawnTrafficT=1.5;
   startTime=performance.now();
+  // 도로 세그먼트를 시작 위치로 다시 배치(재시작 시 도로/가로등 유지)
+  for(let i=0;i<segments.length;i++){ segments[i].position.z = i*SEG_LEN - SEG_LEN*4; }
   // 시작 교통 약간
   for(let i=0;i<4;i++) spawnTraffic();
 }
@@ -734,6 +740,10 @@ function render(dt){
   camera.position.y = 7.2;
   camera.position.z = P.z - 13;
   camera.lookAt(P.x*0.5, 2.2, P.z + 18);
+
+  // 배경(하늘·태양·별)과 바닥 그리드를 플레이어와 함께 이동 -> 끝까지 유지
+  env.position.z = P.z;
+  grid.position.z = Math.round(P.z / GRID_CELL) * GRID_CELL;
   // 속도감: FOV 살짝 변동
   const targetFov = 72 + Math.min(20,(P.speed-24)*0.6);
   camera.fov += (targetFov - camera.fov)*Math.min(1,dt*3);
