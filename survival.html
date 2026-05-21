@@ -448,6 +448,21 @@
   }
   .credit b{ color:var(--pink); }
 
+  .ability{
+    position:absolute; bottom:62px; right:24px;
+    display:flex; align-items:center; gap:10px;
+    font-family:'Black Han Sans',sans-serif;
+    background:rgba(7,2,26,.85); border:2px solid var(--green);
+    border-radius:10px; padding:8px 14px;
+    box-shadow:0 0 14px rgba(0,255,133,.4);
+    transition:opacity .2s, border-color .2s, box-shadow .2s;
+  }
+  .ability.cooling{ border-color:rgba(255,255,255,.2); box-shadow:none; opacity:.6; }
+  .ab-key{ font-family:'Press Start 2P',monospace; font-size:11px; color:#fff; background:rgba(0,255,133,.2); padding:5px 8px; border-radius:5px; letter-spacing:1px; }
+  .ability.cooling .ab-key{ background:rgba(255,255,255,.1); }
+  .ab-state{ font-size:18px; color:var(--green); letter-spacing:1px; }
+  .ability.cooling .ab-state{ color:rgba(243,232,255,.6); }
+
   /* Mobile */
   @media (max-width: 720px){
     .title{ letter-spacing: 2px; }
@@ -478,6 +493,11 @@
   <div class="combo" id="combo">x0<small>콤보</small></div>
 
   <div class="weapons" id="weapons"></div>
+
+  <div class="ability" id="ability">
+    <span class="ab-key">SPACE</span>
+    <span class="ab-state" id="abState">정리 준비됨</span>
+  </div>
 
   <div class="hp-wrap">
     <div class="hp-icon">♥ HP</div>
@@ -515,8 +535,9 @@
   <div class="desc">
     오늘도 학교를 무사히 마치기 위한 마지막 10분.<br>
     시간이 흐를수록 적은 강해지고 많아진다.<br><br>
-    <span class="key">W A S D</span> 또는 <span class="key">방향키</span> 로 이동<br>
-    무기는 <b style="color:var(--cyan)">자동 공격</b>이다. 살아남기만 하면 된다.
+    <span class="key">W A S D</span> · <span class="key">방향키</span> 이동<br>
+    <span class="key">SPACE</span> 주변 적 정리 (15초마다)<br><br>
+    무기는 <b style="color:var(--cyan)">자동 공격</b>, <b style="color:var(--cyan)">보호막</b>이 항상 지켜준다.
   </div>
   <div class="btn-row">
     <button class="btn" id="startBtn">시작하기</button>
@@ -599,6 +620,9 @@ const keys = {};
 window.addEventListener('keydown', e => {
   keys[e.key.toLowerCase()] = true;
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
+  if(e.key === ' ' && game.state === 'playing' && game.bombCD <= 0){
+    triggerBomb();
+  }
 });
 window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 
@@ -627,6 +651,8 @@ const game = {
   flashAlpha: 0,
   flashColor: '#fff',
   stage: 1,
+  bombCD: 0,
+  bombMax: 15,
 };
 
 const player = {
@@ -655,6 +681,7 @@ const particles = [];
 const dmgTexts = [];
 const pickups = [];        // hp, magnet, bombs
 const orbitals = [];       // 컴퍼스 같은 회전 무기
+const shields = [];        // 항상 도는 보호막
 
 // combo
 let combo = 0, comboT = 0;
@@ -908,7 +935,7 @@ function spawnEnemy(type){
     hp: proto.hp * hpScale,
     maxHp: proto.hp * hpScale,
     dmg: proto.dmg,
-    speed: proto.speed * speedScale,
+    speed: proto.speed * speedScale * 0.7,
     xp: proto.xp,
     color: proto.color,
     emoji: proto.emoji,
@@ -946,13 +973,14 @@ function spawnBoss(){
     r: 38,
     type: 'boss',
     hp: 400 * scale, maxHp: 400 * scale,
-    dmg: 25, speed: 65,
+    dmg: 25, speed: 65 * 0.7,
     xp: 30,
     color: '#ff2d5f',
     emoji: '👨‍🏫',
     flash: 0, age: 0, phase: 0,
     shootCD: 1.5,
     isBoss: true,
+    bossTimer: 15,
   });
   showBossBanner();
   shake(20);
@@ -1012,6 +1040,26 @@ function explode(x, y, radius, dmg){
   for(const e of enemies){
     if(dist2(e, {x, y}) < radius*radius) hitEnemy(e, dmg);
   }
+}
+
+function triggerBomb(){
+  game.bombCD = game.bombMax;
+  const radius = 300;
+  shake(16); flash('#00f0ff', 0.45);
+  game.slowmo = 0.4;
+  setTimeout(()=>{ if(game.state==='playing') game.slowmo = 1; }, 150);
+  for(let i=0;i<48;i++){
+    const a = (i/48)*TAU;
+    particles.push({ x:player.x, y:player.y, vx:Math.cos(a)*radius*3.5, vy:Math.sin(a)*radius*3.5, life:0.42, max:0.42, r:7, color:'#7df9ff', drag:0.9 });
+  }
+  for(let j=enemies.length-1;j>=0;j--){
+    const e = enemies[j];
+    if(dist2(e, player) < radius*radius){
+      if(e.isBoss){ hitEnemy(e, 120 * player.dmgMul); }
+      else { burst(e.x, e.y, '#00f0ff', 8, 200); hitEnemy(e, e.hp + 9999); }
+    }
+  }
+  dmgText(player.x, player.y - 42, '정리완료!', '#00f0ff', true);
 }
 
 function dmgText(x, y, txt, color, big){
@@ -1264,6 +1312,38 @@ function update(dt){
     }
   }
 
+  // 보호막 (항상 작동) — 닿은 일반 적은 즉사, 보스는 데미지
+  {
+    const spin = 2.6;
+    for(const s of shields){
+      s.angle += spin * dt;
+      s.x = player.x + Math.cos(s.angle) * s.radius;
+      s.y = player.y + Math.sin(s.angle) * s.radius;
+      for(let j=enemies.length-1;j>=0;j--){
+        const e = enemies[j];
+        if(dist2(s, e) < (s.r + e.r)*(s.r + e.r)){
+          if(e.isBoss){
+            if(!s.hitCD.has(e.id)){
+              hitEnemy(e, 30 * player.dmgMul);
+              s.hitCD.set(e.id, 0.5);
+            }
+          } else {
+            burst(e.x, e.y, '#00f0ff', 10, 220);
+            hitEnemy(e, e.hp + 9999); // 즉사
+          }
+        }
+      }
+      for(const [id, cd] of s.hitCD){
+        const n = cd - dt;
+        if(n <= 0) s.hitCD.delete(id);
+        else s.hitCD.set(id, n);
+      }
+    }
+  }
+
+  // 정리 스킬 쿨다운
+  if(game.bombCD > 0) game.bombCD = Math.max(0, game.bombCD - dt);
+
   // enemies
   const eRate = baseSpawnRate(game.t);
   if(Math.random() < eRate * dt){
@@ -1303,6 +1383,14 @@ function update(dt){
       }
     }
     if(e.isBoss){
+      e.bossTimer -= dt;
+      if(e.bossTimer <= 0){
+        // 담임선생님 퇴장 (처치하지 못하면 보상 없음)
+        burst(e.x, e.y, '#ff2d5f', 30, 280);
+        flash('#ff2d5f', 0.2);
+        enemies.splice(i, 1);
+        continue;
+      }
       e.shootCD -= dt;
       if(e.shootCD <= 0){
         e.shootCD = 1.2;
@@ -1493,6 +1581,16 @@ function updateHUD(){
   } else {
     comboEl.classList.remove('show');
   }
+
+  const ab = document.getElementById('ability');
+  const abState = document.getElementById('abState');
+  if(game.bombCD > 0){
+    ab.classList.add('cooling');
+    abState.textContent = Math.ceil(game.bombCD) + '초';
+  } else {
+    ab.classList.remove('cooling');
+    abState.textContent = '정리 준비됨';
+  }
 }
 
 function baseSpawnRate(t){
@@ -1537,6 +1635,16 @@ function draw(){
   // orbitals
   for(const o of orbitals){
     drawOrbital(o);
+  }
+
+  // 보호막 궤도 + 보호막
+  if(shields.length){
+    ctx.strokeStyle = 'rgba(0,240,255,0.12)';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(player.x, player.y, shields[0].radius, 0, TAU); ctx.stroke();
+  }
+  for(const s of shields){
+    drawShield(s);
   }
 
   // bullets
@@ -1701,8 +1809,9 @@ function drawEnemy(e){
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 3;
-      ctx.strokeText('담임선생님', e.x, y - 6);
-      ctx.fillText('담임선생님', e.x, y - 6);
+      const label = '담임선생님 ' + Math.ceil(e.bossTimer) + '초';
+      ctx.strokeText(label, e.x, y - 6);
+      ctx.fillText(label, e.x, y - 6);
     }
   }
   // shadow
@@ -1835,6 +1944,24 @@ function drawEBullet(b){
   ctx.restore();
 }
 
+function drawShield(s){
+  ctx.save();
+  ctx.translate(s.x, s.y);
+  const pulse = 1 + Math.sin(performance.now()/120) * 0.12;
+  ctx.shadowBlur = 20; ctx.shadowColor = '#00f0ff';
+  const g = ctx.createRadialGradient(0,0,0,0,0,s.r);
+  g.addColorStop(0, 'rgba(255,255,255,0.7)');
+  g.addColorStop(0.55, 'rgba(0,240,255,0.4)');
+  g.addColorStop(1, 'rgba(0,240,255,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(0,0,s.r,0,TAU); ctx.fill();
+  ctx.strokeStyle = 'rgba(0,240,255,0.95)';
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.arc(0,0,s.r*pulse,0,TAU); ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
 function drawOrbital(o){
   ctx.save();
   ctx.translate(o.x, o.y);
@@ -1882,12 +2009,17 @@ function reset(){
   dmgTexts.length = 0;
   pickups.length = 0;
   orbitals.length = 0;
+  shields.length = 0;
+  for(let i=0;i<2;i++){
+    shields.push({ angle: (i/2)*TAU, radius: 95, r: 17, x: player.x, y: player.y, hitCD: new Map() });
+  }
   game.t = 0;
   game.score = 0;
   game.kills = 0;
   game.nextBossT = 60;
   game.pendingLevelUp = 0;
   game.stage = 1;
+  game.bombCD = 0;
   game.shake = 0;
   game.flashAlpha = 0;
   combo = 0; comboT = 0;
