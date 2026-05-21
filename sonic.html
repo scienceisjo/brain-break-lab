@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>반응속도 오락실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@500;700;900&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14;--bg2:#0f1622;--line:#2a3445;--track:#ff4d2e;--led:#39ff7a;--gold:#ffce3a;
+    --ink:#eaf2ff;--muted:#8b97ad;
+    --p1:#00e5ff;--p2:#a6ff00;--p3:#ff3d8a;--p4:#ffae00;
+    --red:#ff3b30;--blue:#1e9bff;--green:#34d65d;--yellow:#ffd60a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:'Noto Sans KR',sans-serif;color:var(--ink);overflow:hidden;
+    user-select:none;-webkit-user-select:none;touch-action:manipulation;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #1b2740 0%, transparent 60%),
+      radial-gradient(900px 700px at 110% 110%, #221021 0%, transparent 55%),
+      linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+  }
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:repeating-linear-gradient(90deg,transparent 0 118px,rgba(255,255,255,.025) 118px 120px);
+    mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .screen{position:fixed;inset:0;z-index:1;display:none;flex-direction:column;height:100%;padding:clamp(14px,2.5vh,28px)}
+  .screen.active{display:flex;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand .badge{font-family:'Orbitron';font-weight:900;font-size:clamp(13px,1.6vh,16px);letter-spacing:2px;
+    color:var(--bg);background:var(--track);padding:6px 12px;border-radius:6px;box-shadow:0 0 18px rgba(255,77,46,.55)}
+  .brand h1{font-family:'Black Han Sans';font-size:clamp(20px,3.4vh,34px);letter-spacing:1px;line-height:1}
+  .pillbtn{font-family:'Noto Sans KR';font-weight:900;font-size:clamp(13px,1.7vh,16px);color:var(--ink);
+    background:rgba(255,255,255,.06);border:2px solid var(--line);padding:9px 16px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .pillbtn:hover{border-color:var(--track);color:#fff;transform:translateY(-1px)}
+  .pillbtn.ghost{background:transparent}
+
+  /* ===== 메인 메뉴 ===== */
+  #menu .hero{flex:0 0 auto;text-align:center;margin:clamp(8px,2vh,26px) 0}
+  #menu .hero .tag{font-family:'Orbitron';color:var(--led);letter-spacing:6px;font-weight:700;font-size:clamp(11px,1.7vh,15px);text-shadow:0 0 14px rgba(57,255,122,.6)}
+  #menu .hero h2{font-family:'Black Han Sans';font-size:clamp(42px,9vh,96px);line-height:.92;letter-spacing:1px;margin-top:6px;
+    background:linear-gradient(180deg,#fff 0%,#9fb4d8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 6px 40px rgba(0,229,255,.18)}
+  #menu .hero h2 b{color:var(--track);-webkit-text-fill-color:var(--track);text-shadow:0 0 30px rgba(255,77,46,.5)}
+  #menu .hero p{color:var(--muted);font-weight:700;margin-top:10px;font-size:clamp(13px,1.9vh,17px)}
+
+  .cards{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(188px,1fr));gap:clamp(10px,1.5vw,16px);align-content:center;min-height:0;overflow:auto}
+  .card{position:relative;border-radius:22px;padding:clamp(18px,3vh,30px);cursor:pointer;overflow:hidden;
+    background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:2px solid var(--line);transition:.2s;
+    display:flex;flex-direction:column;justify-content:space-between;min-height:clamp(160px,30vh,290px)}
+  .card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 40px var(--glow)}
+  .card .num{font-family:'Orbitron';font-weight:900;font-size:clamp(40px,8vh,80px);color:var(--accent);opacity:.25;line-height:1}
+  .card .ico{font-size:clamp(42px,7.5vh,76px);line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))}
+  .card h3{font-family:'Black Han Sans';font-size:clamp(22px,3.6vh,38px);margin-top:auto;line-height:1.05}
+  .card p{color:var(--muted);font-weight:700;font-size:clamp(12px,1.7vh,15px);margin-top:8px}
+  .card .go{margin-top:14px;display:inline-flex;align-items:center;gap:8px;font-family:'Orbitron';font-weight:700;color:var(--accent);font-size:clamp(12px,1.7vh,15px);letter-spacing:1px}
+  .footnote{flex:0 0 auto;text-align:center;color:var(--muted);font-weight:700;font-size:clamp(11px,1.6vh,14px);margin-top:14px}
+
+  /* ===== 점수판 (게임1·3 공용) ===== */
+  .scoreboard{flex:0 0 auto;display:flex;align-items:stretch;gap:10px;margin:10px 0}
+  .sb-clock{flex:0 0 auto;background:#03130a;border:2px solid #0c3a1f;border-radius:14px;padding:6px 18px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:130px;box-shadow:inset 0 0 26px rgba(57,255,122,.18)}
+  .sb-clock .lbl{font-family:'Orbitron';font-size:11px;letter-spacing:3px;color:#1f7a45;font-weight:700}
+  .sb-clock .val{font-family:'Orbitron';font-weight:900;font-size:clamp(30px,5vh,52px);color:var(--led);text-shadow:0 0 18px rgba(57,255,122,.7);line-height:1}
+  .sb-lanes{flex:1 1 auto;display:flex;gap:10px}
+  .sb-lane{flex:1 1 0;border-radius:14px;padding:8px 12px;border:2px solid var(--c);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,transparent),transparent);
+    display:flex;align-items:center;justify-content:space-between;min-width:0}
+  .sb-lane .who{font-family:'Black Han Sans';font-size:clamp(15px,2.4vh,24px);color:var(--c);text-shadow:0 0 12px var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sb-lane .pts{font-family:'Orbitron';font-weight:900;font-size:clamp(22px,4vh,44px);color:#fff}
+
+  /* ===== 게임1 두더지 ===== */
+  .arena{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;position:relative}
+  .lane{flex:1 1 0;position:relative;border-radius:18px;min-width:0;border:2px solid var(--c);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,#0c121c),#0a0f17);
+    box-shadow:inset 0 0 60px color-mix(in srgb,var(--c) 14%,transparent);
+    padding:clamp(8px,1.4vh,16px);display:flex;flex-direction:column}
+  .lane .lane-head{font-family:'Black Han Sans';color:var(--c);font-size:clamp(14px,2.2vh,22px);text-align:center;margin-bottom:6px;text-shadow:0 0 12px var(--c)}
+  .holes{flex:1 1 auto;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:clamp(6px,1.4vh,14px)}
+  .hole{position:relative;border-radius:18px/30px;overflow:hidden;cursor:pointer;touch-action:none;
+    background:radial-gradient(120% 90% at 50% 115%,#05080d,#0e141e 55%,#161e2b);
+    box-shadow:inset 0 -12px 26px rgba(0,0,0,.7),inset 0 6px 14px rgba(255,255,255,.04);
+    display:flex;align-items:flex-end;justify-content:center}
+  .hole .rim{position:absolute;left:6%;right:6%;bottom:7%;height:13%;border-radius:50%;background:#02050a;box-shadow:inset 0 4px 10px rgba(0,0,0,.85);z-index:1}
+  .target{position:absolute;left:50%;bottom:-2%;transform:translate(-50%,120%);font-size:clamp(52px,15vh,140px);line-height:1;
+    transition:transform .12s cubic-bezier(.34,1.7,.5,1);will-change:transform;filter:drop-shadow(0 6px 8px rgba(0,0,0,.6));pointer-events:none;z-index:2}
+  .hole.up .target{transform:translate(-50%,0)}
+  .hole.whacked .target{transform:translate(-50%,0) scale(.55);opacity:.25;filter:grayscale(1)}
+  .pop{position:absolute;left:50%;top:24%;transform:translateX(-50%);font-family:'Orbitron';font-weight:900;
+    font-size:clamp(22px,4.4vh,44px);pointer-events:none;animation:popUp .7s ease forwards;text-shadow:0 2px 6px #000;z-index:5}
+  @keyframes popUp{0%{opacity:0;transform:translateX(-50%) translateY(10px) scale(.6)}30%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-54px) scale(1.15)}}
+
+  /* ===== 게임2 줄다리기 ===== */
+  .tug-arena{flex:1 1 auto;display:flex;position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--line);margin-top:6px}
+  .tug-side{flex:1 1 0;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;touch-action:none}
+  .tug-side.left{background:linear-gradient(90deg,rgba(255,59,48,.30),rgba(255,59,48,.05))}
+  .tug-side.right{background:linear-gradient(270deg,rgba(30,155,255,.30),rgba(30,155,255,.05))}
+  .tug-side .label{font-family:'Black Han Sans';font-size:clamp(28px,7vh,84px);pointer-events:none;text-align:center;line-height:1.05}
+  .tug-side.left .label{color:var(--red);text-shadow:0 0 26px var(--red)}
+  .tug-side.right .label{color:var(--blue);text-shadow:0 0 26px var(--blue)}
+  .tug-side .tap{font-family:'Orbitron';font-weight:900;font-size:clamp(13px,2vh,18px);letter-spacing:2px;margin-top:10px;opacity:.7}
+  .tug-side.flash{animation:tugFlash .25s}
+  @keyframes tugFlash{0%{filter:brightness(2.4)}100%{filter:none}}
+  .tug-rope{position:absolute;top:50%;left:0;right:0;height:8px;transform:translateY(-50%);pointer-events:none;
+    background:repeating-linear-gradient(90deg,#caa45e 0 16px,#8f6a30 16px 24px);box-shadow:0 0 12px rgba(0,0,0,.6)}
+  .tug-center{position:absolute;top:0;bottom:0;left:50%;width:3px;background:rgba(255,255,255,.45);transform:translateX(-50%);pointer-events:none}
+  .tug-flag{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:clamp(46px,9vh,100px);transition:left .07s linear;pointer-events:none;z-index:3;filter:drop-shadow(0 5px 9px #000)}
+  .tug-signal{position:absolute;top:18%;left:50%;transform:translate(-50%,0);font-family:'Black Han Sans';
+    font-size:clamp(36px,9vh,110px);pointer-events:none;z-index:4;text-align:center;line-height:1}
+  .tug-signal.ready{color:#ffd34d;text-shadow:0 0 26px #ffd34d}
+  .tug-signal.go{color:var(--led);text-shadow:0 0 50px var(--led);animation:pulse .4s cubic-bezier(.2,1.5,.4,1)}
+  .tug-signal.foul{color:var(--track);text-shadow:0 0 30px var(--track)}
+
+  /* ===== 게임3 컬러·단어 ===== */
+  .stroop-prompt{flex:0 0 auto;text-align:center;padding:clamp(8px,1.6vh,20px);margin:8px 0;border-radius:18px;background:rgba(255,255,255,.04);border:2px solid var(--line)}
+  .stroop-rule{font-family:'Black Han Sans';color:var(--led);font-size:clamp(14px,2.4vh,24px);text-shadow:0 0 12px rgba(57,255,122,.5)}
+  .stroop-word{font-family:'Black Han Sans';font-size:clamp(56px,15vh,180px);line-height:1;margin-top:2px;transition:transform .1s}
+  .stroop-word.ok{animation:okPulse .35s}
+  @keyframes okPulse{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
+  .stroop-lanes{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,14px);min-height:0}
+  .stroop-lane{flex:1 1 0;border:2px solid var(--c);border-radius:16px;display:flex;flex-direction:column;padding:clamp(7px,1.2vh,12px);min-width:0;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,transparent),transparent);transition:.15s}
+  .stroop-lane.locked{opacity:.35}
+  .stroop-lane .who{font-family:'Black Han Sans';color:var(--c);text-align:center;font-size:clamp(13px,2vh,22px);margin-bottom:6px;text-shadow:0 0 10px var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stroop-btns{flex:1 1 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:clamp(6px,1.2vh,12px)}
+  .cbtn{border-radius:14px;border:3px solid rgba(255,255,255,.16);cursor:pointer;touch-action:none;box-shadow:inset 0 -10px 20px rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.4);transition:.07s}
+  .cbtn:active{transform:scale(.93)}
+
+  /* ===== 게임4 신경 반응속도 ===== */
+  .rt-top{flex:0 0 auto;text-align:center;margin:6px 0 4px}
+  .rt-path{font-family:'Black Han Sans';font-size:clamp(14px,2.3vh,24px);color:var(--ink);letter-spacing:.5px}
+  .rt-path b{color:var(--led)}
+  .rt-instr{font-family:'Noto Sans KR';font-weight:900;color:var(--muted);font-size:clamp(12px,1.9vh,17px);margin-top:4px}
+  .rt-round{font-family:'Orbitron';font-weight:900;color:var(--track);letter-spacing:2px;font-size:clamp(13px,2vh,18px)}
+  .rt-arena{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;margin-top:8px}
+  .rt-pad{flex:1 1 0;border-radius:18px;border:3px solid var(--c);cursor:pointer;touch-action:none;min-width:0;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:background .04s, box-shadow .1s;
+    background:radial-gradient(120% 100% at 50% 0%,#5a1418,#2a0a0c)}
+  .rt-pad .pname{font-family:'Black Han Sans';font-size:clamp(15px,2.4vh,26px);color:var(--c);text-shadow:0 0 12px var(--c)}
+  .rt-pad .pstate{font-family:'Black Han Sans';font-size:clamp(26px,5.5vh,64px);color:#ffd0d0;line-height:1;text-align:center}
+  .rt-pad .ptime{font-family:'Orbitron';font-weight:900;font-size:clamp(30px,7vh,80px);color:#fff;line-height:1}
+  .rt-pad .punit{font-family:'Orbitron';font-weight:700;font-size:clamp(12px,2vh,18px);color:var(--muted)}
+  .rt-pad.go{background:radial-gradient(120% 120% at 50% 50%,#39ff7a,#0e8a3a);border-color:#caffda;
+    box-shadow:0 0 60px rgba(57,255,122,.6),inset 0 0 60px rgba(255,255,255,.25)}
+  .rt-pad.go .pstate{color:#04200f;text-shadow:none}
+  .rt-pad.done{background:radial-gradient(120% 120% at 50% 0%,#10243a,#0a1320);border-color:var(--c)}
+  .rt-pad.foul{background:radial-gradient(120% 120% at 50% 0%,#ff5a3c,#7a1a0c);border-color:#ffcaba;animation:tugFlash .25s}
+  .rt-pad.foul .pstate{color:#fff}
+  .rt-note{flex:0 0 auto;text-align:center;color:var(--muted);font-weight:700;font-size:clamp(11px,1.8vh,15px);margin-top:6px}
+
+  /* ===== 게임5 순간 기억 ===== */
+  .mem-top{flex:0 0 auto;text-align:center;margin:8px 0 4px}
+  .mem-phase{font-family:'Black Han Sans';font-size:clamp(22px,4.6vh,48px);line-height:1}
+  .mem-phase.memo{color:var(--gold);text-shadow:0 0 22px var(--gold)}
+  .mem-phase.recall{color:var(--led);text-shadow:0 0 22px var(--led)}
+  .mem-sub{font-family:'Noto Sans KR';font-weight:900;color:var(--muted);font-size:clamp(12px,1.9vh,17px);margin-top:4px}
+  .mem-lanes{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,14px);min-height:0;margin-top:6px}
+  .mem-lane{flex:1 1 0;border:2px solid var(--c);border-radius:16px;display:flex;flex-direction:column;padding:clamp(7px,1.2vh,12px);min-width:0;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,transparent),transparent);transition:.15s}
+  .mem-lane .who{font-family:'Black Han Sans';color:var(--c);text-align:center;font-size:clamp(13px,2vh,22px);margin-bottom:6px;text-shadow:0 0 10px var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mem-grid{flex:1 1 auto;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:clamp(5px,1vh,10px);min-height:0}
+  .mcell{border-radius:12px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.08);cursor:pointer;touch-action:none;transition:transform .07s,background .1s,box-shadow .1s}
+  .mcell:active{transform:scale(.93)}
+  .mcell.lit{background:var(--c);border-color:#fff;box-shadow:0 0 26px var(--c),inset 0 0 12px rgba(255,255,255,.4)}
+  .mcell.sel{background:rgba(255,255,255,.30);border-color:#fff}
+  .mcell.correct{background:var(--led);border-color:#fff;box-shadow:0 0 22px var(--led)}
+  .mcell.wrong{background:var(--track);border-color:#fff;box-shadow:0 0 22px var(--track)}
+  .mcell.missed{box-shadow:inset 0 0 0 4px var(--gold);background:rgba(255,206,58,.12)}
+
+  /* ===== 오버레이 공통 ===== */
+  .overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;flex-direction:column;
+    background:rgba(6,9,14,.86);backdrop-filter:blur(6px);border-radius:18px;text-align:center;padding:20px}
+  .overlay.show{display:flex;animation:fade .25s ease}
+  .panel h3{font-family:'Black Han Sans';font-size:clamp(26px,5vh,52px);margin-bottom:6px}
+  .panel .sub{color:var(--muted);font-weight:700;margin-bottom:24px;font-size:clamp(13px,2vh,17px);line-height:1.5}
+  .opt-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+  .opt-row .lab{align-self:center;font-family:'Black Han Sans';font-size:clamp(15px,2.3vh,20px);color:var(--muted);margin-right:6px}
+  .chip{font-family:'Orbitron';font-weight:900;font-size:clamp(16px,2.6vh,28px);min-width:60px;padding:12px 18px;border-radius:14px;
+    border:2px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer;transition:.15s}
+  .chip.on{border-color:var(--track);background:var(--track);color:#0a0e14;box-shadow:0 0 24px rgba(255,77,46,.5)}
+  .bigbtn{font-family:'Black Han Sans';font-size:clamp(24px,4.4vh,44px);letter-spacing:2px;padding:16px 50px;border:none;border-radius:18px;cursor:pointer;margin-top:8px;
+    color:#06121a;background:linear-gradient(180deg,var(--led),#16c456);box-shadow:0 10px 30px rgba(57,255,122,.4),0 0 50px rgba(57,255,122,.25);transition:.15s}
+  .bigbtn:hover{transform:translateY(-3px)}
+  .bigbtn.red{background:linear-gradient(180deg,var(--track),#c92e16);box-shadow:0 10px 30px rgba(255,77,46,.4)}
+  .countnum{font-family:'Black Han Sans';font-size:clamp(120px,30vh,300px);line-height:1;color:#fff;text-shadow:0 0 60px var(--track);animation:pulse .55s cubic-bezier(.2,1.4,.4,1)}
+  .countnum.go{color:var(--led);text-shadow:0 0 80px var(--led)}
+  @keyframes pulse{0%{transform:scale(.3);opacity:0}40%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:1}}
+
+  .podium{display:flex;align-items:flex-end;gap:clamp(10px,2vw,26px);justify-content:center;margin:20px 0 26px}
+  .pod{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .pod .medal{font-size:clamp(34px,6vh,60px)}
+  .pod .name{font-family:'Black Han Sans';font-size:clamp(16px,2.6vh,26px);color:var(--c)}
+  .pod .bar{width:clamp(70px,12vw,130px);border-radius:12px 12px 0 0;border:2px solid var(--c);border-bottom:none;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c) 40%,transparent),transparent);
+    display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-family:'Orbitron';font-weight:900;font-size:clamp(20px,3.6vh,38px);color:#fff}
+  .winner-tag{font-family:'Black Han Sans';font-size:clamp(22px,4vh,42px);color:var(--gold);text-shadow:0 0 24px var(--gold);margin-bottom:6px}
+
+  @media (max-width:520px){.cards{grid-template-columns:1fr}.card{min-height:auto}}
+</style>
+</head>
+<body>
+
+<!-- ===================== 메인 메뉴 ===================== -->
+<section class="screen active" id="menu">
+  <div class="topbar">
+    <div class="brand"><span class="badge">REACTION</span><h1>반응속도 오락실</h1></div>
+    <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
+  </div>
+  <div class="hero">
+    <div class="tag">READY · SET · GO</div>
+    <h2>누가 더 <b>빠른가</b></h2>
+    <p>전자칠판 앞으로 2~4명! 동시에 손을 대고 반응속도를 겨뤄보세요.</p>
+  </div>
+  <div class="cards">
+    <div class="card" style="--accent:var(--p1);--glow:rgba(0,229,255,.25)" onclick="openGame('mole')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="num">01</div><div class="ico">🦔</div></div>
+      <div><h3>두더지 잡기</h3><p>레인마다 튀어나오는 두더지를 빠르게! ⭐황금은 보너스, 💣폭탄은 감점.</p><span class="go">▶ 시작하기</span></div>
+    </div>
+    <div class="card" style="--accent:var(--p2);--glow:rgba(166,255,0,.25)" onclick="openGame('tug')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="num">02</div><div class="ico">💪</div></div>
+      <div><h3>반응 줄다리기</h3><p>"당겨!" 신호가 뜨면 누가 더 빨리, 더 많이 두드리나! 줄을 자기 쪽으로.</p><span class="go">▶ 시작하기</span></div>
+    </div>
+    <div class="card" style="--accent:var(--p3);--glow:rgba(255,61,138,.25)" onclick="openGame('stroop')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="num">03</div><div class="ico">🎨</div></div>
+      <div><h3>컬러·단어 매칭</h3><p>글자 뜻은 무시! 글자의 '색깔'을 먼저 누르는 사람이 승리.</p><span class="go">▶ 시작하기</span></div>
+    </div>
+    <div class="card" style="--accent:var(--p4);--glow:rgba(255,174,0,.25)" onclick="openGame('rt')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="num">04</div><div class="ico">🧠</div></div>
+      <div><h3>신경 반응속도</h3><p>초록불이 켜지면 0.1초라도 빨리! 자극→신경→반응을 ms로 측정.</p><span class="go">▶ 시작하기</span></div>
+    </div>
+    <div class="card" style="--accent:var(--led);--glow:rgba(57,255,122,.25)" onclick="openGame('mem')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="num">05</div><div class="ico">💡</div></div>
+      <div><h3>순간 기억</h3><p>반짝인 칸을 외워라! 사라진 패턴을 똑같이 눌러 재현하는 기억력 승부.</p><span class="go">▶ 시작하기</span></div>
+    </div>
+  </div>
+  <div class="footnote">멀티터치 전자칠판 최적화 · 손가락으로 동시에 누르면 됩니다</div>
+</section>
+
+<!-- ===================== 게임1: 두더지 잡기 ===================== -->
+<section class="screen" id="mole">
+  <div class="topbar">
+    <div class="brand"><span class="badge" style="background:var(--p1);box-shadow:0 0 18px rgba(0,229,255,.55)">GAME 01</span><h1>두더지 잡기</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="moleSetup()">⚙ 다시 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="scoreboard">
+    <div class="sb-clock"><span class="lbl">TIME</span><span class="val" id="moleClock">30</span></div>
+    <div class="sb-lanes" id="moleScores"></div>
+  </div>
+  <div class="arena" id="moleArena">
+    <div class="overlay" id="moleSetupOv"><div class="panel">
+      <h3>두더지 잡기</h3><p class="sub">선수 인원과 경기 시간을 정하세요</p>
+      <div class="opt-row"><span class="lab">선수</span>
+        <button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">시간</span>
+        <button class="chip" data-time="20">20초</button><button class="chip on" data-time="30">30초</button><button class="chip" data-time="45">45초</button></div>
+      <button class="bigbtn" onclick="moleStart()">출발 준비!</button>
+    </div></div>
+    <div class="overlay" id="moleCountOv"><div class="countnum" id="moleCountNum">3</div></div>
+    <div class="overlay" id="moleResultOv"><div class="panel">
+      <div class="winner-tag" id="moleWinner">🏆 우승!</div>
+      <div class="podium" id="molePodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn red" onclick="moleStart()">🔁 다시</button><button class="bigbtn" onclick="moleSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임2: 반응 줄다리기 ===================== -->
+<section class="screen" id="tug">
+  <div class="topbar">
+    <div class="brand"><span class="badge" style="background:var(--p2);box-shadow:0 0 18px rgba(166,255,0,.55)">GAME 02</span><h1>반응 줄다리기</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="tugSetup()">⚙ 다시 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="tug-arena" id="tugArena">
+    <div class="tug-side left" id="tugLeft"><div><div class="label">🔴<br>빨강팀</div><div class="tap">여기를 마구 두드려!</div></div></div>
+    <div class="tug-side right" id="tugRight"><div><div class="label">🔵<br>파랑팀</div><div class="tap">여기를 마구 두드려!</div></div></div>
+    <div class="tug-rope"></div>
+    <div class="tug-center"></div>
+    <div class="tug-flag" id="tugFlag" style="left:50%">🚩</div>
+    <div class="tug-signal" id="tugSignal"></div>
+
+    <div class="overlay" id="tugSetupOv"><div class="panel">
+      <h3>반응 줄다리기</h3>
+      <p class="sub">왼쪽 빨강팀 vs 오른쪽 파랑팀<br>한 쪽에 1~2명이 같이 두드려도 됩니다.<br><b style="color:var(--ink)">"당겨!"가 뜨기 전에 누르면 부정출발</b> — 줄이 상대 쪽으로 밀려요!</p>
+      <div class="opt-row"><span class="lab">난이도</span>
+        <button class="chip" data-step="2.6">빠름</button><button class="chip on" data-step="1.8">보통</button><button class="chip" data-step="1.1">접전</button></div>
+      <button class="bigbtn" onclick="tugStart()">경기 시작!</button>
+    </div></div>
+    <div class="overlay" id="tugResultOv"><div class="panel">
+      <div class="winner-tag" id="tugWinner">🏆 승리!</div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+        <button class="bigbtn red" onclick="tugStart()">🔁 한 판 더</button><button class="bigbtn" onclick="tugSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임3: 컬러·단어 매칭 ===================== -->
+<section class="screen" id="stroop">
+  <div class="topbar">
+    <div class="brand"><span class="badge" style="background:var(--p3);box-shadow:0 0 18px rgba(255,61,138,.55)">GAME 03</span><h1>컬러·단어 매칭</h1></div>
+    <div style="display:flex;gap:10px">
+      <div class="sb-clock" style="min-width:96px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="stroopClock" style="font-size:clamp(22px,3.6vh,34px)">30</span></div>
+      <button class="pillbtn" onclick="stroopSetup()">⚙ 다시 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="stroopArena" style="flex-direction:column">
+    <div class="stroop-prompt">
+      <div class="stroop-rule">글자 뜻은 무시 → <span style="color:#fff">글자의 색깔</span>을 누르세요!</div>
+      <div class="stroop-word" id="stroopWord">초록</div>
+    </div>
+    <div class="stroop-lanes" id="stroopLanes"></div>
+
+    <div class="overlay" id="stroopSetupOv"><div class="panel">
+      <h3>컬러·단어 매칭</h3><p class="sub">제시된 '글자의 색깔'에 맞는 버튼을 가장 먼저 누르세요.<br>맞으면 +1, 틀리면 -1! 시간 종료 시 최고 점수 승.</p>
+      <div class="opt-row"><span class="lab">선수</span>
+        <button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">시간</span>
+        <button class="chip" data-time="20">20초</button><button class="chip on" data-time="30">30초</button><button class="chip" data-time="45">45초</button></div>
+      <button class="bigbtn" onclick="stroopStart()">출발 준비!</button>
+    </div></div>
+    <div class="overlay" id="stroopCountOv"><div class="countnum" id="stroopCountNum">3</div></div>
+    <div class="overlay" id="stroopResultOv"><div class="panel">
+      <div class="winner-tag" id="stroopWinner">🏆 우승!</div>
+      <div class="podium" id="stroopPodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn red" onclick="stroopStart()">🔁 다시</button><button class="bigbtn" onclick="stroopSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임4: 신경 반응속도 측정소 ===================== -->
+<section class="screen" id="rt">
+  <div class="topbar">
+    <div class="brand"><span class="badge" style="background:var(--p4);box-shadow:0 0 18px rgba(255,174,0,.55)">GAME 04</span><h1>신경 반응속도 측정소</h1></div>
+    <div style="display:flex;gap:10px">
+      <span class="rt-round" id="rtRound" style="align-self:center"></span>
+      <button class="pillbtn" onclick="rtSetup()">⚙ 다시 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="rt-top">
+    <div class="rt-path">🟢 자극 → 👁️ 감각기관 → 🧠 <b>신경(뇌)</b> → ✋ 반응</div>
+    <div class="rt-instr" id="rtInstr">초록불이 켜지면 최대한 빨리 누르세요!</div>
+  </div>
+  <div class="arena" id="rtArena" style="flex-direction:column">
+    <div class="rt-arena" id="rtPads"></div>
+    <div class="rt-note" id="rtNote">⚠️ 초록불이 켜지기 전에 누르면 부정출발! (그 라운드는 기록 없음)</div>
+
+    <div class="overlay" id="rtSetupOv"><div class="panel">
+      <h3>신경 반응속도 측정소</h3>
+      <p class="sub">빨간불일 땐 기다리다가, <b style="color:var(--led)">초록불</b>이 켜지는 순간 자기 패드를 누르세요.<br>가장 빠르게 반응한 사람이 승리! (여러 라운드 중 <b style="color:var(--ink)">최고 기록</b>으로 순위 결정)</p>
+      <div class="opt-row"><span class="lab">선수</span>
+        <button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">라운드</span>
+        <button class="chip" data-rounds="3">3</button><button class="chip on" data-rounds="5">5</button><button class="chip" data-rounds="7">7</button></div>
+      <button class="bigbtn" onclick="rtStart()">측정 시작!</button>
+    </div></div>
+    <div class="overlay" id="rtResultOv"><div class="panel">
+      <div class="winner-tag" id="rtWinner">🏆 최고 반사신경!</div>
+      <div class="podium" id="rtPodium"></div>
+      <p class="sub" style="margin:0 0 18px">👁️ 보통 사람의 눈→손 반응은 약 <b style="color:var(--ink)">200~250ms</b>. 소리 자극엔 더 빨라요!</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn red" onclick="rtStart()">🔁 다시</button><button class="bigbtn" onclick="rtSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임5: 순간 기억 (메모리 플래시) ===================== -->
+<section class="screen" id="mem">
+  <div class="topbar">
+    <div class="brand"><span class="badge" style="background:var(--led);box-shadow:0 0 18px rgba(57,255,122,.55)">GAME 05</span><h1>순간 기억</h1></div>
+    <div style="display:flex;gap:10px">
+      <span class="rt-round" id="memRound" style="align-self:center;color:var(--led)"></span>
+      <button class="pillbtn" onclick="memSetup()">⚙ 다시 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="memArena" style="flex-direction:column">
+    <div class="mem-top">
+      <div class="mem-phase" id="memPhase">기억 게임</div>
+      <div class="mem-sub" id="memSub">반짝이는 칸을 외운 뒤, 똑같이 눌러 재현하세요!</div>
+    </div>
+    <div class="mem-lanes" id="memLanes"></div>
+
+    <div class="overlay" id="memSetupOv"><div class="panel">
+      <h3>순간 기억</h3>
+      <p class="sub">격자에 <b style="color:var(--gold)">반짝이는 칸</b>을 외우세요.<br>사라지면 그 칸들을 똑같이 눌러 재현! 라운드가 갈수록 칸이 늘어납니다.<br>맞힌 칸 수만큼 점수, 최종 합계 1등이 우승!</p>
+      <div class="opt-row"><span class="lab">선수</span>
+        <button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">라운드</span>
+        <button class="chip" data-rounds="4">4</button><button class="chip on" data-rounds="5">5</button><button class="chip" data-rounds="6">6</button></div>
+      <div class="opt-row"><span class="lab">보기시간</span>
+        <button class="chip" data-flash="1900">느긋</button><button class="chip on" data-flash="1300">보통</button><button class="chip" data-flash="900">빠름</button></div>
+      <button class="bigbtn" onclick="memStart()">기억 시작!</button>
+    </div></div>
+    <div class="overlay" id="memCountOv"><div class="countnum" id="memCountNum">3</div></div>
+    <div class="overlay" id="memResultOv"><div class="panel">
+      <div class="winner-tag" id="memWinner">🏆 우승!</div>
+      <div class="podium" id="memPodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn red" onclick="memStart()">🔁 다시</button><button class="bigbtn" onclick="memSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<script>
+/* ============ 공통 ============ */
+const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)'];
+const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수'];
+function $(id){return document.getElementById(id)}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();show('menu')}
+function toggleFull(){const d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}}
+let AC=null;
+function beep(freq,dur,type='square',vol=.18){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
+  const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=freq;o.connect(g);g.connect(AC.destination);
+  g.gain.setValueAtTime(vol,AC.currentTime);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+dur);o.start();o.stop(AC.currentTime+dur)}catch(e){}}
+function chipToggle(scope,key){document.querySelectorAll(`#${scope} .chip[data-${key}]`).forEach((c)=>{
+  c.addEventListener('click',()=>{document.querySelectorAll(`#${scope} .chip[data-${key}]`).forEach(x=>x.classList.remove('on'));c.classList.add('on')})})}
+function runCountdown(ovId,numId,cb){
+  $(ovId).classList.add('show');let c=3;const cn=$(numId);cn.textContent=c;cn.classList.remove('go');beep(440,.18);
+  const cd=setInterval(()=>{c--;cn.style.animation='none';void cn.offsetWidth;cn.style.animation='';
+    if(c>0){cn.textContent=c;cn.classList.remove('go');beep(440,.18)}
+    else{cn.textContent='GO!';cn.classList.add('go');beep(880,.35,'sawtooth',.22);clearInterval(cd);
+      setTimeout(()=>{$(ovId).classList.remove('show');cb()},650)}},800)}
+function renderPodium(podId,winId,scores,names){
+  const rank=scores.map((s,i)=>({p:i,s})).sort((a,b)=>b.s-a.s);const max=Math.max(1,...scores);
+  $(winId).textContent='🏆 '+names[rank[0].p]+' 우승! ('+rank[0].s+'점)';
+  const order=[];if(rank[1])order.push(rank[1]);order.push(rank[0]);if(rank[2])order.push(rank[2]);if(rank[3])order.push(rank[3]);
+  const medals=[];medals[rank[0].p]='🥇';if(rank[1])medals[rank[1].p]='🥈';if(rank[2])medals[rank[2].p]='🥉';
+  const pod=$(podId);pod.innerHTML='';
+  order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
+    d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})}
+
+function openGame(g){if(g==='mole'){show('mole');moleSetup()}else if(g==='tug'){show('tug');tugSetup()}else if(g==='stroop'){show('stroop');stroopSetup()}else if(g==='rt'){show('rt');rtSetup()}else if(g==='mem'){show('mem');memSetup()}}
+
+/* ============ 게임1: 두더지 잡기 ============ */
+let mole={players:3,time:30,scores:[],running:false,timeLeft:0,tickT:null,spawnT:[],holes:[]};
+function moleSetup(){moleStop();$('moleResultOv').classList.remove('show');$('moleCountOv').classList.remove('show');$('moleSetupOv').classList.add('show')}
+chipToggle('moleSetupOv','players');chipToggle('moleSetupOv','time');
+const KINDS=[{e:'🦔',w:60,score:1,color:'#fff'},{e:'🐹',w:26,score:1,color:'#fff'},{e:'⭐',w:8,score:3,color:'var(--gold)'},{e:'💣',w:6,score:-2,color:'var(--track)'}];
+function pickKind(){const t=KINDS.reduce((s,k)=>s+k.w,0);let r=Math.random()*t;for(const k of KINDS){if((r-=k.w)<0)return k}return KINDS[0]}
+function buildMoleLanes(){
+  const arena=$('moleArena');arena.querySelectorAll('.lane').forEach(l=>l.remove());
+  const sb=$('moleScores');sb.innerHTML='';mole.holes=[];mole.scores=new Array(mole.players).fill(0);
+  for(let p=0;p<mole.players;p++){
+    const sl=document.createElement('div');sl.className='sb-lane';sl.style.setProperty('--c',PCOLORS[p]);
+    sl.innerHTML=`<span class="who">${PNAMES[p]}</span><span class="pts" id="moPts${p}">0</span>`;sb.appendChild(sl);
+    const lane=document.createElement('div');lane.className='lane';lane.style.setProperty('--c',PCOLORS[p]);
+    lane.innerHTML=`<div class="lane-head">${PNAMES[p]}</div>`;
+    const holes=document.createElement('div');holes.className='holes';const laneHoles=[];
+    for(let h=0;h<6;h++){const hole=document.createElement('div');hole.className='hole';
+      hole.innerHTML=`<span class="target"></span><span class="rim"></span>`;
+      const st={el:hole,player:p,active:false,kind:null,timer:null};
+      hole.addEventListener('pointerdown',ev=>{ev.preventDefault();whack(st)},{passive:false});
+      holes.appendChild(hole);laneHoles.push(st)}
+    lane.appendChild(holes);arena.insertBefore(lane,arena.querySelector('.overlay'));mole.holes.push(laneHoles)}}
+function spawnFor(p){if(!mole.running)return;const lane=mole.holes[p];const free=lane.filter(h=>!h.active);
+  if(free.length){const h=free[Math.floor(Math.random()*free.length)];const k=pickKind();
+    h.active=true;h.kind=k;h.el.querySelector('.target').textContent=k.e;h.el.classList.remove('whacked');h.el.classList.add('up');
+    const up=700+Math.random()*900;h.timer=setTimeout(()=>{if(h.active){h.active=false;h.el.classList.remove('up')}},up)}
+  mole.spawnT[p]=setTimeout(()=>spawnFor(p),380+Math.random()*620)}
+function whack(h){if(!mole.running||!h.active)return;const k=h.kind;h.active=false;clearTimeout(h.timer);
+  h.el.classList.remove('up');h.el.classList.add('whacked');
+  mole.scores[h.player]=Math.max(0,mole.scores[h.player]+k.score);$('moPts'+h.player).textContent=mole.scores[h.player];
+  const pop=document.createElement('span');pop.className='pop';pop.style.color=k.color;pop.textContent=(k.score>0?'+':'')+k.score;
+  h.el.appendChild(pop);setTimeout(()=>pop.remove(),700);
+  if(k.score>2)beep(880,.12,'triangle');else if(k.score<0)beep(120,.22,'sawtooth',.25);else beep(540,.07,'square');
+  setTimeout(()=>h.el.classList.remove('whacked'),200)}
+function moleStart(){mole.players=+document.querySelector('#moleSetupOv .chip[data-players].on').dataset.players;
+  mole.time=+document.querySelector('#moleSetupOv .chip[data-time].on').dataset.time;
+  $('moleSetupOv').classList.remove('show');$('moleResultOv').classList.remove('show');buildMoleLanes();
+  $('moleClock').textContent=mole.time;runCountdown('moleCountOv','moleCountNum',runMole)}
+function runMole(){mole.running=true;mole.timeLeft=mole.time;$('moleClock').textContent=mole.timeLeft;mole.spawnT=[];
+  for(let p=0;p<mole.players;p++)mole.spawnT[p]=setTimeout(()=>spawnFor(p),120*p);
+  mole.tickT=setInterval(()=>{mole.timeLeft--;$('moleClock').textContent=mole.timeLeft;
+    if(mole.timeLeft<=5&&mole.timeLeft>0)beep(700,.1,'square',.12);if(mole.timeLeft<=0)moleFinish()},1000)}
+function moleStop(){mole.running=false;clearInterval(mole.tickT);(mole.spawnT||[]).forEach(t=>clearTimeout(t));
+  (mole.holes||[]).forEach(l=>l.forEach(h=>{clearTimeout(h.timer);h.active=false}))}
+function moleFinish(){moleStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  renderPodium('molePodium','moleWinner',mole.scores,PNAMES);$('moleResultOv').classList.add('show')}
+
+/* ============ 게임2: 반응 줄다리기 ============ */
+let tug={pos:50,step:1.8,go:false,over:false};
+chipToggle('tugSetupOv','step');
+function tugSetup(){tugStop();$('tugResultOv').classList.remove('show');$('tugSignal').className='tug-signal';$('tugSignal').textContent='';
+  tug.pos=50;$('tugFlag').style.left='50%';$('tugSetupOv').classList.add('show')}
+function tugStop(){tug.go=false;tug.over=true;clearTimeout(tug._goT)}
+function setFlag(){$('tugFlag').style.left=tug.pos+'%'}
+$('tugLeft').addEventListener('pointerdown',e=>{e.preventDefault();tugTap('left')},{passive:false});
+$('tugRight').addEventListener('pointerdown',e=>{e.preventDefault();tugTap('right')},{passive:false});
+function tugStart(){
+  tug.step=+document.querySelector('#tugSetupOv .chip[data-step].on').dataset.step;
+  $('tugSetupOv').classList.remove('show');$('tugResultOv').classList.remove('show');
+  tug.pos=50;setFlag();tug.go=false;tug.over=false;
+  const sig=$('tugSignal');sig.className='tug-signal ready';sig.textContent='준비…';beep(330,.2);
+  tug._goT=setTimeout(()=>{if(tug.over)return;sig.className='tug-signal go';sig.textContent='당겨!!';tug.go=true;
+    beep(880,.3,'sawtooth',.22);setTimeout(()=>{if(tug.go){sig.textContent=''}},700)},900+Math.random()*1800)}
+function tugTap(side){
+  if(tug.over)return;
+  if(!tug.go){ // 부정출발
+    const sig=$('tugSignal');sig.className='tug-signal foul';sig.textContent='부정출발!';
+    tug.pos+= side==='left'? +7 : -7; // 상대 쪽으로 밀림
+    tug.pos=Math.max(3,Math.min(97,tug.pos));setFlag();
+    const el=$(side==='left'?'tugLeft':'tugRight');el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),250);
+    beep(110,.25,'sawtooth',.25);
+    setTimeout(()=>{if(!tug.go&&!tug.over){sig.className='tug-signal ready';sig.textContent='준비…'}},600);return}
+  // 정상 당기기
+  tug.pos += side==='left'? -tug.step : +tug.step;
+  const el=$(side==='left'?'tugLeft':'tugRight');el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),120);
+  beep(side==='left'?420:520,.05,'square',.14);
+  if(tug.pos<=4){tug.pos=4;setFlag();tugWin('빨강팀','var(--red)')}
+  else if(tug.pos>=96){tug.pos=96;setFlag();tugWin('파랑팀','var(--blue)')}
+  else setFlag()}
+function tugWin(name,color){tug.go=false;tug.over=true;clearTimeout(tug._goT);
+  beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  const w=$('tugWinner');w.textContent='🏆 '+name+' 승리!';w.style.color=color;w.style.textShadow='0 0 24px '+color;
+  $('tugResultOv').classList.add('show')}
+
+/* ============ 게임3: 컬러·단어 매칭 ============ */
+const SCOLORS=[{name:'빨강',css:'#ff3b30'},{name:'파랑',css:'#1e9bff'},{name:'초록',css:'#34d65d'},{name:'노랑',css:'#ffd60a'}];
+let stroop={players:3,time:30,scores:[],running:false,timeLeft:0,tickT:null,ink:0,resolved:false,locked:[]};
+function stroopSetup(){stroopStop();$('stroopResultOv').classList.remove('show');$('stroopCountOv').classList.remove('show');$('stroopSetupOv').classList.add('show')}
+chipToggle('stroopSetupOv','players');chipToggle('stroopSetupOv','time');
+function buildStroopLanes(){
+  const lanes=$('stroopLanes');lanes.innerHTML='';stroop.scores=new Array(stroop.players).fill(0);stroop.locked=new Array(stroop.players).fill(false);
+  for(let p=0;p<stroop.players;p++){
+    const lane=document.createElement('div');lane.className='stroop-lane';lane.style.setProperty('--c',PCOLORS[p]);lane.id='slane'+p;
+    lane.innerHTML=`<div class="who" id="sWho${p}">${PNAMES[p]} · 0점</div>`;
+    const grid=document.createElement('div');grid.className='stroop-btns';
+    SCOLORS.forEach((col,ci)=>{const b=document.createElement('div');b.className='cbtn';b.style.background=col.css;
+      b.addEventListener('pointerdown',ev=>{ev.preventDefault();stroopTap(p,ci)},{passive:false});grid.appendChild(b)});
+    lane.appendChild(grid);lanes.appendChild(lane)}}
+function newPrompt(){
+  stroop.ink=Math.floor(Math.random()*4);let word=Math.floor(Math.random()*4);
+  if(Math.random()<0.75&&word===stroop.ink)word=(word+1+Math.floor(Math.random()*3))%4; // 대부분 불일치
+  stroop.resolved=false;stroop.locked=stroop.locked.map(()=>false);
+  document.querySelectorAll('.stroop-lane').forEach(l=>l.classList.remove('locked'));
+  const w=$('stroopWord');w.textContent=SCOLORS[word].name;w.style.color=SCOLORS[stroop.ink].css;w.classList.remove('ok')}
+function stroopTap(p,ci){
+  if(!stroop.running||stroop.resolved||stroop.locked[p])return;
+  if(ci===stroop.ink){ // 정답
+    stroop.resolved=true;stroop.scores[p]++;$('sWho'+p).textContent=PNAMES[p]+' · '+stroop.scores[p]+'점';
+    const w=$('stroopWord');w.classList.add('ok');beep(740,.12,'triangle');
+    setTimeout(newPrompt,300)}
+  else{ // 오답
+    stroop.scores[p]=Math.max(0,stroop.scores[p]-1);$('sWho'+p).textContent=PNAMES[p]+' · '+stroop.scores[p]+'점';
+    stroop.locked[p]=true;$('slane'+p).classList.add('locked');beep(140,.18,'sawtooth',.2)}}
+function stroopStart(){stroop.players=+document.querySelector('#stroopSetupOv .chip[data-players].on').dataset.players;
+  stroop.time=+document.querySelector('#stroopSetupOv .chip[data-time].on').dataset.time;
+  $('stroopSetupOv').classList.remove('show');$('stroopResultOv').classList.remove('show');buildStroopLanes();
+  $('stroopClock').textContent=stroop.time;runCountdown('stroopCountOv','stroopCountNum',runStroop)}
+function runStroop(){stroop.running=true;stroop.timeLeft=stroop.time;$('stroopClock').textContent=stroop.timeLeft;newPrompt();
+  stroop.tickT=setInterval(()=>{stroop.timeLeft--;$('stroopClock').textContent=stroop.timeLeft;
+    if(stroop.timeLeft<=5&&stroop.timeLeft>0)beep(700,.1,'square',.12);if(stroop.timeLeft<=0)stroopFinish()},1000)}
+function stroopStop(){stroop.running=false;clearInterval(stroop.tickT)}
+function stroopFinish(){stroopStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  renderPodium('stroopPodium','stroopWinner',stroop.scores,PNAMES);$('stroopResultOv').classList.add('show')}
+
+/* ============ 게임4: 신경 반응속도 측정소 ============ */
+let rt={players:3,rounds:5,cur:0,best:[],pads:[],state:'idle',armed:false,greenAt:0,
+        done:[],foul:[],_goT:null,_winT:null};
+chipToggle('rtSetupOv','players');chipToggle('rtSetupOv','rounds');
+function rtSetup(){rtStop();$('rtResultOv').classList.remove('show');$('rtRound').textContent='';
+  $('rtInstr').textContent='초록불이 켜지면 최대한 빨리 누르세요!';$('rtSetupOv').classList.add('show')}
+function rtStop(){rt.state='idle';clearTimeout(rt._goT);clearTimeout(rt._winT)}
+function buildRtPads(){
+  const wrap=$('rtPads');wrap.innerHTML='';rt.pads=[];rt.best=new Array(rt.players).fill(Infinity);
+  for(let p=0;p<rt.players;p++){
+    const pad=document.createElement('div');pad.className='rt-pad';pad.style.setProperty('--c',PCOLORS[p]);
+    pad.innerHTML=`<div class="pname">${PNAMES[p]}</div><div class="pstate">대기</div>`;
+    pad.addEventListener('pointerdown',ev=>{ev.preventDefault();rtTap(p)},{passive:false});
+    wrap.appendChild(pad);rt.pads.push(pad)}}
+function setPad(p,cls,html){const pad=rt.pads[p];pad.className='rt-pad'+(cls?' '+cls:'');pad.style.setProperty('--c',PCOLORS[p]);
+  pad.innerHTML=`<div class="pname">${PNAMES[p]}</div>`+html}
+function rtStart(){
+  rt.players=+document.querySelector('#rtSetupOv .chip[data-players].on').dataset.players;
+  rt.rounds=+document.querySelector('#rtSetupOv .chip[data-rounds].on').dataset.rounds;
+  $('rtSetupOv').classList.remove('show');$('rtResultOv').classList.remove('show');
+  buildRtPads();rt.cur=0;startRound()}
+function startRound(){
+  rt.cur++;
+  if(rt.cur>rt.rounds){rtFinish();return}
+  $('rtRound').textContent='ROUND '+rt.cur+' / '+rt.rounds;
+  $('rtInstr').textContent='빨간불… 초록불을 기다리세요';
+  rt.state='wait';rt.armed=false;rt.done=new Array(rt.players).fill(false);rt.foul=new Array(rt.players).fill(false);
+  for(let p=0;p<rt.players;p++)setPad(p,'',`<div class="pstate">기다려…</div>`);
+  beep(330,.15);
+  const delay=1400+Math.random()*3000;
+  rt._goT=setTimeout(goGreen,delay)}
+function goGreen(){
+  if(rt.state!=='wait')return;
+  rt.state='go';rt.armed=true;rt.greenAt=performance.now();
+  $('rtInstr').textContent='지금! 눌러요!';
+  for(let p=0;p<rt.players;p++)if(!rt.foul[p])setPad(p,'go',`<div class="pstate">눌러!</div>`);
+  beep(880,.25,'sawtooth',.22);
+  // 안 누른 사람 마감
+  rt._winT=setTimeout(()=>{ for(let p=0;p<rt.players;p++){ if(!rt.done[p]&&!rt.foul[p]){rt.foul[p]=true;setPad(p,'foul',`<div class="pstate">놓침</div>`)} } endRound() },2500)}
+function rtTap(p){
+  if(rt.state==='wait'){ // 부정출발
+    if(rt.foul[p]||rt.done[p])return;rt.foul[p]=true;
+    setPad(p,'foul',`<div class="pstate">부정출발!</div>`);beep(120,.22,'sawtooth',.25);
+    checkAllResolved();return}
+  if(rt.state==='go'){
+    if(rt.done[p]||rt.foul[p])return;
+    const ms=Math.round(performance.now()-rt.greenAt);rt.done[p]=true;
+    if(ms<rt.best[p])rt.best[p]=ms;
+    setPad(p,'done',`<div class="ptime">${ms}</div><div class="punit">ms</div>`);
+    beep(660,.08,'triangle');checkAllResolved()}}
+function checkAllResolved(){
+  for(let p=0;p<rt.players;p++)if(!rt.done[p]&&!rt.foul[p])return;
+  endRound()}
+function endRound(){
+  if(rt.state==='ended')return;rt.state='ended';clearTimeout(rt._goT);clearTimeout(rt._winT);
+  $('rtInstr').textContent='라운드 종료!';
+  rt._winT=setTimeout(startRound,1500)}
+function rtFinish(){
+  rtStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  renderTimePodium('rtPodium','rtWinner',rt.best,PNAMES);
+  $('rtRound').textContent='';$('rtInstr').textContent='측정 완료! 빠를수록 신경 전달이 빨랐다는 뜻이에요.';
+  $('rtResultOv').classList.add('show')}
+function renderTimePodium(podId,winId,times,names){
+  const rank=times.map((t,i)=>({p:i,t})).sort((a,b)=>a.t-b.t); // 빠른 순
+  const fin=times.filter(t=>isFinite(t));const minT=fin.length?Math.min(...fin):0;const maxT=fin.length?Math.max(...fin):1;
+  const w=$(winId);
+  if(isFinite(rank[0].t))w.textContent='🏆 '+names[rank[0].p]+' · '+rank[0].t+'ms!';
+  else w.textContent='🏆 기록 없음';
+  const order=[];if(rank[1])order.push(rank[1]);order.push(rank[0]);if(rank[2])order.push(rank[2]);if(rank[3])order.push(rank[3]);
+  const medals=[];medals[rank[0].p]='🥇';if(rank[1])medals[rank[1].p]='🥈';if(rank[2])medals[rank[2].p]='🥉';
+  const pod=$(podId);pod.innerHTML='';
+  order.forEach(r=>{
+    let h,label;
+    if(isFinite(r.t)){h=60+((maxT-r.t)/((maxT-minT)||1))*120;label=r.t+'<span style="font-size:.5em">ms</span>'}
+    else{h=50;label='<span style="font-size:.5em">기록없음</span>'}
+    const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
+    d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${label}</div>`;
+    pod.appendChild(d)})}
+
+/* ============ 게임5: 순간 기억 (메모리 플래시) ============ */
+let mem={players:3,rounds:5,flash:1300,cur:0,scores:[],grids:[],pattern:[],sel:[],locked:[],doneN:0,phase:'idle',_t:null,_safe:null};
+chipToggle('memSetupOv','players');chipToggle('memSetupOv','rounds');chipToggle('memSetupOv','flash');
+function memSetup(){memStop();$('memResultOv').classList.remove('show');$('memCountOv').classList.remove('show');
+  $('memRound').textContent='';$('memPhase').className='mem-phase';$('memPhase').textContent='기억 게임';
+  $('memSub').textContent='반짝이는 칸을 외운 뒤, 똑같이 눌러 재현하세요!';$('memSetupOv').classList.add('show')}
+function memStop(){mem.phase='idle';clearTimeout(mem._t);clearTimeout(mem._safe)}
+function buildMemLanes(){
+  const wrap=$('memLanes');wrap.innerHTML='';mem.grids=[];mem.scores=new Array(mem.players).fill(0);
+  for(let p=0;p<mem.players;p++){
+    const lane=document.createElement('div');lane.className='mem-lane';lane.style.setProperty('--c',PCOLORS[p]);lane.id='mlane'+p;
+    lane.innerHTML=`<div class="who" id="mWho${p}">${PNAMES[p]} · 0점</div>`;
+    const grid=document.createElement('div');grid.className='mem-grid';const cells=[];
+    for(let i=0;i<16;i++){const c=document.createElement('div');c.className='mcell';
+      const idx=i;c.addEventListener('pointerdown',ev=>{ev.preventDefault();memTap(p,idx)},{passive:false});grid.appendChild(c);cells.push(c)}
+    lane.appendChild(grid);wrap.appendChild(lane);mem.grids.push(cells)}}
+function memStart(){
+  mem.players=+document.querySelector('#memSetupOv .chip[data-players].on').dataset.players;
+  mem.rounds=+document.querySelector('#memSetupOv .chip[data-rounds].on').dataset.rounds;
+  mem.flash=+document.querySelector('#memSetupOv .chip[data-flash].on').dataset.flash;
+  $('memSetupOv').classList.remove('show');$('memResultOv').classList.remove('show');
+  buildMemLanes();mem.cur=0;runCountdown('memCountOv','memCountNum',memRound)}
+function clearCells(){mem.grids.forEach(cells=>cells.forEach(c=>c.className='mcell'))}
+function memRound(){
+  mem.cur++;
+  if(mem.cur>mem.rounds){memFinish();return}
+  $('memRound').textContent='ROUND '+mem.cur+' / '+mem.rounds;
+  const count=Math.min(2+mem.cur,8);
+  // 패턴 생성
+  const all=[...Array(16).keys()];for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]]}
+  mem.pattern=all.slice(0,count);
+  mem.sel=Array.from({length:mem.players},()=>new Set());mem.locked=new Array(mem.players).fill(false);mem.doneN=0;
+  // 보여주기 단계
+  clearCells();mem.phase='show';
+  $('memPhase').className='mem-phase memo';$('memPhase').textContent='기억하세요! ('+count+'칸)';
+  $('memSub').textContent='칸이 곧 사라집니다…';
+  mem.grids.forEach(cells=>mem.pattern.forEach(i=>cells[i].classList.add('lit')));
+  beep(520,.12);setTimeout(()=>beep(620,.12),120);
+  const dur=mem.flash+count*100;
+  mem._t=setTimeout(()=>{
+    clearCells();mem.phase='input';
+    $('memPhase').className='mem-phase recall';$('memPhase').textContent='지금 재현하세요!';
+    $('memSub').textContent=count+'칸을 똑같이 누르면 자동 채점됩니다';
+    beep(880,.18,'sawtooth',.2);
+    mem._safe=setTimeout(()=>{ // 시간 초과 안전장치
+      for(let p=0;p<mem.players;p++)if(!mem.locked[p])evalPlayer(p);
+    },10000);
+  },dur)}
+function memTap(p,i){
+  if(mem.phase!=='input'||mem.locked[p])return;
+  const cell=mem.grids[p][i];const set=mem.sel[p];
+  if(set.has(i)){set.delete(i);cell.classList.remove('sel');beep(300,.04,'square',.1)}
+  else{set.add(i);cell.classList.add('sel');beep(460,.04,'square',.12)}
+  if(set.size===mem.pattern.length)evalPlayer(p)}
+function evalPlayer(p){
+  if(mem.locked[p])return;mem.locked[p]=true;
+  const set=mem.sel[p];const cells=mem.grids[p];let correct=0;
+  for(let i=0;i<16;i++){
+    const inPat=mem.pattern.includes(i),picked=set.has(i);
+    cells[i].classList.remove('sel');
+    if(inPat&&picked){cells[i].classList.add('correct');correct++}
+    else if(picked&&!inPat)cells[i].classList.add('wrong');
+    else if(inPat&&!picked)cells[i].classList.add('missed');
+  }
+  mem.scores[p]+=correct;$('mWho'+p).textContent=PNAMES[p]+' · '+mem.scores[p]+'점';
+  if(correct===mem.pattern.length)beep(740,.14,'triangle');else beep(200,.12,'sawtooth',.18);
+  mem.doneN++;
+  if(mem.doneN>=mem.players){clearTimeout(mem._safe);mem.phase='ended';
+    $('memPhase').className='mem-phase';$('memPhase').textContent='라운드 '+mem.cur+' 종료';
+    $('memSub').textContent='초록=정답, 빨강=오답, 노랑테두리=놓친 칸';
+    mem._t=setTimeout(memRound,1800)}}
+function memFinish(){memStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  $('memRound').textContent='';renderPodium('memPodium','memWinner',mem.scores,PNAMES);$('memResultOv').classList.add('show')}
+</script>
+</body>
+</html>
