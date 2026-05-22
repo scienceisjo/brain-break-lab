@@ -183,6 +183,85 @@
   .mem-lane.win .winflag{display:block;animation:pulse .4s}
   .mem-lane.out{opacity:.4}
 
+  /* ===== 게임7 다이아 러시 (채굴 레이스) ===== */
+  .mine-lanes{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;margin-top:8px}
+  .mine-lane{flex:1 1 0;background:var(--stonedd);display:flex;flex-direction:column;min-width:0;position:relative;transition:box-shadow .15s;
+    box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--c),inset 4px 4px 0 rgba(255,255,255,.06),inset -4px -4px 0 rgba(0,0,0,.4)}
+  .mine-lane.lead{box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--gold),inset 4px 4px 0 rgba(255,255,255,.08),0 0 26px var(--gold)}
+  .mine-lane.ore{animation:tugFlash .25s}
+  .mine-lane.win{box-shadow:0 0 0 4px var(--outline),0 0 0 8px var(--gold),0 0 44px var(--gold)}
+  .mine-head{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;gap:6px}
+  .mine-name{font-family:'Do Hyeon';color:var(--c);font-size:clamp(13px,2vh,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:1px 1px 0 var(--outline)}
+  .mine-depth{font-family:'Press Start 2P';font-size:clamp(11px,1.8vh,18px);color:#fff;text-shadow:1px 1px 0 var(--outline)}
+  .mine-prog{height:clamp(10px,1.6vh,16px);background:#0c0905;margin:0 8px;box-shadow:inset 0 0 0 2px var(--outline)}
+  .mine-prog-fill{height:100%;width:0;background:var(--c);transition:width .12s;box-shadow:0 0 12px var(--c)}
+  .mine-block{flex:1 1 auto;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:none;position:relative;overflow:hidden;margin:8px;
+    background:radial-gradient(120% 100% at 50% 0%,#2a2f37,#13171d);box-shadow:inset 7px 7px 0 rgba(0,0,0,.45),inset -4px -4px 0 rgba(255,255,255,.05),0 0 0 3px #0c0905}
+  .mine-block .blk{font-size:clamp(56px,17vh,170px);line-height:1;filter:drop-shadow(0 5px 6px rgba(0,0,0,.6));transition:transform .05s,opacity .05s}
+  .mine-block.hit .blk{animation:mineShake .09s}
+  @keyframes mineShake{0%{transform:translate(0,0) scale(1.07)}50%{transform:translate(3px,-3px) scale(.95) rotate(-3deg)}100%{transform:none}}
+  .mine-combo{position:absolute;top:5%;left:50%;transform:translateX(-50%);font-family:'Do Hyeon';color:var(--gold);text-shadow:2px 2px 0 var(--outline);pointer-events:none;white-space:nowrap;min-height:1em}
+  .mine-fx{position:absolute;left:50%;top:36%;transform:translateX(-50%);font-family:'Press Start 2P';font-size:clamp(18px,3.4vh,34px);pointer-events:none;animation:popUp .75s ease forwards;text-shadow:2px 2px 0 #000;z-index:6}
+
+  /* ===== 게임8 정확히 멈춰 ===== */
+  .stp-rows{flex:1 1 auto;display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px);min-height:0;margin-top:8px}
+  .stp-row{flex:1 1 0;background:var(--stonedd);display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:0;
+    box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--c),inset 4px 4px 0 rgba(255,255,255,.06),inset -4px -4px 0 rgba(0,0,0,.4)}
+  .stp-who{width:clamp(84px,12vw,150px);flex:0 0 auto;text-align:center}
+  .stp-who .nm{font-family:'Do Hyeon';color:var(--c);font-size:clamp(13px,2vh,22px);text-shadow:1px 1px 0 var(--outline)}
+  .stp-who .sc{font-family:'Press Start 2P';font-size:clamp(18px,3.4vh,34px);color:#fff;text-shadow:1px 1px 0 var(--outline)}
+  .stp-track{flex:1 1 auto;align-self:stretch;position:relative;background:#0c0905;cursor:pointer;touch-action:none;margin:8px 0;box-shadow:inset 0 0 0 3px var(--outline)}
+  .stp-target{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--c) 35%,transparent);box-shadow:inset 0 0 0 2px var(--c)}
+  .stp-bull{position:absolute;top:-3px;bottom:-3px;width:4px;background:var(--gold);transform:translateX(-50%);box-shadow:0 0 10px var(--gold)}
+  .stp-marker{position:absolute;top:-5px;bottom:-5px;width:9px;background:#fff;transform:translateX(-50%);box-shadow:0 0 12px #fff,0 0 0 2px var(--outline)}
+  .stp-marker.good{background:var(--emerald);box-shadow:0 0 16px var(--emerald),0 0 0 2px var(--outline)}
+  .stp-marker.bad{background:var(--redstone);box-shadow:0 0 16px var(--redstone),0 0 0 2px var(--outline)}
+  .stp-fb{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'Press Start 2P';font-size:clamp(11px,1.8vh,18px);color:#fff;text-shadow:2px 2px 0 #000;pointer-events:none}
+
+  /* ===== 게임9 참아 (Go/No-Go) ===== */
+  .gng-top{flex:0 0 auto;text-align:center;margin:6px 0}
+  .gng-signal{font-family:'Do Hyeon';font-size:clamp(30px,7vh,80px);line-height:1.1;text-shadow:3px 3px 0 var(--outline);min-height:1.1em}
+  .gng-signal.wait{color:var(--muted)}.gng-signal.go{color:var(--emerald);animation:pulse .3s}.gng-signal.nogo{color:var(--redstone);animation:pulse .3s}
+  .gng-pads{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;margin-top:8px}
+  .gng-pad{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;touch-action:none;min-width:0;background:#3a3f47;transition:background .05s;
+    box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--c),inset 6px 6px 0 rgba(255,255,255,.07),inset -6px -6px 0 rgba(0,0,0,.4)}
+  .gng-pad.go{background:#1f8a3f;box-shadow:0 0 0 4px var(--outline),0 0 0 6px #caffda,inset 6px 6px 0 rgba(255,255,255,.25),inset -6px -6px 0 rgba(0,0,0,.3)}
+  .gng-pad.nogo{background:#9a2424;box-shadow:0 0 0 4px var(--outline),0 0 0 6px #ffcaca,inset 6px 6px 0 rgba(255,255,255,.2),inset -6px -6px 0 rgba(0,0,0,.3)}
+  .gng-pad.good{background:#1f8a3f}.gng-pad.bad{background:#9a2a14;animation:tugFlash .22s}
+  .gng-pad .pname{font-family:'Do Hyeon';font-size:clamp(14px,2.2vh,24px);color:#fff;text-shadow:1px 1px 0 var(--outline)}
+  .gng-pad .pscore{font-family:'Press Start 2P';font-size:clamp(20px,4vh,44px);color:#fff;text-shadow:2px 2px 0 var(--outline)}
+  .gng-pad .pstate{font-family:'Do Hyeon';font-size:clamp(15px,2.6vh,28px);color:#fff;text-align:center}
+
+  /* ===== 게임10 다른 것 찾기 ===== */
+  .find-lanes{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,14px);min-height:0;margin-top:6px}
+  .find-lane{flex:1 1 0;background:var(--stonedd);display:flex;flex-direction:column;padding:clamp(7px,1.2vh,12px);min-width:0;transition:.12s;
+    box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--c),inset 4px 4px 0 rgba(255,255,255,.06),inset -4px -4px 0 rgba(0,0,0,.4)}
+  .find-lane.locked{opacity:.32}
+  .find-lane .who{font-family:'Do Hyeon';color:var(--c);text-align:center;font-size:clamp(13px,2vh,22px);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:1px 1px 0 var(--outline)}
+  .find-grid{flex:1 1 auto;display:grid;gap:clamp(4px,.9vh,8px);min-height:0}
+  .fcell{display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:none;background:#2b2f36;line-height:1;
+    font-size:clamp(18px,5.5vh,52px);box-shadow:inset 3px 3px 0 rgba(255,255,255,.08),inset -3px -3px 0 rgba(0,0,0,.32),0 0 0 2px var(--outline)}
+  .fcell:active{transform:scale(.94)}
+  .fcell.bad{background:var(--redstone);animation:tugFlash .25s}
+
+  /* ===== 게임11 몸으로 글자 (카메라) ===== */
+  .cam-wrap{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;margin-top:8px}
+  .cam-stage{flex:1 1 auto;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 4px var(--outline),inset 0 0 0 3px rgba(255,255,255,.05)}
+  .cam-stage canvas{max-width:100%;max-height:100%;display:block}
+  .cam-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;font-family:'Do Hyeon';font-size:clamp(15px,2.4vh,24px);background:rgba(8,12,8,.72);padding:20px;line-height:1.5}
+  .cam-side{width:clamp(180px,26vw,320px);flex:0 0 auto;display:flex;flex-direction:column;gap:10px;background:var(--stonedd);padding:12px;
+    box-shadow:0 0 0 4px var(--outline),inset 4px 4px 0 rgba(255,255,255,.06),inset -4px -4px 0 rgba(0,0,0,.4)}
+  .cam-tbox{background:var(--board);padding:6px;text-align:center;box-shadow:0 0 0 3px var(--outline),0 0 0 6px #3a5240}
+  .cam-target{font-family:'Black Han Sans';font-size:clamp(56px,15vh,140px);color:var(--gold);line-height:1.15;text-shadow:3px 3px 0 var(--outline)}
+  .cam-turn{font-family:'Do Hyeon';font-size:clamp(18px,3vh,30px);text-align:center;text-shadow:1px 1px 0 var(--outline)}
+  .cam-live{font-family:'Do Hyeon';text-align:center;font-size:clamp(14px,2.1vh,20px);color:var(--muted)}
+  .cam-live span{font-family:'Press Start 2P';color:var(--emerald);font-size:clamp(18px,3vh,32px)}
+  .cam-board{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+  .cam-board .row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--stonedd);box-shadow:0 0 0 3px var(--outline),0 0 0 5px var(--c)}
+  .cam-board .row .nm{font-family:'Do Hyeon';color:var(--c);font-size:clamp(12px,1.8vh,18px)}
+  .cam-board .row .pt{font-family:'Press Start 2P';color:#fff;font-size:clamp(13px,2vh,20px)}
+  @media(max-width:720px){.cam-wrap{flex-direction:column}.cam-side{width:auto}}
+
   /* ===== 오버레이 공통 ===== */
   .overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;flex-direction:column;
     background:rgba(12,18,12,.88);text-align:center;padding:20px}
@@ -212,10 +291,44 @@
     font-family:'Press Start 2P';font-size:clamp(16px,2.8vh,30px);color:#0c160a;box-shadow:0 0 0 4px var(--outline),inset 5px 5px 0 rgba(255,255,255,.3),inset -5px -5px 0 rgba(0,0,0,.25)}
   .winner-tag{font-family:'Do Hyeon';font-size:clamp(22px,4vh,40px);color:var(--gold);margin-bottom:6px;text-shadow:2px 2px 0 var(--outline)}
 
+  /* ===== 안전 서약 ===== */
+  .pledge-list{text-align:left;display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+  .pledge-item{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:#e8f1e1;background:var(--stonedd);padding:9px 14px;
+    box-shadow:0 0 0 3px var(--outline),inset 4px 4px 0 rgba(255,255,255,.06),inset -4px -4px 0 rgba(0,0,0,.35)}
+  .pledge-item b{color:var(--gold)}
+  .pledge-check{display:inline-flex;align-items:center;gap:12px;cursor:pointer;font-family:'Do Hyeon';font-size:clamp(15px,2.3vh,23px);color:#fff;margin-bottom:18px;justify-content:center;width:100%}
+  .pledge-check .box{width:clamp(28px,3.6vh,40px);height:clamp(28px,3.6vh,40px);background:var(--stone);display:inline-block;flex:0 0 auto;position:relative;
+    box-shadow:0 0 0 3px var(--outline),inset 4px 4px 0 rgba(255,255,255,.22),inset -4px -4px 0 rgba(0,0,0,.3)}
+  .pledge-check.on .box{background:var(--emerald)}
+  .pledge-check.on .box::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#0c1f0a;font-family:'Do Hyeon';font-size:clamp(20px,2.8vh,30px)}
+  .bigbtn.disabled{opacity:.4;filter:grayscale(.6)}
+
   @media (max-width:520px){.cards{grid-template-columns:1fr}.card{min-height:auto}}
 </style>
 </head>
 <body>
+
+<!-- ===================== 안전 서약 (모든 게임 시작 전) ===================== -->
+<div class="overlay" id="pledgeOv" style="position:fixed;z-index:100">
+  <div class="panel" style="max-width:700px">
+    <h3 style="color:var(--gold)">⚠️ 플레이 전 안전 서약</h3>
+    <p class="sub" style="margin-bottom:16px">전자칠판은 우리 모두의 소중한 장비예요.<br>아래 약속을 읽고 동의해 주세요!</p>
+    <div class="pledge-list">
+      <div class="pledge-item">✋ 나는 흥분해도 전자칠판을 <b>세게 치거나 때리지 않겠습니다.</b></div>
+      <div class="pledge-item">👆 주먹·손바닥·팔꿈치 대신 <b>손가락으로 부드럽게</b> 터치하겠습니다.</div>
+      <div class="pledge-item">🤝 친구를 밀거나 부딪치지 않고 <b>순서와 자리</b>를 지키겠습니다.</div>
+      <div class="pledge-item">🖊️ 칠판과 펜, 교실 물건을 <b>소중히</b> 다루겠습니다.</div>
+      <div class="pledge-item">😄 끝까지 <b>즐겁고 안전하게</b> 플레이하겠습니다!</div>
+    </div>
+    <div class="pledge-check" id="pledgeCheck" onclick="togglePledge()">
+      <span class="box"></span><span>위 내용을 모두 지킬 것을 약속합니다!</span>
+    </div>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <button class="bigbtn disabled" id="pledgeAgree" onclick="agreePledge()">✅ 동의하고 시작!</button>
+      <button class="pillbtn ghost" onclick="cancelPledge()" style="align-self:center">← 메뉴로</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== 메인 메뉴 ===================== -->
 <section class="screen active" id="menu">
@@ -252,6 +365,26 @@
     <div class="card" style="--accent:var(--copper)" onclick="openGame('calc')">
       <div class="top"><div class="num">06</div><div class="ico">🧮</div></div>
       <div><h3>빠른 계산</h3><p>누가누가 계산이 더 빠른가! 정답을 먼저 누르면 승점.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:var(--diamond)" onclick="openGame('mine')">
+      <div class="top"><div class="num">07</div><div class="ico">⛏️</div></div>
+      <div><h3>다이아 러시</h3><p>곡괭이 광클! 콤보로 더 빨리 캐고 광물로 역전! 먼저 목표 깊이까지.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:var(--redstone)" onclick="openGame('stp')">
+      <div class="top"><div class="num">08</div><div class="ico">🎯</div></div>
+      <div><h3>정확히 멈춰!</h3><p>움직이는 막대를 금색 중앙선에 딱! 속도가 아닌 타이밍 승부.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:var(--emerald)" onclick="openGame('gng')">
+      <div class="top"><div class="num">09</div><div class="ico">🚦</div></div>
+      <div><h3>참아! Go/No-Go</h3><p>초록엔 빨리 누르고 빨강엔 꾹 참기! 잘못 누르면 감점.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:var(--p1)" onclick="openGame('find')">
+      <div class="top"><div class="num">10</div><div class="ico">🔍</div></div>
+      <div><h3>다른 것 찾기</h3><p>똑같은 그림 속 딱 하나 다른 것! 가장 먼저 찾아 누르면 승점.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:#ff7eb6" onclick="openGame('letterg')">
+      <div class="top"><div class="num">11</div><div class="ico">🤸</div></div>
+      <div><h3>몸으로 글자!</h3><p>📷 카메라 게임! 모둠이 몸을 합쳐 글자를 표현 — 닮을수록 고득점.</p><div class="go">▶ PLAY</div></div>
     </div>
   </div>
   <div class="footnote">⛏ 손가락으로 동시에 누르세요 · 멀티터치 전자칠판 최적화</div>
@@ -406,13 +539,156 @@
   </div>
 </section>
 
+<!-- ===================== 게임7: 다이아 러시 (채굴 레이스) ===================== -->
+<section class="screen" id="mine">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:var(--diamond);color:#053">GAME 07</span><h1>다이아 러시</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="mineSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="rt-top"><div class="rt-path">⛏️ 광클로 블록을 캐라! 🔥콤보가 쌓이면 더 빨리 · 💎광물은 점수 폭발!</div></div>
+  <div class="arena" id="mineArena" style="flex-direction:column">
+    <div class="mine-lanes" id="mineLanes"></div>
+    <div class="overlay" id="mineSetupOv"><div class="panel">
+      <h3>다이아 러시</h3>
+      <p class="sub">자기 블록을 <b style="color:var(--ink)">최대한 빠르게 두드려</b> 캐세요!<br>연타로 <b style="color:var(--gold)">🔥콤보</b>가 쌓이면 더 빨리 캐지고, 🟨금·🟩에메랄드·💎다이아 광물은 점수가 크게 올라요.<br>가장 먼저 <b style="color:var(--diamond)">목표 깊이</b>에 도달하면 우승!</p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">목표</span><button class="chip" data-goal="20">짧게</button><button class="chip on" data-goal="30">보통</button><button class="chip" data-goal="45">길게</button></div>
+      <button class="bigbtn" onclick="mineStart()">채굴 시작!</button>
+    </div></div>
+    <div class="overlay" id="mineCountOv"><div class="countnum" id="mineCountNum">3</div></div>
+    <div class="overlay" id="mineResultOv"><div class="panel">
+      <div class="winner-tag" id="mineWinner">🏆 우승!</div><div class="podium" id="minePodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="mineStart()">🔁 다시</button><button class="bigbtn" onclick="mineSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임8: 정확히 멈춰! ===================== -->
+<section class="screen" id="stp">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:var(--redstone);color:#fff">GAME 08</span><h1>정확히 멈춰!</h1></div>
+    <div style="display:flex;gap:10px"><span class="rt-round" id="stpRound" style="align-self:center"></span><button class="pillbtn" onclick="stpSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="rt-top"><div class="rt-path">🎯 좌우로 움직이는 막대를 <b>금색 중앙선</b>에 딱 맞춰 멈추세요!</div></div>
+  <div class="arena" id="stpArena" style="flex-direction:column">
+    <div class="stp-rows" id="stpRows"></div>
+    <div class="overlay" id="stpSetupOv"><div class="panel">
+      <h3>정확히 멈춰!</h3><p class="sub">자기 트랙을 눌러 막대를 멈추세요. <b style="color:var(--gold)">중앙(금색)</b>에 가까울수록 고득점!<br>PERFECT +5 · GOOD +3 · OK +1. 라운드가 갈수록 빨라지고 칸이 좁아져요.</p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">라운드</span><button class="chip" data-rounds="3">3</button><button class="chip on" data-rounds="5">5</button><button class="chip" data-rounds="7">7</button></div>
+      <button class="bigbtn" onclick="stpStart()">시작!</button>
+    </div></div>
+    <div class="overlay" id="stpCountOv"><div class="countnum" id="stpCountNum">3</div></div>
+    <div class="overlay" id="stpResultOv"><div class="panel">
+      <div class="winner-tag" id="stpWinner">🏆 우승!</div><div class="podium" id="stpPodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="stpStart()">🔁 다시</button><button class="bigbtn" onclick="stpSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임9: 참아! (Go/No-Go) ===================== -->
+<section class="screen" id="gng">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:var(--emerald);color:#053">GAME 09</span><h1>참아! Go/No-Go</h1></div>
+    <div style="display:flex;gap:10px">
+      <div class="sb-clock" style="min-width:92px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="gngClock" style="font-size:clamp(20px,3.4vh,32px)">30</span></div>
+      <button class="pillbtn" onclick="gngSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="gng-top"><div class="gng-signal" id="gngSignal">준비</div></div>
+  <div class="arena" id="gngArena" style="flex-direction:column">
+    <div class="gng-pads" id="gngPads"></div>
+    <div class="rt-note">🟢 초록 "눌러!" 엔 빨리 · 🔴 빨강 "참아!" 엔 절대 누르지 마세요 (누르면 -2)</div>
+    <div class="overlay" id="gngSetupOv"><div class="panel">
+      <h3>참아! Go/No-Go</h3><p class="sub">신호를 잘 보고 반응하세요!<br><b style="color:var(--emerald)">초록(눌러!)</b> → 빨리 누르면 +점 (1등 +2, 나머지 +1)<br><b style="color:var(--redstone)">빨강(참아!)</b> → 누르면 -2점! 신호 전 성급한 터치도 -1점.</p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="30">30초</button><button class="chip on" data-time="45">45초</button><button class="chip" data-time="60">60초</button></div>
+      <button class="bigbtn" onclick="gngStart()">출발 준비!</button>
+    </div></div>
+    <div class="overlay" id="gngCountOv"><div class="countnum" id="gngCountNum">3</div></div>
+    <div class="overlay" id="gngResultOv"><div class="panel">
+      <div class="winner-tag" id="gngWinner">🏆 우승!</div><div class="podium" id="gngPodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="gngStart()">🔁 다시</button><button class="bigbtn" onclick="gngSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임10: 다른 것 찾기 ===================== -->
+<section class="screen" id="find">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:var(--p1);color:#053">GAME 10</span><h1>다른 것 찾기</h1></div>
+    <div style="display:flex;gap:10px">
+      <div class="sb-clock" style="min-width:92px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="findClock" style="font-size:clamp(20px,3.4vh,32px)">30</span></div>
+      <button class="pillbtn" onclick="findSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="findArena" style="flex-direction:column">
+    <div class="qz-prompt"><div class="qz-rule">딱 <span style="color:#fff">하나 다른 것</span>을 찾아 가장 먼저 터치!</div></div>
+    <div class="find-lanes" id="findLanes"></div>
+    <div class="overlay" id="findSetupOv"><div class="panel">
+      <h3>다른 것 찾기</h3><p class="sub">똑같은 그림들 속에서 딱 하나 다른 것을 가장 먼저 찾아 누르세요.<br>맞으면 +1, 틀리면 -1. 시간 종료 시 최고 점수 승!</p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button></div>
+      <div class="opt-row"><span class="lab">난이도</span><button class="chip on" data-size="3">쉬움</button><button class="chip" data-size="4">보통</button><button class="chip" data-size="5">어려움</button></div>
+      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="30">30초</button><button class="chip on" data-time="45">45초</button><button class="chip" data-time="60">60초</button></div>
+      <button class="bigbtn" onclick="findStart()">출발 준비!</button>
+    </div></div>
+    <div class="overlay" id="findCountOv"><div class="countnum" id="findCountNum">3</div></div>
+    <div class="overlay" id="findResultOv"><div class="panel">
+      <div class="winner-tag" id="findWinner">🏆 우승!</div><div class="podium" id="findPodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="findStart()">🔁 다시</button><button class="bigbtn" onclick="findSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임11: 몸으로 글자! (카메라) ===================== -->
+<section class="screen" id="letterg">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#ff7eb6;color:#3a0a22">GAME 11</span><h1>몸으로 글자!</h1></div>
+    <div style="display:flex;gap:10px"><span class="rt-round" id="lgRound" style="align-self:center"></span><button class="pillbtn" onclick="lgSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="lgArena" style="flex-direction:column">
+    <div class="cam-wrap">
+      <div class="cam-stage">
+        <video id="lgVideo" playsinline muted style="display:none"></video>
+        <canvas id="lgProc" style="display:none"></canvas>
+        <canvas id="lgCanvas" width="480" height="360"></canvas>
+        <div class="cam-msg" id="lgMsg">카메라 준비 중…</div>
+      </div>
+      <div class="cam-side">
+        <div class="rt-round" id="lgRound2" style="text-align:center"></div>
+        <div class="cam-tbox"><div class="cam-target" id="lgTarget">?</div></div>
+        <div class="cam-turn" id="lgTurn">대기</div>
+        <div class="cam-live">유사도 <span id="lgLive">0%</span></div>
+        <button class="bigbtn" id="lgMeasure" onclick="lgMeasure()" style="padding:12px 20px;font-size:clamp(20px,3.4vh,32px)">📸 측정!</button>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="pillbtn" onclick="lgRecalib()">🔄 배경 다시</button>
+          <button class="pillbtn ghost" onclick="lgSkip()">⏭ 패스</button>
+        </div>
+        <div class="cam-board" id="lgScore"></div>
+      </div>
+    </div>
+    <div class="overlay" id="lgSetupOv"><div class="panel">
+      <h3>몸으로 글자!</h3>
+      <p class="sub">한 <b style="color:var(--ink)">모둠씩</b> 카메라 앞에 서서, 화면에 흐릿하게 보이는 <b style="color:var(--gold)">목표 글자</b>를 몸으로 채워 표현하세요!<br>글자 모양과 <b style="color:var(--emerald)">닮을수록(겹칠수록) 점수↑</b>. "📸측정!"을 누른 순간의 유사도가 점수가 됩니다.</p>
+      <p class="sub" style="color:var(--gold);font-size:clamp(12px,1.8vh,15px);margin-bottom:18px">⚠️ 카메라 권한 필요 · https(깃허브 페이지스)에서 열기 · 배경은 단순하게 · 시작 시 무대를 잠깐 비워 배경을 잡아요</p>
+      <div class="opt-row"><span class="lab">모둠</span><button class="chip" data-groups="2">2</button><button class="chip on" data-groups="3">3</button><button class="chip" data-groups="4">4</button></div>
+      <div class="opt-row"><span class="lab">라운드</span><button class="chip" data-rounds="2">2</button><button class="chip on" data-rounds="3">3</button><button class="chip" data-rounds="5">5</button></div>
+      <div class="opt-row"><span class="lab">글자</span><button class="chip on" data-set="kr">한글</button><button class="chip" data-set="en">알파벳</button><button class="chip" data-set="num">숫자</button></div>
+      <div class="opt-row"><span class="lab">감도</span><button class="chip" data-sens="low">낮음</button><button class="chip on" data-sens="mid">보통</button><button class="chip" data-sens="high">높음</button></div>
+      <button class="bigbtn" onclick="lgStart()">📷 카메라 켜고 시작!</button>
+    </div></div>
+    <div class="overlay" id="lgResultOv"><div class="panel">
+      <div class="winner-tag" id="lgWinner">🏆 우승 모둠!</div><div class="podium" id="lgPodium"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="lgStart()">🔁 다시</button><button class="bigbtn" onclick="lgSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
 <script>
 /* ============ 공통 ============ */
 const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)'];
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();show('menu')}
 function toggleFull(){const d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}}
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -437,7 +713,18 @@ function renderPodium(podId,winId,scores,names){
   const pod=$(podId);pod.innerHTML='';
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})}
-function openGame(g){const m={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup};show(g);m[g]()}
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,gng:gngSetup,find:findSetup,letterg:lgSetup};
+let pendingGame=null,pledgeOK=false;
+function openGame(g){pendingGame=g;pledgeOK=false;
+  $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
+function togglePledge(){pledgeOK=!pledgeOK;$('pledgeCheck').classList.toggle('on',pledgeOK);
+  $('pledgeAgree').classList.toggle('disabled',!pledgeOK);beep(pledgeOK?660:300,.06,'square',.16)}
+function agreePledge(){
+  if(!pledgeOK){const c=$('pledgeCheck');c.style.animation='none';void c.offsetWidth;c.style.animation='tugFlash .3s';
+    beep(150,.18,'sawtooth',.2);return}
+  $('pledgeOv').classList.remove('show');beep(740,.12,'triangle');setTimeout(()=>beep(940,.14,'triangle'),100);
+  const g=pendingGame;show(g);SETUPMAP[g]()}
+function cancelPledge(){$('pledgeOv').classList.remove('show');goMenu()}
 
 /* ============ 게임1: 두더지 ============ */
 let mole={players:3,time:30,scores:[],running:false,timeLeft:0,tickT:null,spawnT:[],holes:[]};
@@ -677,6 +964,279 @@ function runCalc(){calc.running=true;calc.timeLeft=calc.time;$('calcClock').text
 function calcStop(){calc.running=false;clearInterval(calc.tickT)}
 function calcFinish(){calcStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
   renderPodium('calcPodium','calcWinner',calc.scores,PNAMES);$('calcResultOv').classList.add('show')}
+
+/* ============ 게임7: 다이아 러시 (채굴 레이스) ============ */
+const BLOCKS=[
+  {e:'🟫',hp:1,val:1,w:32,fx:'#c08a4e'},
+  {e:'🪨',hp:2,val:1,w:27,fx:'#9aa0a6'},
+  {e:'⚫',hp:2,val:1,w:11,fx:'#888',ore:true},
+  {e:'🟧',hp:3,val:2,w:9,fx:'#e0a35a',ore:true},
+  {e:'🟨',hp:3,val:3,w:7,fx:'#f7c948',ore:true},
+  {e:'🟩',hp:3,val:4,w:5,fx:'#3bd671',ore:true},
+  {e:'💎',hp:4,val:6,w:3,fx:'#34d6d6',ore:true},
+  {e:'⬛',hp:5,val:1,w:6,fx:'#7a6bb0'}
+];
+let mine={players:3,goal:30,scores:[],lanes:[],running:false};
+chipToggle('mineSetupOv','players');chipToggle('mineSetupOv','goal');
+function mineSetup(){mineStop();$('mineResultOv').classList.remove('show');$('mineCountOv').classList.remove('show');$('mineSetupOv').classList.add('show')}
+function mineStop(){mine.running=false}
+function pickBlock(){const tot=BLOCKS.reduce((s,b)=>s+b.w,0);let r=Math.random()*tot;for(const b of BLOCKS){if((r-=b.w)<0)return b}return BLOCKS[0]}
+function fxFloat(box,text,color){const s=document.createElement('span');s.className='mine-fx';s.textContent=text;s.style.color=color;box.appendChild(s);setTimeout(()=>s.remove(),750)}
+function buildMineLanes(){
+  const wrap=$('mineLanes');wrap.innerHTML='';mine.lanes=[];mine.scores=new Array(mine.players).fill(0);
+  for(let p=0;p<mine.players;p++){
+    const lane=document.createElement('div');lane.className='mine-lane';lane.style.setProperty('--c',PCOLORS[p]);
+    lane.innerHTML=`<div class="mine-head"><span class="mine-name">${PNAMES[p]}</span><span class="mine-depth">0/${mine.goal}</span></div>
+      <div class="mine-prog"><div class="mine-prog-fill"></div></div>
+      <div class="mine-block"><span class="mine-combo"></span><span class="blk">🟫</span></div>`;
+    wrap.appendChild(lane);
+    const box=lane.querySelector('.mine-block');
+    const L={laneEl:lane,box,blk:lane.querySelector('.blk'),comboEl:lane.querySelector('.mine-combo'),
+      depthEl:lane.querySelector('.mine-depth'),fill:lane.querySelector('.mine-prog-fill'),
+      combo:0,lastTap:0,hp:1,maxhp:1,type:BLOCKS[0],done:false};
+    const pp=p;box.addEventListener('pointerdown',ev=>{ev.preventDefault();mineTap(pp)},{passive:false});
+    mine.lanes.push(L);spawnBlock(p);
+  }}
+function spawnBlock(p){const L=mine.lanes[p];const b=pickBlock();L.type=b;L.hp=b.hp;L.maxhp=b.hp;L.blk.textContent=b.e;L.blk.style.opacity='1'}
+function mineTap(p){
+  if(!mine.running)return;const L=mine.lanes[p];if(L.done)return;
+  const now=performance.now();
+  if(now-L.lastTap<350)L.combo++;else L.combo=1;L.lastTap=now;
+  const power=Math.min(3,1+Math.floor(L.combo/6));
+  L.hp-=power;
+  L.box.classList.remove('hit');void L.box.offsetWidth;L.box.classList.add('hit');
+  L.blk.style.opacity=(0.5+0.5*Math.max(0,L.hp)/L.maxhp).toFixed(2);
+  beep(280+Math.min(L.combo,22)*26,.04,'square',.12);
+  if(L.combo>=3){L.comboEl.textContent='🔥 콤보 x'+L.combo;
+    L.comboEl.style.fontSize='clamp(13px,'+(1.7+Math.min(L.combo,16)*0.13)+'vh,36px)'}
+  else L.comboEl.textContent='';
+  if(L.hp<=0)breakBlock(p)}
+function breakBlock(p){
+  const L=mine.lanes[p],t=L.type;mine.scores[p]+=t.val;
+  fxFloat(L.box,'+'+t.val,t.fx);
+  if(t.ore){L.laneEl.classList.add('ore');setTimeout(()=>L.laneEl.classList.remove('ore'),250);
+    beep(900,.14,'triangle',.2);setTimeout(()=>beep(1250,.18,'triangle',.18),70)}
+  else beep(170,.1,'sawtooth',.2);
+  L.depthEl.textContent=Math.min(mine.scores[p],mine.goal)+'/'+mine.goal;
+  L.fill.style.width=Math.min(100,mine.scores[p]/mine.goal*100)+'%';
+  updateLead();
+  if(mine.scores[p]>=mine.goal){mineWin(p);return}
+  spawnBlock(p)}
+function updateLead(){let mx=-1,mi=-1;mine.scores.forEach((s,i)=>{if(s>mx){mx=s;mi=i}});
+  mine.lanes.forEach((L,i)=>L.laneEl.classList.toggle('lead',i===mi&&mx>0&&mine.running))}
+function mineStart(){mine.players=+getChip('mineSetupOv','players');mine.goal=+getChip('mineSetupOv','goal');
+  $('mineSetupOv').classList.remove('show');$('mineResultOv').classList.remove('show');buildMineLanes();
+  runCountdown('mineCountOv','mineCountNum',()=>{mine.running=true;updateLead()})}
+function mineWin(p){
+  mine.running=false;const L=mine.lanes[p];L.done=true;
+  mine.lanes.forEach(x=>x.laneEl.classList.remove('lead'));
+  L.laneEl.classList.add('win');L.blk.textContent='💎';L.blk.style.opacity='1';L.comboEl.textContent='';
+  fxFloat(L.box,'CLEAR!','var(--gold)');
+  beep(523,.15);setTimeout(()=>beep(659,.15),130);setTimeout(()=>beep(784,.15),260);setTimeout(()=>beep(1047,.45),390);
+  setTimeout(()=>{renderPodium('minePodium','mineWinner',mine.scores,PNAMES);$('mineResultOv').classList.add('show')},1300)}
+
+/* ============ 게임8: 정확히 멈춰! ============ */
+let stp={players:3,rounds:5,cur:0,scores:[],rows:[],running:false,raf:null,_t:null};
+chipToggle('stpSetupOv','players');chipToggle('stpSetupOv','rounds');
+function stpSetup(){stpStop();$('stpResultOv').classList.remove('show');$('stpCountOv').classList.remove('show');$('stpRound').textContent='';$('stpSetupOv').classList.add('show')}
+function stpStop(){stp.running=false;cancelAnimationFrame(stp.raf);clearTimeout(stp._t)}
+function buildStpRows(){const wrap=$('stpRows');wrap.innerHTML='';stp.rows=[];stp.scores=new Array(stp.players).fill(0);
+  for(let p=0;p<stp.players;p++){const row=document.createElement('div');row.className='stp-row';row.style.setProperty('--c',PCOLORS[p]);
+    row.innerHTML=`<div class="stp-who"><div class="nm">${PNAMES[p]}</div><div class="sc">0</div></div>
+      <div class="stp-track"><div class="stp-target"></div><div class="stp-bull"></div><div class="stp-marker"></div><div class="stp-fb"></div></div>`;
+    wrap.appendChild(row);const track=row.querySelector('.stp-track');
+    const R={row,track,target:row.querySelector('.stp-target'),bull:row.querySelector('.stp-bull'),marker:row.querySelector('.stp-marker'),fb:row.querySelector('.stp-fb'),sc:row.querySelector('.sc'),pos:0,vel:1,stopped:false,center:50,band:18};
+    const pp=p;track.addEventListener('pointerdown',ev=>{ev.preventDefault();stpTap(pp)},{passive:false});stp.rows.push(R)}}
+function stpStart(){stp.players=+getChip('stpSetupOv','players');stp.rounds=+getChip('stpSetupOv','rounds');
+  $('stpSetupOv').classList.remove('show');$('stpResultOv').classList.remove('show');buildStpRows();stp.cur=0;runCountdown('stpCountOv','stpCountNum',stpRound)}
+function stpRound(){stp.cur++;if(stp.cur>stp.rounds){stpFinish();return}
+  $('stpRound').textContent='ROUND '+stp.cur+'/'+stp.rounds;
+  const speed=0.7+stp.cur*0.30,band=Math.max(7,20-stp.cur*2.2);
+  stp.rows.forEach(R=>{R.stopped=false;R.pos=Math.random()*100;R.vel=(Math.random()<.5?-1:1)*speed;R.center=18+Math.random()*64;R.band=band;
+    R.target.style.left=(R.center-band/2)+'%';R.target.style.width=band+'%';R.bull.style.left=R.center+'%';
+    R.fb.textContent='';R.marker.classList.remove('good','bad');R.marker.style.left=R.pos+'%'});
+  beep(330,.12);stp.running=true;stpLoop();
+  stp._t=setTimeout(()=>{stp.rows.forEach((R,i)=>{if(!R.stopped)stpLock(i)})},5500)}
+function stpLoop(){if(!stp.running)return;
+  stp.rows.forEach(R=>{if(R.stopped)return;R.pos+=R.vel;if(R.pos<=0){R.pos=0;R.vel=Math.abs(R.vel)}else if(R.pos>=100){R.pos=100;R.vel=-Math.abs(R.vel)}R.marker.style.left=R.pos+'%'});
+  stp.raf=requestAnimationFrame(stpLoop)}
+function stpTap(p){if(!stp.running||stp.rows[p].stopped)return;stpLock(p)}
+function stpLock(p){const R=stp.rows[p];if(R.stopped)return;R.stopped=true;
+  const dist=Math.abs(R.pos-R.center);let pts,txt,cls;
+  if(dist<=2){pts=5;txt='PERFECT! +5';cls='good';beep(1046,.2,'triangle')}
+  else if(dist<=R.band/2){pts=3;txt='GOOD +3';cls='good';beep(740,.14,'triangle')}
+  else if(dist<=R.band){pts=1;txt='OK +1';cls='good';beep(440,.1)}
+  else{pts=0;txt='MISS';cls='bad';beep(150,.18,'sawtooth',.2)}
+  stp.scores[p]+=pts;R.sc.textContent=stp.scores[p];R.fb.textContent=txt;R.marker.classList.add(cls);
+  if(stp.rows.every(r=>r.stopped)){stp.running=false;cancelAnimationFrame(stp.raf);clearTimeout(stp._t);stp._t=setTimeout(stpRound,1500)}}
+function stpFinish(){stpStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);$('stpRound').textContent='';renderPodium('stpPodium','stpWinner',stp.scores,PNAMES);$('stpResultOv').classList.add('show')}
+
+/* ============ 게임9: 참아! (Go/No-Go) ============ */
+let gng={players:3,time:30,scores:[],pads:[],running:false,state:'idle',signal:null,answered:[],firstDone:false,timeLeft:0,tickT:null,_t:null};
+chipToggle('gngSetupOv','players');chipToggle('gngSetupOv','time');
+function gngSetup(){gngStop();$('gngResultOv').classList.remove('show');$('gngCountOv').classList.remove('show');$('gngSignal').textContent='준비';$('gngSignal').className='gng-signal';$('gngSetupOv').classList.add('show')}
+function gngStop(){gng.running=false;gng.state='idle';clearInterval(gng.tickT);clearTimeout(gng._t)}
+function buildGngPads(){const wrap=$('gngPads');wrap.innerHTML='';gng.pads=[];gng.scores=new Array(gng.players).fill(0);
+  for(let p=0;p<gng.players;p++){const pad=document.createElement('div');pad.className='gng-pad';pad.style.setProperty('--c',PCOLORS[p]);
+    pad.innerHTML=`<div class="pname">${PNAMES[p]}</div><div class="pscore" id="gSc${p}">0</div><div class="pstate" id="gSt${p}">대기</div>`;
+    const pp=p;pad.addEventListener('pointerdown',ev=>{ev.preventDefault();gngTap(pp)},{passive:false});wrap.appendChild(pad);gng.pads.push(pad)}}
+function gngPadState(p,cls,txt){const pad=gng.pads[p];pad.className='gng-pad'+(cls?' '+cls:'');pad.style.setProperty('--c',PCOLORS[p]);$('gSt'+p).textContent=txt}
+function gngStart(){gng.players=+getChip('gngSetupOv','players');gng.time=+getChip('gngSetupOv','time');
+  $('gngSetupOv').classList.remove('show');$('gngResultOv').classList.remove('show');buildGngPads();$('gngClock').textContent=gng.time;runCountdown('gngCountOv','gngCountNum',runGng)}
+function runGng(){gng.running=true;gng.timeLeft=gng.time;$('gngClock').textContent=gng.timeLeft;
+  gng.tickT=setInterval(()=>{gng.timeLeft--;$('gngClock').textContent=gng.timeLeft;if(gng.timeLeft<=5&&gng.timeLeft>0)beep(700,.1,'square',.12);if(gng.timeLeft<=0)gngFinish()},1000);
+  nextSignal()}
+function nextSignal(){if(!gng.running)return;gng.state='wait';gng.answered=new Array(gng.players).fill(false);
+  $('gngSignal').className='gng-signal wait';$('gngSignal').textContent='준비…';
+  gng.pads.forEach((_,p)=>gngPadState(p,'','대기'));
+  gng._t=setTimeout(showSignal,550+Math.random()*950)}
+function showSignal(){if(!gng.running)return;const go=Math.random()<0.68;gng.signal=go?'go':'nogo';gng.firstDone=false;gng.answered=new Array(gng.players).fill(false);gng.state='signal';
+  if(go){$('gngSignal').className='gng-signal go';$('gngSignal').textContent='🟢 눌러!';gng.pads.forEach((_,p)=>gngPadState(p,'go','눌러!'));beep(880,.2,'sawtooth',.2)}
+  else{$('gngSignal').className='gng-signal nogo';$('gngSignal').textContent='🔴 참아!';gng.pads.forEach((_,p)=>gngPadState(p,'nogo','참아!'));beep(200,.22,'square',.2)}
+  gng._t=setTimeout(()=>{if(gng.running)nextSignal()},go?1000:1150)}
+function gngTap(p){if(!gng.running)return;
+  if(gng.state==='wait'){if(gng.answered[p])return;gng.answered[p]=true;gng.scores[p]=Math.max(0,gng.scores[p]-1);$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'bad','성급! -1');beep(160,.15,'sawtooth',.2);return}
+  if(gng.state==='signal'){if(gng.answered[p])return;gng.answered[p]=true;
+    if(gng.signal==='go'){const pts=gng.firstDone?1:2;gng.firstDone=true;gng.scores[p]+=pts;$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'good',pts===2?'1등! +2':'+1');beep(740,.1,'triangle')}
+    else{gng.scores[p]=Math.max(0,gng.scores[p]-2);$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'bad','으악! -2');beep(140,.2,'sawtooth',.22)}}}
+function gngFinish(){gngStop();$('gngSignal').className='gng-signal';$('gngSignal').textContent='끝!';beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  renderPodium('gngPodium','gngWinner',gng.scores,PNAMES);$('gngResultOv').classList.add('show')}
+
+/* ============ 게임10: 다른 것 찾기 ============ */
+const FIND_PAIRS=[['🟦','🟪'],['🟧','🟨'],['🟥','🟧'],['🟩','🟦'],['🔵','🟣'],['🟢','🔵'],['😀','😄'],['😀','😁'],['🙂','😊'],['🐶','🐺'],['🐱','🐯'],['🐰','🐹'],['🐭','🐹'],['🌕','🌝'],['⭐','🌟'],['🍎','🍏'],['🐸','🐢']];
+let find={players:3,time:45,size:3,scores:[],lanes:[],running:false,timeLeft:0,tickT:null,resolved:false,locked:[],odd:0};
+chipToggle('findSetupOv','players');chipToggle('findSetupOv','size');chipToggle('findSetupOv','time');
+function findSetup(){findStop();$('findResultOv').classList.remove('show');$('findCountOv').classList.remove('show');$('findSetupOv').classList.add('show')}
+function findStop(){find.running=false;clearInterval(find.tickT)}
+function buildFindLanes(){const lanes=$('findLanes');lanes.innerHTML='';find.scores=new Array(find.players).fill(0);find.locked=new Array(find.players).fill(false);find.lanes=[];
+  const n=find.size*find.size;
+  for(let p=0;p<find.players;p++){const lane=document.createElement('div');lane.className='find-lane';lane.style.setProperty('--c',PCOLORS[p]);lane.id='flane'+p;
+    lane.innerHTML=`<div class="who" id="fWho${p}">${PNAMES[p]} · 0점</div>`;
+    const grid=document.createElement('div');grid.className='find-grid';grid.style.gridTemplateColumns='repeat('+find.size+',1fr)';grid.style.gridTemplateRows='repeat('+find.size+',1fr)';
+    const cells=[];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='fcell';const idx=i;c.addEventListener('pointerdown',ev=>{ev.preventDefault();findTap(p,idx)},{passive:false});grid.appendChild(c);cells.push(c)}
+    lane.appendChild(grid);lanes.appendChild(lane);find.lanes.push(cells)}}
+function newFind(){const n=find.size*find.size;const pair=FIND_PAIRS[Math.floor(Math.random()*FIND_PAIRS.length)];
+  const base=pair[0],odd=pair[1];find.odd=Math.floor(Math.random()*n);find.resolved=false;find.locked=find.locked.map(()=>false);
+  document.querySelectorAll('#findLanes .find-lane').forEach(l=>l.classList.remove('locked'));
+  find.lanes.forEach(cells=>cells.forEach((c,i)=>{c.textContent=(i===find.odd?odd:base);c.classList.remove('bad')}))}
+function findTap(p,i){if(!find.running||find.resolved||find.locked[p])return;
+  if(i===find.odd){find.resolved=true;find.scores[p]++;$('fWho'+p).textContent=PNAMES[p]+' · '+find.scores[p]+'점';
+    find.lanes.forEach(cells=>{cells[find.odd].style.transition='transform .15s';cells[find.odd].style.transform='scale(1.25)';setTimeout(()=>cells[find.odd].style.transform='',200)});
+    beep(740,.12,'triangle');setTimeout(newFind,350)}
+  else{find.scores[p]=Math.max(0,find.scores[p]-1);$('fWho'+p).textContent=PNAMES[p]+' · '+find.scores[p]+'점';
+    find.locked[p]=true;$('flane'+p).classList.add('locked');find.lanes[p][i].classList.add('bad');beep(140,.18,'sawtooth',.2)}}
+function findStart(){find.players=+getChip('findSetupOv','players');find.size=+getChip('findSetupOv','size');find.time=+getChip('findSetupOv','time');
+  $('findSetupOv').classList.remove('show');$('findResultOv').classList.remove('show');buildFindLanes();$('findClock').textContent=find.time;runCountdown('findCountOv','findCountNum',runFind)}
+function runFind(){find.running=true;find.timeLeft=find.time;$('findClock').textContent=find.timeLeft;newFind();
+  find.tickT=setInterval(()=>{find.timeLeft--;$('findClock').textContent=find.timeLeft;if(find.timeLeft<=5&&find.timeLeft>0)beep(700,.1,'square',.12);if(find.timeLeft<=0)findFinish()},1000)}
+function findFinish(){findStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  renderPodium('findPodium','findWinner',find.scores,PNAMES);$('findResultOv').classList.add('show')}
+
+/* ============ 게임11: 몸으로 글자! (카메라 유사도) ============ */
+const GROUPNAMES=['1모둠','2모둠','3모둠','4모둠'];
+const CHARSETS={
+  kr:['ㄱ','ㄴ','ㄷ','ㅁ','ㅅ','ㅇ','ㅈ','ㅋ','ㅌ','ㅍ','ㅗ','ㅏ','ㅣ','ㅜ','ㅡ','ㄹ','ㅂ','ㅎ'],
+  en:['T','L','I','O','X','Y','V','C','H','K','A','U','Z','N'],
+  num:['1','2','3','4','5','7','0']
+};
+let lg={groups:3,rounds:3,charset:'kr',thr:40,W:192,H:144,cur:0,turn:0,curGroup:0,scores:[],target:'',
+  stream:null,video:null,proc:null,pctx:null,disp:null,dctx:null,lcanvas:null,ovcanvas:null,ovctx:null,ovImg:null,
+  bg:null,letterMask:null,letterCount:1,score:0,raf:null,phase:'idle'};
+chipToggle('lgSetupOv','groups');chipToggle('lgSetupOv','rounds');chipToggle('lgSetupOv','set');chipToggle('lgSetupOv','sens');
+function lgSetup(){lgStop();$('lgResultOv').classList.remove('show');$('lgRound').textContent='';$('lgRound2').textContent='';
+  $('lgTurn').textContent='대기';$('lgTarget').textContent='?';$('lgLive').textContent='0%';$('lgSetupOv').classList.add('show')}
+function lgStop(){cancelAnimationFrame(lg.raf);if(lg.stream){lg.stream.getTracks().forEach(t=>t.stop());lg.stream=null}lg.phase='idle'}
+async function lgStart(){
+  lg.groups=+getChip('lgSetupOv','groups');lg.rounds=+getChip('lgSetupOv','rounds');lg.charset=getChip('lgSetupOv','set');
+  lg.thr={low:55,mid:40,high:28}[getChip('lgSetupOv','sens')];
+  $('lgSetupOv').classList.remove('show');$('lgResultOv').classList.remove('show');
+  lg.scores=new Array(lg.groups).fill(0);buildLgScore();
+  const ok=await initLgCam();if(!ok)return;
+  await lgCalibrate();
+  lg.cur=0;lgNextRound();
+}
+async function initLgCam(){
+  try{
+    lg.video=$('lgVideo');
+    const s=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});
+    lg.stream=s;lg.video.srcObject=s;await lg.video.play();
+    lg.proc=$('lgProc');lg.proc.width=lg.W;lg.proc.height=lg.H;lg.pctx=lg.proc.getContext('2d',{willReadFrequently:true});
+    lg.disp=$('lgCanvas');lg.dctx=lg.disp.getContext('2d');
+    lg.lcanvas=document.createElement('canvas');lg.lcanvas.width=lg.W;lg.lcanvas.height=lg.H;
+    lg.ovcanvas=document.createElement('canvas');lg.ovcanvas.width=lg.W;lg.ovcanvas.height=lg.H;lg.ovctx=lg.ovcanvas.getContext('2d');
+    lg.ovImg=lg.ovctx.createImageData(lg.W,lg.H);
+    $('lgMsg').style.display='none';
+    cancelAnimationFrame(lg.raf);lg.raf=requestAnimationFrame(lgLoop);
+    return true;
+  }catch(e){
+    $('lgMsg').style.display='flex';
+    $('lgMsg').innerHTML='📷 카메라를 사용할 수 없어요.<br><span style="font-size:.72em;color:#cfe0c8">권한을 허용했는지, https(깃허브 페이지스)에서 여는지 확인하세요.<br>이 채팅 미리보기에서는 카메라가 막혀 있을 수 있어요.</span><br><button class="pillbtn" style="margin-top:16px" onclick="lgSetup()">⚙ 설정으로</button>';
+    return false;
+  }
+}
+function lgCaptureBG(){const W=lg.W,H=lg.H;lg.pctx.drawImage(lg.video,0,0,W,H);const d=lg.pctx.getImageData(0,0,W,H).data;
+  const bg=new Float32Array(W*H);for(let i=0;i<W*H;i++)bg[i]=d[i*4]*0.3+d[i*4+1]*0.59+d[i*4+2]*0.11;lg.bg=bg}
+function lgCalibrate(){return new Promise(res=>{
+  let c=3;$('lgMsg').style.display='flex';
+  $('lgMsg').innerHTML='무대를 잠깐 비워주세요!<br>배경을 잡는 중…<br><span class="px" style="font-size:2.4em;color:var(--gold)">3</span>';
+  const span=()=>$('lgMsg').querySelector('.px');beep(330,.15);
+  const t=setInterval(()=>{c--;if(c>0){if(span())span().textContent=c;beep(330,.15)}
+    else{clearInterval(t);lgCaptureBG();$('lgMsg').style.display='none';beep(880,.22,'sawtooth');res()}},900)})}
+async function lgRecalib(){if(!lg.stream)return;const keep=lg.phase;lg.phase='calib';await lgCalibrate();lg.phase=keep}
+function makeLetterMask(ch){const W=lg.W,H=lg.H,x=lg.lcanvas.getContext('2d');
+  x.clearRect(0,0,W,H);x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
+  const size=Math.min(W,H)*0.82;x.font="900 "+size+"px 'Black Han Sans','Arial Black',sans-serif";
+  const r=Math.max(2,Math.round(size*0.05));
+  for(let dx=-r;dx<=r;dx+=r)for(let dy=-r;dy<=r;dy+=r)x.fillText(ch,W/2+dx,H/2+dy);
+  const d=x.getImageData(0,0,W,H).data;const m=new Uint8Array(W*H);let cnt=0;
+  for(let i=0;i<W*H;i++){if(d[i*4+3]>100){m[i]=1;cnt++}}lg.letterMask=m;lg.letterCount=cnt||1}
+function lgLoop(){
+  if(!lg.stream){return}
+  const W=lg.W,H=lg.H;
+  try{lg.pctx.drawImage(lg.video,0,0,W,H)}catch(e){lg.raf=requestAnimationFrame(lgLoop);return}
+  const d=lg.pctx.getImageData(0,0,W,H).data;const ov=lg.ovImg.data;
+  let inter=0,fg=0;
+  for(let i=0;i<W*H;i++){
+    const r=d[i*4],g=d[i*4+1],b=d[i*4+2];const gray=r*0.3+g*0.59+b*0.11;
+    const isFg=lg.bg&&Math.abs(gray-lg.bg[i])>lg.thr;
+    const inL=lg.letterMask&&lg.letterMask[i]===1;
+    let R=0,G=0,B=0,A=0;
+    if(inL){R=247;G=201;B=72;A=60}
+    if(isFg){fg++;if(inL){inter++;R=57;G=255;B=122;A=160}else{R=226;G=59;B=59;A=110}}
+    ov[i*4]=R;ov[i*4+1]=G;ov[i*4+2]=B;ov[i*4+3]=A;
+  }
+  if(lg.letterMask&&lg.bg){const recall=inter/lg.letterCount,prec=fg?inter/fg:0,b2=2.25;
+    lg.score=(prec+recall>0)?Math.round((1+b2)*prec*recall/(b2*prec+recall)*100):0}
+  const DW=lg.disp.width,DH=lg.disp.height;
+  lg.dctx.drawImage(lg.video,0,0,DW,DH);
+  lg.ovctx.putImageData(lg.ovImg,0,0);
+  lg.dctx.imageSmoothingEnabled=false;lg.dctx.drawImage(lg.ovcanvas,0,0,W,H,0,0,DW,DH);
+  if(lg.phase==='pose')$('lgLive').textContent=lg.score+'%';
+  lg.raf=requestAnimationFrame(lgLoop)}
+function buildLgScore(){const wrap=$('lgScore');wrap.innerHTML='';
+  for(let p=0;p<lg.groups;p++){const row=document.createElement('div');row.className='row';row.style.setProperty('--c',PCOLORS[p]);
+    row.innerHTML=`<span class="nm">${GROUPNAMES[p]}</span><span class="pt" id="lgPt${p}">0</span>`;wrap.appendChild(row)}}
+function updateLgScore(){for(let p=0;p<lg.groups;p++)$('lgPt'+p).textContent=lg.scores[p]}
+function lgNextRound(){lg.cur++;if(lg.cur>lg.rounds){lgFinish();return}
+  const set=CHARSETS[lg.charset];lg.target=set[Math.floor(Math.random()*set.length)];makeLetterMask(lg.target);
+  $('lgRound').textContent='ROUND '+lg.cur+'/'+lg.rounds;$('lgRound2').textContent='ROUND '+lg.cur+' / '+lg.rounds;
+  $('lgTarget').textContent=lg.target;lg.turn=0;lgNextTurn()}
+function lgNextTurn(){if(lg.turn>=lg.groups){lgNextRound();return}
+  lg.curGroup=lg.turn;lg.phase='pose';
+  $('lgTurn').textContent=GROUPNAMES[lg.turn]+' 차례!';$('lgTurn').style.color=PCOLORS[lg.turn];
+  $('lgLive').textContent='0%';$('lgMeasure').classList.remove('disabled');beep(520,.1)}
+function lgMeasure(){if(lg.phase!=='pose')return;lg.phase='result';
+  const sc=lg.score;lg.scores[lg.curGroup]+=sc;updateLgScore();
+  $('lgTurn').textContent='유사도 '+sc+'%! 🎉';$('lgLive').textContent=sc+'%';
+  $('lgMeasure').classList.add('disabled');
+  if(sc>=75){beep(880,.15,'triangle');setTimeout(()=>beep(1175,.25,'triangle'),130)}
+  else if(sc>=45)beep(660,.16,'triangle');else beep(330,.18,'square');
+  lg.turn++;setTimeout(lgNextTurn,1900)}
+function lgSkip(){if(lg.phase!=='pose')return;lg.phase='result';
+  $('lgTurn').textContent='패스!';$('lgMeasure').classList.add('disabled');beep(220,.15,'square');
+  lg.turn++;setTimeout(lgNextTurn,800)}
+function lgFinish(){lg.phase='done';beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  $('lgRound').textContent='';renderPodium('lgPodium','lgWinner',lg.scores,GROUPNAMES);$('lgResultOv').classList.add('show')}
 </script>
 </body>
 </html>
