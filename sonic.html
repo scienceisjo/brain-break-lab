@@ -53,16 +53,42 @@
   .pillbtn.ghost{background:var(--stoned)}
 
   /* ===== 메인 메뉴 ===== */
-  #menu .hero{flex:0 0 auto;text-align:center;margin:clamp(8px,2vh,22px) auto;max-width:1100px;width:100%;
-    background:var(--board);padding:clamp(14px,3vh,30px);position:relative;
-    box-shadow:0 0 0 4px var(--outline),0 0 0 9px #3a5240, inset 0 0 0 3px rgba(255,255,255,.05),10px 10px 0 rgba(0,0,0,.35)}
-  #menu .hero::before{content:"";position:absolute;left:14px;top:14px;width:14px;height:14px;background:var(--chalk);opacity:.5;
-    box-shadow:0 0 0 3px rgba(255,255,255,.15)}
-  #menu .hero .sky{font-family:'Press Start 2P';color:var(--grass);font-size:clamp(10px,1.6vh,14px);text-shadow:2px 2px 0 #1a3010}
-  #menu .hero h2{font-family:'Press Start 2P';font-size:clamp(26px,6.2vh,68px);line-height:1.15;margin:14px 0 8px;color:var(--chalk);
-    text-shadow:4px 4px 0 #0f1d13,0 0 22px rgba(106,191,63,.3)}
-  #menu .hero h2 b{color:var(--gold)}
-  #menu .hero p{font-family:'Do Hyeon';color:#cfe0c8;font-size:clamp(13px,1.9vh,18px);margin-top:6px}
+  #menu::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(8,12,8,.5) 0%,rgba(8,12,8,.12) 20%,transparent 45%,transparent 66%,rgba(8,12,8,.5) 100%)}
+  .biome-bg{position:absolute;inset:0;z-index:-2;overflow:hidden;
+    --skyTop:#5b9bff;--skyBot:#cfe9ff;--ground:#56892f;--groundTop:#6abf3f;--sun:#fff3ad;--sunGlow:rgba(255,240,150,.55);
+    background:linear-gradient(180deg,var(--skyTop) 0%,var(--skyBot) 60%)}
+  .biome-bg.desert{--skyTop:#5aa6ff;--skyBot:#ffe7b0;--ground:#caa45e;--groundTop:#e3c178;--sun:#ffd24a;--sunGlow:rgba(255,200,60,.75)}
+  .biome-bg.ocean{--skyTop:#3f93d6;--skyBot:#bfe9ff;--ground:#2f93cf;--groundTop:#57b6e6;--sun:#fff2c8;--sunGlow:rgba(255,240,180,.5)}
+  .biome-bg.jungle{--skyTop:#6fae5a;--skyBot:#d2ecae;--ground:#2f5e2a;--groundTop:#3f8a33;--sun:#eaf7a0;--sunGlow:rgba(200,240,140,.5)}
+  .biome-bg .ground{position:absolute;left:0;right:0;bottom:0;height:42%;background-color:var(--ground);
+    background-image:radial-gradient(rgba(0,0,0,.18) 2px,transparent 2.5px),radial-gradient(rgba(255,255,255,.08) 2px,transparent 2.5px);
+    background-size:20px 20px,15px 15px;box-shadow:inset 0 9px 0 var(--groundTop),inset 0 15px 0 rgba(0,0,0,.12)}
+  .biome-bg.ocean .ground{box-shadow:inset 0 9px 0 var(--groundTop);
+    background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 14px,transparent 14px 30px),repeating-linear-gradient(rgba(0,0,0,.10) 0 14px,transparent 14px 28px);background-size:auto}
+  .biome-bg .sun{position:absolute;left:13%;top:13%;width:clamp(44px,7vw,80px);height:clamp(44px,7vw,80px);background:var(--sun);box-shadow:0 0 0 3px rgba(0,0,0,.08),0 0 70px 14px var(--sunGlow)}
+  .biome-bg .clouds{position:absolute;top:11%;left:0;right:0;height:clamp(16px,4.2vh,40px);opacity:.9;
+    background-image:linear-gradient(90deg,#fff 0 72px,transparent 72px 270px);background-size:270px 100%;background-repeat:repeat-x;animation:cloudDrift 34s linear infinite}
+  .biome-bg.jungle .clouds,.biome-bg.ocean .clouds{opacity:.65}
+  @keyframes cloudDrift{from{background-position:0 0}to{background-position:270px 0}}
+  .biome-bg .deco{position:absolute;left:0;right:0;bottom:34%;text-align:center;white-space:nowrap;overflow:hidden;
+    font-size:clamp(26px,6.5vh,58px);letter-spacing:clamp(8px,4vw,46px);filter:drop-shadow(0 4px 4px rgba(0,0,0,.4))}
+  .biome-tabs{flex:0 0 auto;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:clamp(6px,1.4vh,12px) 0 0}
+  .btab{font-family:'Do Hyeon';font-size:clamp(13px,1.9vh,18px);color:var(--ink);cursor:pointer;border:none;background:var(--stoned);padding:8px 16px;
+    box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD);transition:transform .05s}
+  .btab:active{transform:translate(2px,2px)}
+  .btab.on{background:var(--grass);color:#13230a;box-shadow:0 0 0 3px var(--outline),0 0 0 5px #d9ffb0,var(--bevelL),var(--bevelD)}
+  #menu .hero{flex:0 0 auto;text-align:center;margin:clamp(10px,3vh,40px) auto clamp(6px,1.5vh,16px);max-width:1100px;width:100%;position:relative;padding:0 10px}
+  #menu .hero .sky{font-family:'Press Start 2P';color:#ffec5c;font-size:clamp(9px,1.4vh,13px);text-shadow:2px 2px 0 #3a2e00;letter-spacing:2px}
+  #menu .hero h2{font-family:'Press Start 2P';font-size:clamp(28px,6.8vh,74px);line-height:1.25;margin:16px 0 10px;color:#d4d4d4;letter-spacing:1px;
+    text-shadow:3px 3px 0 #4a4a4a,6px 6px 0 #383838,9px 9px 0 #262626,11px 12px 0 #141414,11px 19px 22px rgba(0,0,0,.55)}
+  #menu .hero h2 b{color:#d0bd6c;text-shadow:3px 3px 0 #6a5a20,6px 6px 0 #4a3f16,9px 9px 0 #2e2710,11px 12px 0 #181307,11px 19px 22px rgba(0,0,0,.55)}
+  #menu .hero p{font-family:'Do Hyeon';color:#e9efe0;font-size:clamp(13px,1.9vh,18px);margin-top:14px;text-shadow:2px 2px 0 #1a1a1a}
+  .splash{position:absolute;right:clamp(2%,5vw,15%);top:clamp(30px,7.5vh,82px);font-family:'Press Start 2P';color:#ffec5c;
+    font-size:clamp(10px,1.7vh,16px);transform:rotate(-17deg);text-shadow:2px 2px 0 #3a2e00;animation:splashB 1s ease-in-out infinite;pointer-events:none;white-space:nowrap;z-index:2}
+  @keyframes splashB{0%,100%{transform:rotate(-17deg) scale(1)}50%{transform:rotate(-17deg) scale(1.13)}}
+  .mc-ver,.mc-copy{position:absolute;bottom:8px;font-family:'Press Start 2P';font-size:clamp(8px,1.2vh,11px);color:#e4e4e4;text-shadow:2px 2px 0 #000;z-index:2}
+  .mc-ver{left:12px}.mc-copy{right:12px}
 
   .cards{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:clamp(10px,1.4vw,16px);align-content:center;min-height:0;overflow:auto;padding:4px}
   .card{position:relative;cursor:pointer;padding:clamp(14px,2.4vh,22px);display:flex;flex-direction:column;justify-content:space-between;
@@ -332,12 +358,20 @@
 
 <!-- ===================== 메인 메뉴 ===================== -->
 <section class="screen active" id="menu">
+  <div class="biome-bg wild" id="biomeBg"><div class="clouds"></div><div class="sun"></div><div class="ground"></div><div class="deco" id="biomeDeco"></div></div>
   <div class="topbar">
     <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.0</span></div>
     <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
   </div>
+  <div class="biome-tabs">
+    <button class="btab on" data-b="wild" onclick="setBiome('wild')">🌳 야생</button>
+    <button class="btab" data-b="desert" onclick="setBiome('desert')">🏜️ 사막</button>
+    <button class="btab" data-b="ocean" onclick="setBiome('ocean')">🌊 바다</button>
+    <button class="btab" data-b="jungle" onclick="setBiome('jungle')">🌴 정글</button>
+  </div>
   <div class="hero">
-    <div class="sky">▰▰▰ MINI GAME SELECT ▰▰▰</div>
+    <div class="splash" id="splash">100% 무첨가 도파민!</div>
+    <div class="sky">▰▰▰ SELECT MINIGAME ▰▰▰</div>
     <h2>CLASS<br><b>GAME WORLD</b></h2>
     <p>마인크래프트 교실에서 즐기는 블록 미니게임 · 2~4명이 전자칠판 앞에서 동시에!</p>
   </div>
@@ -388,6 +422,8 @@
     </div>
   </div>
   <div class="footnote">⛏ 손가락으로 동시에 누르세요 · 멀티터치 전자칠판 최적화</div>
+  <div class="mc-ver">CLASS GAME WORLD 1.1</div>
+  <div class="mc-copy">팬 제작 테마 · Minecraft™ / Mojang</div>
 </section>
 
 <!-- ===================== 게임1: 두더지 ===================== -->
@@ -688,7 +724,12 @@ const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)'];
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();setSplash();show('menu')}
+const SPLASHES=['100% 무첨가 도파민!','곡괭이 챙겼나요?','다이아 발견!','전자칠판을 아껴줘요!','오늘도 광클!','크리퍼 조심!','2~4인 동시 플레이!','blockyblocky!','선생님도 함께!','안전하게 즐겨요!','반응속도 측정 중...','참아... 참아...','한 칸만 더!','우리 반 최강은?','엔더맨도 인정!','전자칠판 사랑해요!'];
+function setSplash(){const e=$('splash');if(e)e.textContent=SPLASHES[Math.floor(Math.random()*SPLASHES.length)]}
+const BIOMES={wild:'🌲 🌳 🐑 🌳 🌲',desert:'🌵 🐫 🌵 🦂 🌵',ocean:'🐟 🐠 🌊 🐡 🐙',jungle:'🌴 🦜 🌿 🐒 🌴'};
+function setBiome(b){const bg=$('biomeBg');if(!bg)return;bg.className='biome-bg '+b;$('biomeDeco').textContent=BIOMES[b]||'';
+  document.querySelectorAll('.btab').forEach(t=>t.classList.toggle('on',t.dataset.b===b));beep(560,.07,'square',.14)}
 function toggleFull(){const d=document.documentElement;if(!document.fullscreenElement){d.requestFullscreen&&d.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}}
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -1237,6 +1278,8 @@ function lgSkip(){if(lg.phase!=='pose')return;lg.phase='result';
   lg.turn++;setTimeout(lgNextTurn,800)}
 function lgFinish(){lg.phase='done';beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
   $('lgRound').textContent='';renderPodium('lgPodium','lgWinner',lg.scores,GROUPNAMES);$('lgResultOv').classList.add('show')}
+setSplash();
+setBiome('wild');
 </script>
 </body>
 </html>
