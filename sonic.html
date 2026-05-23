@@ -858,8 +858,8 @@
    3) Project Settings > API 에서 Project URL / anon public key 복사해 아래에 붙여넣기
    * anon 키는 공개돼도 안전한 '공개 키'입니다. 실제 보안은 테이블의 RLS 규칙이 담당해요.
    비워두면 자동으로 '우리 교실(이 PC)' 기록만 사용합니다. ============================================================ */
-const SUPA_URL='';   // 예: 'https://abcd1234.supabase.co'
-const SUPA_KEY='';   // anon public key (eyJ... 로 시작)
+const SUPA_URL='https://vbvtnmnodeoocbbjauap.supabase.co';   // 예: 'https://abcd1234.supabase.co'
+const SUPA_KEY='sb_publishable_ErWOtUHnPmpi-_895tj7ww_IwEZmAPN';   // publishable 키(sb_publishable_...) 권장 · anon public 키(eyJ...)도 가능
 
 const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)'];
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수'];
@@ -932,7 +932,7 @@ function buildHOF(){const body=$('hofBody');body.innerHTML='';
     g.innerHTML=h;body.appendChild(g)})}
 /* ===== Supabase 전국 랭킹 + 인기순 (anon 키 + RLS) ===== */
 function supaOn(){return !!(SUPA_URL&&SUPA_KEY)}
-function supaH(){return {apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json'}}
+function supaH(){const h={apikey:SUPA_KEY,'Content-Type':'application/json'};if(SUPA_KEY&&SUPA_KEY.slice(0,3)!=='sb_')h.Authorization='Bearer '+SUPA_KEY;return h}
 async function supaTop(game,low){const url=SUPA_URL+'/rest/v1/scores?game=eq.'+encodeURIComponent(game)+'&select=name,value,school&order=value.'+(low?'asc':'desc')+'&limit=5';
   const r=await fetch(url,{headers:supaH()});if(!r.ok)throw 0;return await r.json()}
 function supaSubmit(game,name,value,school){return fetch(SUPA_URL+'/rest/v1/scores',{method:'POST',
