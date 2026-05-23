@@ -101,6 +101,9 @@
   .card h3{font-family:'Do Hyeon';font-size:clamp(19px,3vh,30px);margin-top:auto;line-height:1.1;text-shadow:2px 2px 0 var(--outline)}
   .card p{font-family:'Do Hyeon';color:#d2dccb;font-size:clamp(12px,1.6vh,15px);margin-top:6px}
   .card .go{margin-top:10px;font-family:'Press Start 2P';color:var(--accent);font-size:clamp(8px,1.2vh,11px)}
+  .play-badge{position:absolute;right:9px;bottom:9px;font-family:'Press Start 2P';font-size:clamp(7px,1.05vh,10px);color:var(--gold);background:var(--stonedd);padding:3px 7px;box-shadow:0 0 0 2px var(--outline);z-index:3}
+  .card.top1{box-shadow:0 0 0 4px var(--gold),inset 5px 5px 0 rgba(255,255,255,.14),inset -5px -5px 0 rgba(0,0,0,.4),7px 7px 0 rgba(0,0,0,.4)}
+  .card.top1 .num::after{content:' 👑'}
   .footnote{flex:0 0 auto;text-align:center;color:var(--muted);font-family:'Do Hyeon';font-size:clamp(11px,1.6vh,15px);margin-top:12px}
   .credit{flex:0 0 auto;text-align:center;font-family:'Do Hyeon';color:#cfe0c8;font-size:clamp(11px,1.6vh,14px);margin-top:6px;margin-bottom:18px;line-height:1.5}
   .credit a{color:var(--gold);text-decoration:none}
@@ -849,17 +852,35 @@
 <script>
 /* ============ 공통 ============ */
 /* ============================================================
-   🌍 전국 통합 랭킹 — Supabase Edge Function 사용 (키 노출 없음!)
-   브라우저엔 '함수 주소'만 넣습니다. 비밀 키는 서버(Edge Function)에만 보관돼요.
-   설정: 대화 안내의 SQL + Edge Function을 배포한 뒤, 함수 주소를 아래에 붙여넣기.
-   비워두면 자동으로 '우리 교실(이 PC)' 랭킹만 사용합니다. ============================================================ */
-const LB_URL='';   // 예: 'https://abcd1234.supabase.co/functions/v1/leaderboard'
+   🌍 전국 통합 랭킹 + 인기순 — Supabase (anon 키 + RLS)
+   1) supabase.com 무료 프로젝트 생성
+   2) SQL Editor에 대화 안내의 SQL 실행 (테이블 2개 + 함수 1개)
+   3) Project Settings > API 에서 Project URL / anon public key 복사해 아래에 붙여넣기
+   * anon 키는 공개돼도 안전한 '공개 키'입니다. 실제 보안은 테이블의 RLS 규칙이 담당해요.
+   비워두면 자동으로 '우리 교실(이 PC)' 기록만 사용합니다. ============================================================ */
+const SUPA_URL='';   // 예: 'https://abcd1234.supabase.co'
+const SUPA_KEY='';   // anon public key (eyJ... 로 시작)
 
 const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)'];
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();arrStop();setSplash();show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();arrStop();setSplash();sortCards();loadGlobalPlays();show('menu')}
+/* ===== 인기 게임 정렬 (플레이 횟수) ===== */
+function playKey(g){return 'cgw_play_'+g}
+function getPlay(g){return +(lsGet(playKey(g))||0)}
+function bumpPlay(g){const n=getPlay(g)+1;lsSet(playKey(g),n);
+  if(supaOn()){if(!GLOBAL_PLAYS)GLOBAL_PLAYS={};GLOBAL_PLAYS[g]=(+GLOBAL_PLAYS[g]||0)+1;supaBumpPlay(g).catch(()=>{})}
+  return n}
+function sortCards(){const wrap=document.querySelector('.cards');if(!wrap)return;
+  const cards=[...wrap.querySelectorAll('.card')];
+  cards.forEach((c,i)=>{if(c.dataset.idx==null)c.dataset.idx=i;
+    if(!c.dataset.g){const m=(c.getAttribute('onclick')||'').match(/openGame\('([^']+)'\)/);c.dataset.g=m?m[1]:''}
+    let b=c.querySelector('.play-badge');const n=playCountFor(c.dataset.g);
+    if(!b){b=document.createElement('div');b.className='play-badge';c.appendChild(b)}
+    b.textContent=n>0?('🔥 '+n):'';b.style.display=n>0?'block':'none'});
+  cards.sort((a,z)=>{const d=playCountFor(z.dataset.g)-playCountFor(a.dataset.g);return d!==0?d:(+a.dataset.idx-+z.dataset.idx)});
+  cards.forEach((c,i)=>{c.classList.toggle('top1',i===0&&playCountFor(c.dataset.g)>0);wrap.appendChild(c)})}
 const SPLASHES=['100% 무첨가 도파민!','곡괭이 챙겼나요?','다이아 발견!','전자칠판을 아껴줘요!','오늘도 광클!','크리퍼 조심!','2~4인 동시 플레이!','blockyblocky!','선생님도 함께!','안전하게 즐겨요!','반응속도 측정 중...','참아... 참아...','한 칸만 더!','우리 반 최강은?','엔더맨도 인정!','전자칠판 사랑해요!'];
 function setSplash(){const e=$('splash');if(e)e.textContent=SPLASHES[Math.floor(Math.random()*SPLASHES.length)]}
 const BIOMES={wild:'🌲 🌳 🐑 🌳 🌲',desert:'🌵 🐫 🌵 🦂 🌵',ocean:'🐟 🐠 🌊 🐡 🐙',jungle:'🌴 🦜 🌿 🐒 🌴'};
@@ -909,22 +930,31 @@ function buildHOF(){const body=$('hofBody');body.innerHTML='';
     if(!b.length)h+='<div class="hof-empty">아직 기록이 없어요</div>';
     else b.forEach((e,i)=>{const m=['🥇','🥈','🥉','4️⃣','5️⃣'][i]||'';h+='<div class="hof-row"><span class="rk">'+m+'</span><span class="nm">'+esc(e.n)+'</span><span class="vl">'+e.v+r.unit+'</span></div>'});
     g.innerHTML=h;body.appendChild(g)})}
-/* ===== Supabase 전국 랭킹 (Edge Function · 키 노출 없음) ===== */
-function supaOn(){return !!LB_URL}
-async function supaAll(){const r=await fetch(LB_URL+'?all=1',{cache:'no-store'});if(!r.ok)throw 0;return await r.json()}
-function supaSubmit(game,name,value,school){return fetch(LB_URL,{method:'POST',
-  headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({game:game,name:name,value:value,school:school||''})})}
+/* ===== Supabase 전국 랭킹 + 인기순 (anon 키 + RLS) ===== */
+function supaOn(){return !!(SUPA_URL&&SUPA_KEY)}
+function supaH(){return {apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json'}}
+async function supaTop(game,low){const url=SUPA_URL+'/rest/v1/scores?game=eq.'+encodeURIComponent(game)+'&select=name,value,school&order=value.'+(low?'asc':'desc')+'&limit=5';
+  const r=await fetch(url,{headers:supaH()});if(!r.ok)throw 0;return await r.json()}
+function supaSubmit(game,name,value,school){return fetch(SUPA_URL+'/rest/v1/scores',{method:'POST',
+  headers:Object.assign({Prefer:'return=minimal'},supaH()),
+  body:JSON.stringify({game:game,name:name,value:value,school:school||null})})}
+function supaBumpPlay(game){return fetch(SUPA_URL+'/rest/v1/rpc/bump_play',{method:'POST',headers:supaH(),body:JSON.stringify({g:game})})}
+async function supaPlays(){const r=await fetch(SUPA_URL+'/rest/v1/plays?select=game,count',{headers:supaH()});
+  if(!r.ok)throw 0;const rows=await r.json();const o={};rows.forEach(x=>o[x.game]=x.count);return o}
 async function buildHOFNat(){const body=$('hofNat');
-  if(!supaOn()){body.innerHTML='<div class="hof-empty">🌍 전국 랭킹을 켜려면 코드 상단의 <b>LB_URL</b>에 Supabase Edge Function 주소를 넣어주세요.<br>(설정 전엔 "💻 우리 교실" 탭의 이 PC 기록을 사용합니다.)</div>';return}
+  if(!supaOn()){body.innerHTML='<div class="hof-empty">🌍 전국 랭킹을 켜려면 코드 상단의 <b>SUPA_URL / SUPA_KEY</b>에 Supabase 정보를 넣어주세요.<br>(설정 전엔 "💻 우리 교실" 탭의 이 PC 기록을 사용합니다.)</div>';return}
   body.innerHTML='<div class="hof-empty">전국 기록 불러오는 중…</div>';
-  try{const data=await supaAll();
-    let html='';REC_ORDER.forEach(k=>{const r=REC[k];const b=(data&&data[k])||[];html+='<div class="hof-game"><h4>'+r.label+'</h4>';
+  try{const res=await Promise.all(REC_ORDER.map(k=>supaTop(k,REC[k].low).catch(()=>null)));
+    let html='';REC_ORDER.forEach((k,idx)=>{const r=REC[k];const b=res[idx]||[];html+='<div class="hof-game"><h4>'+r.label+'</h4>';
       if(!b.length)html+='<div class="hof-empty">아직 기록이 없어요</div>';
       else b.forEach((e,i)=>{const m=['🥇','🥈','🥉','4️⃣','5️⃣'][i]||'';const sc=e.school?' <span style="color:var(--muted);font-size:.78em">('+esc(e.school)+')</span>':'';
         html+='<div class="hof-row"><span class="rk">'+m+'</span><span class="nm">'+esc(e.name)+sc+'</span><span class="vl">'+e.value+r.unit+'</span></div>'});
       html+='</div>'});body.innerHTML=html}
   catch(e){body.innerHTML='<div class="hof-empty">전국 랭킹을 불러오지 못했어요. 인터넷 연결/설정을 확인하세요.</div>'}}
+/* 전국 인기(플레이) 집계 */
+let GLOBAL_PLAYS=null;
+function playCountFor(g){if(GLOBAL_PLAYS&&GLOBAL_PLAYS[g]!=null)return +GLOBAL_PLAYS[g];return getPlay(g)}
+async function loadGlobalPlays(){if(!supaOn())return;try{GLOBAL_PLAYS=await supaPlays();sortCards()}catch(e){}}
 
 /* ===== 접속자 수 (외부 카운터 + 기기 카운트 대체) ===== */
 async function loadVisits(){const el=$('visitCount');if(!el)return;let local=1;
@@ -967,7 +997,7 @@ function agreePledge(){
   if(!pledgeOK){const c=$('pledgeCheck');c.style.animation='none';void c.offsetWidth;c.style.animation='tugFlash .3s';
     beep(150,.18,'sawtooth',.2);return}
   $('pledgeOv').classList.remove('show');beep(740,.12,'triangle');setTimeout(()=>beep(940,.14,'triangle'),100);
-  const g=pendingGame;show(g);SETUPMAP[g]()}
+  const g=pendingGame;bumpPlay(g);show(g);SETUPMAP[g]()}
 function cancelPledge(){$('pledgeOv').classList.remove('show');goMenu()}
 
 /* ============ 게임1: 두더지 ============ */
@@ -1522,6 +1552,8 @@ function lgFinish(){lg.phase='done';beep(523,.15);setTimeout(()=>beep(659,.15),1
   $('lgRound').textContent='';renderPodium('lgPodium','lgWinner',lg.scores,GROUPNAMES);$('lgResultOv').classList.add('show')}
 setSplash();
 setBiome('wild');
+sortCards();
+loadGlobalPlays();
 loadVisits();
 </script>
 </body>
