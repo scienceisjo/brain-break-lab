@@ -365,7 +365,10 @@
     box-shadow:0 0 0 4px var(--outline),inset 4px 4px 0 rgba(255,255,255,.10),inset -4px -4px 0 rgba(0,0,0,.35)}
   .entry-h{font-family:'Do Hyeon';color:var(--gold);font-size:clamp(15px,2.3vh,21px);margin-bottom:10px;text-shadow:1px 1px 0 var(--outline)}
   .entry-games{display:flex;flex-wrap:wrap;gap:7px}
-  .eg{font-family:'Do Hyeon';font-size:clamp(11px,1.7vh,15px);color:#e9f1e4;background:var(--stonedd);padding:5px 10px;box-shadow:0 0 0 2px var(--outline)}
+  .eg{font-family:'Do Hyeon';font-size:clamp(11px,1.7vh,15px);color:#e9f1e4;background:var(--stonedd);padding:5px 10px;box-shadow:0 0 0 2px var(--outline);cursor:help;transition:transform .07s}
+  .eg:hover{transform:translateY(-2px);box-shadow:0 0 0 2px var(--gold)}
+  .eg-desc{margin-top:11px;min-height:2.6em;display:flex;align-items:center;justify-content:center;text-align:center;
+    font-family:'Do Hyeon';color:#cfe0c8;font-size:clamp(12px,1.8vh,15px);line-height:1.4;background:rgba(0,0,0,.22);padding:8px 12px;box-shadow:inset 0 0 0 2px var(--outline)}
   .entry-legend{margin-top:11px;font-family:'Do Hyeon';color:#cfe0c8;font-size:clamp(11px,1.6vh,14px)}
   .entry-legend b{color:var(--gold)}
   .entry-note{font-family:'Do Hyeon';color:#cfe0c8;font-size:clamp(12px,1.8vh,15px);margin-bottom:6px;line-height:1.5}
@@ -373,6 +376,30 @@
   .entry-box .rec-input{display:block;margin:9px auto 0;width:min(100%,380px)}
   .entry-go{font-size:clamp(16px,2.6vh,24px);margin-top:2px}
   .entry-foot{font-family:'Do Hyeon';color:var(--muted);font-size:clamp(10px,1.5vh,13px);text-align:center}
+  /* ===== 사과게임 ===== */
+  .apple-sum{font-family:'Do Hyeon';color:#e9f1e4;font-size:clamp(13px,2vh,20px);text-align:center;background:var(--stonedd);padding:5px 16px;min-width:220px;
+    box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .apple-sum b{color:var(--gold)}
+  .apple-sum.ok{color:#063;background:var(--emerald)}.apple-sum.ok b{color:#063}
+  .apple-grid{aspect-ratio:17/10;width:min(95vw,134vh);margin:0 auto;display:grid;grid-template-columns:repeat(17,1fr);gap:clamp(2px,.45vh,5px);
+    touch-action:none;background:#5a3b22;padding:clamp(4px,1vh,10px);
+    box-shadow:0 0 0 4px var(--outline),inset 5px 5px 0 rgba(255,255,255,.07),inset -5px -5px 0 rgba(0,0,0,.4)}
+  .ap{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%!important;
+    background:radial-gradient(circle at 34% 28%, #ff6f57, #cf3320 72%);box-shadow:inset 0 -2px 3px rgba(0,0,0,.32);
+    font-family:'Do Hyeon',sans-serif;color:#fff;font-size:clamp(7px,1.7vw,22px);line-height:1;
+    text-shadow:0 1px 1px rgba(0,0,0,.4);user-select:none;-webkit-user-select:none;transition:transform .07s,opacity .15s}
+  .ap.sel{transform:scale(.82);box-shadow:0 0 0 2px var(--gold),inset 0 -2px 3px rgba(0,0,0,.32)}
+  .ap.gone{background:transparent;box-shadow:none;color:transparent}
+  .ap.gone::after{content:'';position:absolute;width:30%;height:30%;left:35%;top:35%;background:rgba(0,0,0,.16);border-radius:50%!important}
+  /* 신경 반응속도 동물 모드 */
+  .rt-animal-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:0 0 12px}
+  .rt-an{display:flex;flex-direction:column;align-items:center;font-size:clamp(20px,3.4vh,30px);opacity:.32;filter:grayscale(1);transition:all .2s}
+  .rt-an small{font-family:'Do Hyeon';font-size:clamp(8px,1.2vh,11px);color:#cfe0c8;line-height:1.05;margin-top:2px;text-align:center}
+  .rt-an.beat{opacity:1;filter:none;transform:scale(1.06)}
+  /* 헬리콥터 */
+  .heli-canvas{display:block;margin:0 auto;width:min(94vw,131vh);aspect-ratio:16/9;background:#0a0e0a;
+    box-shadow:0 0 0 3px var(--outline),inset 0 0 80px rgba(0,0,0,.7);touch-action:none;cursor:pointer}
+  .heli-hint{font-family:'Do Hyeon';color:#cfe9cf;font-size:clamp(12px,1.9vh,16px);text-align:center}
   .upd-badge{display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:var(--stonedd);color:#e9f1e4;font-family:'Do Hyeon';font-size:clamp(11px,1.6vh,14px);padding:6px 12px;
     box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD);transition:transform .08s;white-space:nowrap}
   .upd-badge:hover{transform:translateY(-2px)}
@@ -443,6 +470,22 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v1.4</h4>
+        <ul>
+          <li>새 게임 🚁 헬리콥터 추가 — 1~2인 대결(화면 분할), 좁아지는 동굴 비행, 전국 랭킹 연동</li>
+          <li>🧠 신경 반응속도에 '동물 이기기' 모드 추가 — 나무늘보·고양이·파리 등과 반응속도 대결</li>
+          <li>🧮 '빠른 계산' → '인간 계산기를 찾아라'로 이름 변경</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
+        <h4>v1.3</h4>
+        <ul>
+          <li>새 게임 🍎 사과게임(1인 도전) 추가 — 합이 10인 사각형을 드래그해 제거, 전국 랭킹 연동</li>
+          <li>정확히 멈춰!·참아! 난이도 선택 추가, 모든 게임 1~6명 지원</li>
+          <li>입장 화면(학교·닉네임) 추가 — 좋은 기록 자동 등록</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v1.2 · 2026.05.22</h4>
         <ul>
           <li>전국 통합 랭킹 추가 (Supabase 연동 · 키 노출 없는 안전 방식)</li>
@@ -473,32 +516,35 @@
 <section class="screen active" id="entry">
   <div class="entry-wrap">
     <div class="entry-logo">CLASS<br>GAME WORLD</div>
-    <p class="entry-sub">⛏️ 마인크래프트 교실에서 즐기는 블록 미니게임 모음 · 1~6명이 전자칠판 앞에서 동시에 대결!</p>
+    <p class="entry-sub">👨‍👩‍👧‍👦 친구·가족·우리 반 누구와도 함께! 한 화면 앞에 1~6명이 모여 즐기는 블록 미니게임 모음이에요.</p>
 
     <div class="entry-box">
       <h3 class="entry-h">🎮 이런 게임들이 있어요</h3>
       <div class="entry-games">
-        <span class="eg">🦔 고슴+더지 잡기 🏆</span>
-        <span class="eg">💪 반응 줄다리기</span>
-        <span class="eg">🎨 컬러·단어 매칭 🏆</span>
-        <span class="eg">🧠 신경 반응속도 🏆</span>
-        <span class="eg">💡 순간 기억 🏆</span>
-        <span class="eg">🧮 빠른 계산 🏆</span>
-        <span class="eg">⛏️ 다이아 러시</span>
-        <span class="eg">🎯 정확히 멈춰! 🏆</span>
-        <span class="eg">🚦 참아! Go/No-Go 🏆</span>
-        <span class="eg">🔍 다른 것 찾기 🏆</span>
-        <span class="eg">🤸 몸으로 글자!</span>
-        <span class="eg">🧭 방향 맞추기 🏆</span>
+        <span class="eg" data-desc="튀어나오는 고슴더지를 빠르게 터치! ⭐보너스 +, 💣폭탄 −">🦔 고슴+더지 잡기 🏆</span>
+        <span class="eg" data-desc="'당겨!' 신호가 뜨면 마구 두드려 줄을 내 쪽으로! (좌우 대결)">💪 반응 줄다리기</span>
+        <span class="eg" data-desc="글자 뜻은 함정! 글자의 '색깔'을 먼저 누르면 승점.">🎨 컬러·단어 매칭 🏆</span>
+        <span class="eg" data-desc="초록불이 켜지는 순간 누가 가장 빠른가! 반응 시간(ms) 측정.">🧠 신경 반응속도 🏆</span>
+        <span class="eg" data-desc="반짝이는 순서를 외워 똑같이 재현! 먼저 성공하면 승리.">💡 순간 기억 🏆</span>
+        <span class="eg" data-desc="정답을 가장 먼저 누르는 사람이 승점! 누가 더 빠른가.">🧮 인간 계산기를 찾아라 🏆</span>
+        <span class="eg" data-desc="곡괭이 광클! 콤보로 더 빨리 캐서 목표 깊이까지 먼저.">⛏️ 다이아 러시</span>
+        <span class="eg" data-desc="움직이는 막대를 금색 중앙선에 딱 멈추기! 타이밍 승부.">🎯 정확히 멈춰! 🏆</span>
+        <span class="eg" data-desc="초록엔 빨리 누르고 빨강엔 꾹 참기! 잘못 누르면 감점.">🚦 참아! Go/No-Go 🏆</span>
+        <span class="eg" data-desc="똑같은 그림 속 딱 하나 다른 것! 가장 먼저 찾아 누르기.">🔍 다른 것 찾기 🏆</span>
+        <span class="eg" data-desc="📷 카메라로 모둠이 몸을 합쳐 글자를 표현! 닮을수록 고득점.">🤸 몸으로 글자!</span>
+        <span class="eg" data-desc="글자는 함정! 화살표가 가리키는 진짜 방향을 먼저 누르기.">🧭 방향 맞추기 🏆</span>
+        <span class="eg" data-desc="합이 10이 되는 사각형을 드래그해 사과 제거! 2분 도전(1인).">🍎 사과게임 🏆</span>
+        <span class="eg" data-desc="누르면 상승·떼면 하강! 좁아지는 동굴을 부딪히지 않고 멀리. 1~2인 대결.">🚁 헬리콥터 🏆</span>
       </div>
+      <div class="eg-desc" id="egDesc">게임에 마우스를 올리거나 탭하면 설명이 나와요 👆</div>
       <div class="entry-legend">🏆 표시는 <b>전국 랭킹</b>에 기록되는 게임이에요 (총 9종)</div>
     </div>
 
     <div class="entry-box">
       <h3 class="entry-h">🏆 명예의 전당에 이름 올리기</h3>
-      <p class="entry-note">학교와 닉네임을 적고 입장하면, 좋은 기록이 <b>자동으로 전국 랭킹</b>에 등록돼요.</p>
-      <input id="entrySchool" class="rec-input" maxlength="20" placeholder="학교 이름 (예: 해누리중)">
+      <p class="entry-note"><b style="color:var(--gold)">닉네임은 필수</b>예요. 적고 입장하면 좋은 기록이 <b>자동으로 전국 랭킹</b>에 등록돼요. (학교는 선택)</p>
       <input id="entryNick" class="rec-input" maxlength="8" placeholder="닉네임 (최대 8자) *필수">
+      <input id="entrySchool" class="rec-input" maxlength="20" placeholder="학교 (선택 · 예: OO중, OO초)">
     </div>
 
     <button class="bigbtn entry-go" onclick="enterApp()">입장하기! ▶</button>
@@ -509,7 +555,7 @@
 <section class="screen" id="menu">
   <div class="biome-bg wild" id="biomeBg"><div class="clouds"></div><div class="sun"></div><div class="ground"></div><div class="deco" id="biomeDeco"></div></div>
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.2</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.4</span></div>
     <div style="display:flex;gap:8px;align-items:center">
       <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.05.22</b></span>
       <button class="pillbtn" onclick="openHOF()">🏆 명예의 전당</button>
@@ -526,7 +572,7 @@
     <div class="splash" id="splash">100% 무첨가 도파민!</div>
     <div class="sky">▰▰▰ SELECT MINIGAME ▰▰▰</div>
     <h2>CLASS<br><b>GAME WORLD</b></h2>
-    <p>마인크래프트 교실에서 즐기는 블록 미니게임 · 1~6명이 전자칠판 앞에서 동시에!</p>
+    <p>친구·가족·우리 반과 함께 · 1~6명이 한 화면에서 동시에!</p>
   </div>
   <div class="cards">
     <div class="card" style="--accent:var(--p1)" onclick="openGame('mole')">
@@ -551,7 +597,7 @@
     </div>
     <div class="card" style="--accent:var(--copper)" onclick="openGame('calc')">
       <div class="top"><div class="num">06</div><div class="ico">🧮</div></div>
-      <div><h3>빠른 계산</h3><p>누가누가 계산이 더 빠른가! 정답을 먼저 누르면 승점.</p><div class="go">▶ PLAY</div></div>
+      <div><h3>인간 계산기를 찾아라</h3><p>누가누가 계산이 더 빠른가! 정답을 먼저 누르면 승점.</p><div class="go">▶ PLAY</div></div>
     </div>
     <div class="card" style="--accent:var(--diamond)" onclick="openGame('mine')">
       <div class="top"><div class="num">07</div><div class="ico">⛏️</div></div>
@@ -577,11 +623,19 @@
       <div class="top"><div class="num">12</div><div class="ico">🧭</div></div>
       <div><h3>방향 맞추기</h3><p>글자는 함정! 화살표가 가리키는 진짜 방향을 먼저 누르면 승점.</p><div class="go">▶ PLAY</div></div>
     </div>
+    <div class="card" style="--accent:#e0533f" onclick="openGame('apple')">
+      <div class="top"><div class="num">13</div><div class="ico">🍎</div></div>
+      <div><h3>사과게임 (10 만들기)</h3><p>드래그한 사각형 안 사과 숫자 합이 10이면 제거! 2분 안에 최대한 많이. 1인 도전.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:#39ff7a" onclick="openGame('heli')">
+      <div class="top"><div class="num">14</div><div class="ico">🚁</div></div>
+      <div><h3>헬리콥터</h3><p>누르면 상승, 떼면 하강! 좁아지는 동굴을 부딪히지 않고 멀리. 1~2인 대결.</p><div class="go">▶ PLAY</div></div>
+    </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
   <div class="footnote">⛏ 손가락으로 동시에 누르세요 · 멀티터치 전자칠판 최적화</div>
   <div class="credit">제작 : 과학이조선생 <span class="sep">·</span> 인스타그램 : <a href="https://instagram.com/science_is_jo" target="_blank" rel="noopener">@science_is_jo</a></div>
-  <div class="mc-ver">CLASS GAME WORLD 1.2</div>
+  <div class="mc-ver">CLASS GAME WORLD 1.4</div>
   <div class="mc-copy">팬 제작 테마 · Minecraft™ / Mojang</div>
 </section>
 
@@ -675,11 +729,13 @@
       <h3>신경 반응속도 측정소</h3><p class="sub">빨간불일 땐 기다리다가 <b style="color:var(--emerald)">초록불</b>이 켜지는 순간 누르세요!<br>여러 라운드 중 <b style="color:var(--ink)">최고 기록</b>으로 순위 결정.</p>
       <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="1">1</button><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
       <div class="opt-row"><span class="lab">라운드</span><button class="chip" data-rounds="3">3</button><button class="chip on" data-rounds="5">5</button><button class="chip" data-rounds="7">7</button></div>
+      <div class="opt-row"><span class="lab">모드</span><button class="chip on" data-mode="human">사람 대결</button><button class="chip" data-mode="animal">🐾 동물 이기기</button></div>
       <button class="bigbtn" onclick="rtStart()">측정 시작!</button>
     </div></div>
     <div class="overlay" id="rtResultOv"><div class="panel">
       <div class="winner-tag" id="rtWinner">🏆 최고 반사신경!</div><div class="podium" id="rtPodium"></div>
-      <p class="sub" style="margin:0 0 18px">👁️ 보통 사람의 눈→손 반응은 약 <b style="color:var(--ink)">200~250ms</b>!</p>
+      <div id="rtAnimal"></div>
+      <p class="sub" id="rtFact" style="margin:0 0 18px">👁️ 보통 사람의 눈→손 반응은 약 <b style="color:var(--ink)">200~250ms</b>!</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="rtStart()">🔁 다시</button><button class="bigbtn" onclick="rtSetup()">⚙ 설정</button></div>
     </div></div>
   </div>
@@ -710,10 +766,10 @@
   </div>
 </section>
 
-<!-- ===================== 게임6: 빠른 계산 ===================== -->
+<!-- ===================== 게임6: 인간 계산기를 찾아라 ===================== -->
 <section class="screen" id="calc">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:var(--copper);color:#fff">GAME 06</span><h1>빠른 계산</h1></div>
+    <div class="brand"><span class="tag" style="background:var(--copper);color:#fff">GAME 06</span><h1>인간 계산기를 찾아라</h1></div>
     <div style="display:flex;gap:10px">
       <div class="sb-clock" style="min-width:92px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="calcClock" style="font-size:clamp(20px,3.4vh,32px)">40</span></div>
       <button class="pillbtn" onclick="calcSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
@@ -722,7 +778,7 @@
     <div class="qz-prompt"><div class="qz-rule">정답을 가장 먼저 누르면 +1점!</div><div class="qz-word px" id="calcQ" style="font-size:clamp(30px,9vh,84px)">7 x 8 = ?</div></div>
     <div class="qz-lanes" id="calcLanes"></div>
     <div class="overlay" id="calcSetupOv"><div class="panel">
-      <h3>빠른 계산</h3><p class="sub">누가누가 계산이 더 빠른가!<br>제시된 식의 정답 보기를 가장 먼저 누르세요. 맞으면 +1, 틀리면 -1.</p>
+      <h3>인간 계산기를 찾아라</h3><p class="sub">누가누가 계산이 더 빠른가!<br>제시된 식의 정답 보기를 가장 먼저 누르세요. 맞으면 +1, 틀리면 -1.</p>
       <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="1">1</button><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
       <div class="opt-row"><span class="lab">난이도</span><button class="chip on" data-diff="easy">쉬움</button><button class="chip" data-diff="normal">보통</button><button class="chip" data-diff="hard">어려움</button></div>
       <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="30">30초</button><button class="chip on" data-time="40">40초</button><button class="chip" data-time="60">60초</button></div>
@@ -773,6 +829,7 @@
       <h3>정확히 멈춰!</h3><p class="sub">자기 트랙을 눌러 막대를 멈추세요. <b style="color:var(--gold)">중앙(금색)</b>에 가까울수록 고득점!<br>PERFECT +5 · GOOD +3 · OK +1. 라운드가 갈수록 빨라지고 칸이 좁아져요.</p>
       <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="1">1</button><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
       <div class="opt-row"><span class="lab">라운드</span><button class="chip" data-rounds="3">3</button><button class="chip on" data-rounds="5">5</button><button class="chip" data-rounds="7">7</button></div>
+      <div class="opt-row"><span class="lab">난이도</span><button class="chip" data-diff="easy">쉬움</button><button class="chip on" data-diff="normal">보통</button><button class="chip" data-diff="hard">어려움</button></div>
       <button class="bigbtn" onclick="stpStart()">시작!</button>
     </div></div>
     <div class="overlay" id="stpCountOv"><div class="countnum" id="stpCountNum">3</div></div>
@@ -799,6 +856,7 @@
       <h3>참아! Go/No-Go</h3><p class="sub">신호를 잘 보고 반응하세요!<br><b style="color:var(--emerald)">초록(눌러!)</b> → 빨리 누르면 +점 (1등 +2, 나머지 +1)<br><b style="color:var(--redstone)">빨강(참아!)</b> → 누르면 -2점! 신호 전 성급한 터치도 -1점.</p>
       <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="1">1</button><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
       <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="30">30초</button><button class="chip on" data-time="45">45초</button><button class="chip" data-time="60">60초</button></div>
+      <div class="opt-row"><span class="lab">난이도</span><button class="chip" data-diff="easy">쉬움</button><button class="chip on" data-diff="normal">보통</button><button class="chip" data-diff="hard">어려움</button></div>
       <button class="bigbtn" onclick="gngStart()">출발 준비!</button>
     </div></div>
     <div class="overlay" id="gngCountOv"><div class="countnum" id="gngCountNum">3</div></div>
@@ -905,6 +963,64 @@
   </div>
 </section>
 
+<!-- ===================== 게임13: 사과게임 (1인) ===================== -->
+<section class="screen" id="apple">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#e0533f;color:#fff">GAME 13</span><h1>사과게임</h1></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="sb-clock" style="min-width:88px;padding:4px 12px"><span class="lbl">SCORE</span><span class="val" id="appleScore" style="font-size:clamp(18px,3.2vh,30px)">0</span></div>
+      <div class="sb-clock" style="min-width:88px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="appleClock" style="font-size:clamp(18px,3.2vh,30px)">120</span></div>
+      <button class="pillbtn" onclick="appleSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="appleArena" style="flex-direction:column;gap:clamp(6px,1.2vh,12px);justify-content:center">
+    <div class="apple-sum" id="appleSum">사각형을 드래그해서 <b>합이 10</b>이 되게!</div>
+    <div class="apple-grid" id="appleGrid"></div>
+    <div class="overlay" id="appleSetupOv"><div class="panel">
+      <h3>🍎 사과게임 (10 만들기)</h3><p class="sub">사과를 <b style="color:var(--gold)">사각형으로 드래그</b>해서, 그 안 숫자들의 <b style="color:var(--gold)">합이 정확히 10</b>이면 사라져요!<br>사라진 사과 수가 점수예요. 시간 안에 최대한 많이 비우세요. (1인 도전 · 태블릿 추천 📱)</p>
+      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="90">90초</button><button class="chip on" data-time="120">120초</button><button class="chip" data-time="180">180초</button></div>
+      <button class="bigbtn" onclick="appleStart()">시작!</button>
+    </div></div>
+    <div class="overlay" id="appleCountOv"><div class="countnum" id="appleCountNum">3</div></div>
+    <div class="overlay" id="appleResultOv"><div class="panel">
+      <div class="winner-tag" id="appleResultTitle">🍎 클리어!</div>
+      <p class="sub" id="appleResultMsg" style="margin-bottom:14px"></p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="appleStart()">🔁 다시</button><button class="bigbtn" onclick="appleSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임14: 헬리콥터 (1~2인) ===================== -->
+<section class="screen" id="heli">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#39ff7a;color:#063">GAME 14</span><h1>헬리콥터</h1></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="pillbtn" onclick="heliSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="heliArena" style="flex-direction:column;justify-content:center;gap:clamp(6px,1.2vh,12px)">
+    <canvas id="heliCanvas" class="heli-canvas"></canvas>
+    <div class="heli-hint" id="heliHint">누르고 있으면 상승, 떼면 하강!</div>
+    <div class="overlay" id="heliSetupOv"><div class="panel" style="max-width:580px">
+      <h3>🚁 헬리콥터 — 동굴 탈출 비행</h3>
+      <p class="sub" style="text-align:left;line-height:1.6">
+        🎯 <b style="color:var(--gold)">목표</b> — 헬리콥터를 조종해 위·아래 동굴 벽과 주황 장애물에 부딪히지 않고 <b>최대한 멀리</b> 날아가세요. 갈수록 통로가 좁아지고 빨라져요.<br>
+        🖱️ <b style="color:var(--gold)">조작</b> — <b>누르고 있으면 상승, 떼면 하강.</b> 화면 터치·마우스 클릭·스페이스바·↑ 모두 가능.<br>
+        👥 <b style="color:var(--gold)">2인 대결</b> — 화면이 좌우로 나뉘어요. <b>1P는 왼쪽 화면, 2P는 오른쪽 화면</b>을 각자 누르세요(키보드 1P=A, 2P=↑). 더 멀리 간 사람이 승리!<br>
+        🏆 <b style="color:var(--gold)">기록</b> — 1인 모드의 비행 거리가 명예의 전당에 등록돼요.<br>
+        💡 <b style="color:var(--gold)">팁</b> — 길게 누르지 말고 <b>짧게 톡톡</b> 끊어 누르며 높이를 미세하게 맞추는 게 오래 버티는 비결!
+      </p>
+      <div class="opt-row"><span class="lab">인원</span><button class="chip on" data-players="1">1</button><button class="chip" data-players="2">2</button></div>
+      <div class="opt-row"><span class="lab">난이도</span><button class="chip" data-diff="low">하</button><button class="chip on" data-diff="mid">중</button><button class="chip" data-diff="high">상</button></div>
+      <button class="bigbtn" onclick="heliStart()">시작!</button>
+    </div></div>
+    <div class="overlay" id="heliCountOv"><div class="countnum" id="heliCountNum">3</div></div>
+    <div class="overlay" id="heliResultOv"><div class="panel">
+      <div class="winner-tag" id="heliResultTitle">🚁 추락!</div>
+      <p class="sub" id="heliResultMsg" style="margin-bottom:14px"></p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="heliStart()">🔁 다시</button><button class="bigbtn" onclick="heliSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
 <script>
 /* ============ 공통 ============ */
 /* ============================================================
@@ -915,13 +1031,13 @@
    * anon 키는 공개돼도 안전한 '공개 키'입니다. 실제 보안은 테이블의 RLS 규칙이 담당해요.
    비워두면 자동으로 '우리 교실(이 PC)' 기록만 사용합니다. ============================================================ */
 const SUPA_URL='https://vbvtnmnodeoocbbjauap.supabase.co';   // 과학이조선생 프로젝트 (공개 URL)
-const SUPA_KEY='sb_publishable_ErWOtUHnPmpi-_895tj7ww_IwEZmAPN';   // ← 여기에 publishable 키(sb_publishable_...)를 붙여넣으세요
+const SUPA_KEY='';   // ← 여기에 publishable 키(sb_publishable_...)를 붙여넣으세요
 
 const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)','var(--p5)','var(--p6)'];
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수','5번 선수','6번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();arrStop();setSplash();sortCards();loadGlobalPlays();show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();arrStop();appleStop();heliStop();setSplash();sortCards();loadGlobalPlays();show('menu')}
 /* ===== 인기 게임 정렬 (플레이 횟수) ===== */
 function playKey(g){return 'cgw_play_'+g}
 function getPlay(g){return +(lsGet(playKey(g))||0)}
@@ -954,9 +1070,10 @@ function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>
 /* ===== 명예의 전당 (기록 가능한 게임) ===== */
 const REC={rt:{label:'🧠 신경 반응속도',low:true,unit:'ms'},stp:{label:'🎯 정확히 멈춰!',low:false,unit:'점'},
   mole:{label:'🦔 고슴+더지 잡기',low:false,unit:'점'},stroop:{label:'🎨 컬러·단어 매칭',low:false,unit:'점'},
-  arrow:{label:'🧭 방향 맞추기',low:false,unit:'점'},calc:{label:'🧮 빠른 계산',low:false,unit:'점'},
-  find:{label:'🔍 다른 것 찾기',low:false,unit:'점'},gng:{label:'🚦 참아!',low:false,unit:'점'},mem:{label:'💡 순간 기억',low:false,unit:'점'}};
-const REC_ORDER=['rt','stp','mole','stroop','arrow','calc','find','gng','mem'];
+  arrow:{label:'🧭 방향 맞추기',low:false,unit:'점'},calc:{label:'🧮 인간 계산기를 찾아라',low:false,unit:'점'},
+  find:{label:'🔍 다른 것 찾기',low:false,unit:'점'},gng:{label:'🚦 참아!',low:false,unit:'점'},mem:{label:'💡 순간 기억',low:false,unit:'점'},
+  apple:{label:'🍎 사과게임',low:false,unit:'개'},heli:{label:'🚁 헬리콥터',low:false,unit:'m'}};
+const REC_ORDER=['heli','apple','rt','stp','mole','stroop','arrow','calc','find','gng','mem'];
 let recPending=null;
 let MY_NICK='', MY_SCHOOL='';
 function bdKey(k){return 'cgw_bd_'+k}
@@ -1062,7 +1179,7 @@ function renderPodium(podId,winId,scores,names){
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})
   const _rk=podId.replace('Podium','');if(REC[_rk])tryRecord(_rk,rank[0].s,false)}
-const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,gng:gngSetup,find:findSetup,letterg:lgSetup,arrow:arrSetup};
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,gng:gngSetup,find:findSetup,letterg:lgSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup};
 let pendingGame=null,pledgeOK=false;
 function openGame(g){pendingGame=g;pledgeOK=false;
   $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
@@ -1220,8 +1337,9 @@ function arrFinish(){arrStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);s
   renderPodium('arrowPodium','arrowWinner',arr.scores,PNAMES);$('arrowResultOv').classList.add('show')}
 
 /* ============ 게임4: 신경 반응속도 ============ */
-let rt={players:3,rounds:5,cur:0,best:[],pads:[],state:'idle',armed:false,greenAt:0,done:[],foul:[],_goT:null,_winT:null};
-chipToggle('rtSetupOv','players');chipToggle('rtSetupOv','rounds');
+let rt={players:3,rounds:5,mode:'human',cur:0,best:[],pads:[],state:'idle',armed:false,greenAt:0,done:[],foul:[],_goT:null,_winT:null};
+chipToggle('rtSetupOv','players');chipToggle('rtSetupOv','rounds');chipToggle('rtSetupOv','mode');
+const RT_ANIMALS=[{e:'🦥',n:'나무늘보',ms:680},{e:'🐢',n:'거북이',ms:450},{e:'🐘',n:'코끼리',ms:330},{e:'🐶',n:'강아지',ms:250},{e:'🐱',n:'고양이',ms:200},{e:'🐰',n:'토끼',ms:150},{e:'🐝',n:'벌',ms:70},{e:'🪰',n:'파리',ms:30}];
 function rtSetup(){rtStop();$('rtResultOv').classList.remove('show');$('rtRound').textContent='';$('rtInstr').textContent='초록불이 켜지면 최대한 빨리 누르세요!';$('rtSetupOv').classList.add('show')}
 function rtStop(){rt.state='idle';clearTimeout(rt._goT);clearTimeout(rt._winT)}
 function buildRtPads(){const wrap=$('rtPads');wrap.innerHTML='';rt.pads=[];rt.best=new Array(rt.players).fill(Infinity);
@@ -1229,7 +1347,7 @@ function buildRtPads(){const wrap=$('rtPads');wrap.innerHTML='';rt.pads=[];rt.be
     pad.innerHTML=`<div class="pname">${PNAMES[p]}</div><div class="pstate">대기</div>`;
     pad.addEventListener('pointerdown',ev=>{ev.preventDefault();rtTap(p)},{passive:false});wrap.appendChild(pad);rt.pads.push(pad)}}
 function setPad(p,cls,html){const pad=rt.pads[p];pad.className='rt-pad'+(cls?' '+cls:'');pad.style.setProperty('--c',PCOLORS[p]);pad.innerHTML=`<div class="pname">${PNAMES[p]}</div>`+html}
-function rtStart(){rt.players=+getChip('rtSetupOv','players');rt.rounds=+getChip('rtSetupOv','rounds');
+function rtStart(){rt.players=+getChip('rtSetupOv','players');rt.rounds=+getChip('rtSetupOv','rounds');rt.mode=getChip('rtSetupOv','mode');
   $('rtSetupOv').classList.remove('show');$('rtResultOv').classList.remove('show');buildRtPads();rt.cur=0;startRound()}
 function startRound(){rt.cur++;if(rt.cur>rt.rounds){rtFinish();return}
   $('rtRound').textContent='ROUND '+rt.cur+'/'+rt.rounds;$('rtInstr').textContent='빨간불… 초록불을 기다리세요';
@@ -1246,7 +1364,18 @@ function rtTap(p){
 function checkAllResolved(){for(let p=0;p<rt.players;p++)if(!rt.done[p]&&!rt.foul[p])return;endRound()}
 function endRound(){if(rt.state==='ended')return;rt.state='ended';clearTimeout(rt._goT);clearTimeout(rt._winT);$('rtInstr').textContent='라운드 종료!';rt._winT=setTimeout(startRound,1500)}
 function rtFinish(){rtStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
-  renderTimePodium('rtPodium','rtWinner',rt.best,PNAMES);$('rtRound').textContent='';$('rtInstr').textContent='측정 완료! 빠를수록 신경 전달이 빨랐다는 뜻이에요.';$('rtResultOv').classList.add('show')}
+  renderTimePodium('rtPodium','rtWinner',rt.best,PNAMES);$('rtRound').textContent='';$('rtInstr').textContent='측정 완료! 빠를수록 신경 전달이 빨랐다는 뜻이에요.';
+  const box=$('rtAnimal');const fact=$('rtFact');
+  if(rt.mode==='animal'){const fin=rt.best.filter(t=>isFinite(t));const my=fin.length?Math.min(...fin):Infinity;
+    let html='<div class="rt-animal-row">';let nextA=null;
+    RT_ANIMALS.forEach(a=>{const win=my<a.ms;if(!win&&!nextA)nextA=a;
+      html+='<span class="rt-an'+(win?' beat':'')+'">'+a.e+'<small>'+a.n+'<br>'+a.ms+'ms</small></span>'});
+    html+='</div>';
+    let msg;if(!isFinite(my))msg='기록이 없어요. 다시 도전!';
+    else{const beat=RT_ANIMALS.filter(a=>my<a.ms);msg='최고 <b style="color:var(--gold)">'+my+'ms</b> — '+(beat.length?('<b>'+beat.length+'마리</b>의 동물보다 빨라요! '+beat.map(a=>a.e).join('')):'아직 동물을 못 이겼어요')+(nextA?(' · 다음 목표 '+nextA.e+nextA.n+'('+nextA.ms+'ms)'):' · 최고예요! 🪰까지 격파!');}
+    box.innerHTML=html;fact.innerHTML=msg;}
+  else{box.innerHTML='';fact.innerHTML='👁️ 보통 사람의 눈→손 반응은 약 <b style="color:var(--ink)">200~250ms</b>!';}
+  $('rtResultOv').classList.add('show')}
 function renderTimePodium(podId,winId,times,names){
   const rank=times.map((t,i)=>({p:i,t})).sort((a,b)=>a.t-b.t);
   const fin=times.filter(t=>isFinite(t));const minT=fin.length?Math.min(...fin):0;const maxT=fin.length?Math.max(...fin):1;
@@ -1312,7 +1441,7 @@ function endMemRound(){if(mem.phase==='ended')return;mem.phase='ended';clearTime
 function memFinish(){memStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
   $('memRound').textContent='';renderPodium('memPodium','memWinner',mem.scores,PNAMES);$('memResultOv').classList.add('show')}
 
-/* ============ 게임6: 빠른 계산 ============ */
+/* ============ 게임6: 인간 계산기를 찾아라 ============ */
 let calc={players:3,time:40,diff:'easy',scores:[],running:false,timeLeft:0,tickT:null,ans:0,opts:[],resolved:false,locked:[],lanes:[]};
 chipToggle('calcSetupOv','players');chipToggle('calcSetupOv','diff');chipToggle('calcSetupOv','time');
 function calcSetup(){calcStop();$('calcResultOv').classList.remove('show');$('calcCountOv').classList.remove('show');$('calcSetupOv').classList.add('show')}
@@ -1423,8 +1552,8 @@ function mineWin(p){
   setTimeout(()=>{renderPodium('minePodium','mineWinner',mine.scores,PNAMES);$('mineResultOv').classList.add('show')},1300)}
 
 /* ============ 게임8: 정확히 멈춰! ============ */
-let stp={players:3,rounds:5,cur:0,scores:[],rows:[],running:false,raf:null,_t:null};
-chipToggle('stpSetupOv','players');chipToggle('stpSetupOv','rounds');
+let stp={players:3,rounds:5,diff:'normal',cur:0,scores:[],rows:[],running:false,raf:null,_t:null};
+chipToggle('stpSetupOv','players');chipToggle('stpSetupOv','rounds');chipToggle('stpSetupOv','diff');
 function stpSetup(){stpStop();$('stpResultOv').classList.remove('show');$('stpCountOv').classList.remove('show');$('stpRound').textContent='';$('stpSetupOv').classList.add('show')}
 function stpStop(){stp.running=false;cancelAnimationFrame(stp.raf);clearTimeout(stp._t)}
 function buildStpRows(){const wrap=$('stpRows');wrap.innerHTML='';stp.rows=[];stp.scores=new Array(stp.players).fill(0);
@@ -1434,11 +1563,12 @@ function buildStpRows(){const wrap=$('stpRows');wrap.innerHTML='';stp.rows=[];st
     wrap.appendChild(row);const track=row.querySelector('.stp-track');
     const R={row,track,target:row.querySelector('.stp-target'),bull:row.querySelector('.stp-bull'),marker:row.querySelector('.stp-marker'),fb:row.querySelector('.stp-fb'),sc:row.querySelector('.sc'),pos:0,vel:1,stopped:false,center:50,band:18};
     const pp=p;track.addEventListener('pointerdown',ev=>{ev.preventDefault();stpTap(pp)},{passive:false});stp.rows.push(R)}}
-function stpStart(){stp.players=+getChip('stpSetupOv','players');stp.rounds=+getChip('stpSetupOv','rounds');
+function stpStart(){stp.players=+getChip('stpSetupOv','players');stp.rounds=+getChip('stpSetupOv','rounds');stp.diff=getChip('stpSetupOv','diff');
   $('stpSetupOv').classList.remove('show');$('stpResultOv').classList.remove('show');buildStpRows();stp.cur=0;runCountdown('stpCountOv','stpCountNum',stpRound)}
 function stpRound(){stp.cur++;if(stp.cur>stp.rounds){stpFinish();return}
   $('stpRound').textContent='ROUND '+stp.cur+'/'+stp.rounds;
-  const speed=0.7+stp.cur*0.30,band=Math.max(7,20-stp.cur*2.2);
+  const D=({easy:{s:0.62,b:1.5},normal:{s:1,b:1},hard:{s:1.5,b:0.66}})[stp.diff]||{s:1,b:1};
+  const speed=(0.7+stp.cur*0.30)*D.s,band=Math.max(5,(20-stp.cur*2.2)*D.b);
   stp.rows.forEach(R=>{R.stopped=false;R.pos=Math.random()*100;R.vel=(Math.random()<.5?-1:1)*speed;R.center=18+Math.random()*64;R.band=band;
     R.target.style.left=(R.center-band/2)+'%';R.target.style.width=band+'%';R.bull.style.left=R.center+'%';
     R.fb.textContent='';R.marker.classList.remove('good','bad');R.marker.style.left=R.pos+'%'});
@@ -1459,8 +1589,8 @@ function stpLock(p){const R=stp.rows[p];if(R.stopped)return;R.stopped=true;
 function stpFinish(){stpStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);$('stpRound').textContent='';renderPodium('stpPodium','stpWinner',stp.scores,PNAMES);$('stpResultOv').classList.add('show')}
 
 /* ============ 게임9: 참아! (Go/No-Go) ============ */
-let gng={players:3,time:30,scores:[],pads:[],running:false,state:'idle',signal:null,answered:[],firstDone:false,timeLeft:0,tickT:null,_t:null};
-chipToggle('gngSetupOv','players');chipToggle('gngSetupOv','time');
+let gng={players:3,time:30,diff:'normal',dm:1,goP:0.68,scores:[],pads:[],running:false,state:'idle',signal:null,answered:[],firstDone:false,timeLeft:0,tickT:null,_t:null};
+chipToggle('gngSetupOv','players');chipToggle('gngSetupOv','time');chipToggle('gngSetupOv','diff');
 function gngSetup(){gngStop();$('gngResultOv').classList.remove('show');$('gngCountOv').classList.remove('show');$('gngSignal').textContent='준비';$('gngSignal').className='gng-signal';$('gngSetupOv').classList.add('show')}
 function gngStop(){gng.running=false;gng.state='idle';clearInterval(gng.tickT);clearTimeout(gng._t)}
 function buildGngPads(){const wrap=$('gngPads');wrap.innerHTML='';gng.pads=[];gng.scores=new Array(gng.players).fill(0);
@@ -1468,7 +1598,8 @@ function buildGngPads(){const wrap=$('gngPads');wrap.innerHTML='';gng.pads=[];gn
     pad.innerHTML=`<div class="pname">${PNAMES[p]}</div><div class="pscore" id="gSc${p}">0</div><div class="pstate" id="gSt${p}">대기</div>`;
     const pp=p;pad.addEventListener('pointerdown',ev=>{ev.preventDefault();gngTap(pp)},{passive:false});wrap.appendChild(pad);gng.pads.push(pad)}}
 function gngPadState(p,cls,txt){const pad=gng.pads[p];pad.className='gng-pad'+(cls?' '+cls:'');pad.style.setProperty('--c',PCOLORS[p]);$('gSt'+p).textContent=txt}
-function gngStart(){gng.players=+getChip('gngSetupOv','players');gng.time=+getChip('gngSetupOv','time');
+function gngStart(){gng.players=+getChip('gngSetupOv','players');gng.time=+getChip('gngSetupOv','time');gng.diff=getChip('gngSetupOv','diff');
+  gng.dm=({easy:1.4,normal:1,hard:0.6})[gng.diff]||1;gng.goP=({easy:0.75,normal:0.68,hard:0.58})[gng.diff]||0.68;
   $('gngSetupOv').classList.remove('show');$('gngResultOv').classList.remove('show');buildGngPads();$('gngClock').textContent=gng.time;runCountdown('gngCountOv','gngCountNum',runGng)}
 function runGng(){gng.running=true;gng.timeLeft=gng.time;$('gngClock').textContent=gng.timeLeft;
   gng.tickT=setInterval(()=>{gng.timeLeft--;$('gngClock').textContent=gng.timeLeft;if(gng.timeLeft<=5&&gng.timeLeft>0)beep(700,.1,'square',.12);if(gng.timeLeft<=0)gngFinish()},1000);
@@ -1476,11 +1607,11 @@ function runGng(){gng.running=true;gng.timeLeft=gng.time;$('gngClock').textConte
 function nextSignal(){if(!gng.running)return;gng.state='wait';gng.answered=new Array(gng.players).fill(false);
   $('gngSignal').className='gng-signal wait';$('gngSignal').textContent='준비…';
   gng.pads.forEach((_,p)=>gngPadState(p,'','대기'));
-  gng._t=setTimeout(showSignal,550+Math.random()*950)}
-function showSignal(){if(!gng.running)return;const go=Math.random()<0.68;gng.signal=go?'go':'nogo';gng.firstDone=false;gng.answered=new Array(gng.players).fill(false);gng.state='signal';
+  gng._t=setTimeout(showSignal,(550+Math.random()*950)*gng.dm)}
+function showSignal(){if(!gng.running)return;const go=Math.random()<gng.goP;gng.signal=go?'go':'nogo';gng.firstDone=false;gng.answered=new Array(gng.players).fill(false);gng.state='signal';
   if(go){$('gngSignal').className='gng-signal go';$('gngSignal').textContent='🟢 눌러!';gng.pads.forEach((_,p)=>gngPadState(p,'go','눌러!'));beep(880,.2,'sawtooth',.2)}
   else{$('gngSignal').className='gng-signal nogo';$('gngSignal').textContent='🔴 참아!';gng.pads.forEach((_,p)=>gngPadState(p,'nogo','참아!'));beep(200,.22,'square',.2)}
-  gng._t=setTimeout(()=>{if(gng.running)nextSignal()},go?1000:1150)}
+  gng._t=setTimeout(()=>{if(gng.running)nextSignal()},(go?1000:1150)*gng.dm)}
 function gngTap(p){if(!gng.running)return;
   if(gng.state==='wait'){if(gng.answered[p])return;gng.answered[p]=true;gng.scores[p]=Math.max(0,gng.scores[p]-1);$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'bad','성급! -1');beep(160,.15,'sawtooth',.2);return}
   if(gng.state==='signal'){if(gng.answered[p])return;gng.answered[p]=true;
@@ -1625,6 +1756,153 @@ function lgSkip(){if(lg.phase!=='pose')return;lg.phase='result';
   lg.turn++;setTimeout(lgNextTurn,800)}
 function lgFinish(){lg.phase='done';beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
   $('lgRound').textContent='';renderPodium('lgPodium','lgWinner',lg.scores,GROUPNAMES);$('lgResultOv').classList.add('show')}
+/* ===== 사과게임 (1인 · 합이 10인 사각형 제거) ===== */
+let apple={time:120,score:0,grid:[],els:[],cols:17,rows:10,running:false,tickT:null,timeLeft:0,drag:false,sr:0,sc:0,er:0,ec:0,bound:false};
+function appleSetup(){appleStop();$('appleResultOv').classList.remove('show');$('appleCountOv').classList.remove('show');$('appleSetupOv').classList.add('show')}
+function appleStop(){apple.running=false;apple.drag=false;clearInterval(apple.tickT)}
+function appleSelBox(){return {r0:Math.min(apple.sr,apple.er),r1:Math.max(apple.sr,apple.er),c0:Math.min(apple.sc,apple.ec),c1:Math.max(apple.sc,apple.ec)}}
+function appleSetSum(s,ok){const el=$('appleSum');if(s<=0){el.innerHTML='사각형을 드래그해서 <b>합이 10</b>이 되게!';el.classList.remove('ok');return}el.textContent='합계: '+s;el.classList.toggle('ok',ok)}
+function appleClearSel(){document.querySelectorAll('#appleGrid .ap.sel').forEach(x=>x.classList.remove('sel'))}
+function appleUpdateSel(){appleClearSel();const b=appleSelBox();let sum=0;
+  for(let r=b.r0;r<=b.r1;r++)for(let c=b.c0;c<=b.c1;c++){const v=apple.grid[r][c];sum+=v;if(v>0)apple.els[r][c].classList.add('sel')}
+  appleSetSum(sum,sum===10)}
+function appleCommitSel(){const b=appleSelBox();let sum=0,cleared=0;
+  for(let r=b.r0;r<=b.r1;r++)for(let c=b.c0;c<=b.c1;c++)sum+=apple.grid[r][c];
+  if(sum===10){for(let r=b.r0;r<=b.r1;r++)for(let c=b.c0;c<=b.c1;c++){if(apple.grid[r][c]>0){apple.grid[r][c]=0;const el=apple.els[r][c];el.classList.remove('sel');el.classList.add('gone');el.textContent='';cleared++}}
+    apple.score+=cleared;$('appleScore').textContent=apple.score;beep(740,.09,'triangle');setTimeout(()=>beep(990,.1,'triangle'),70)}
+  else if(sum>0){beep(170,.1,'sawtooth',.12)}}
+function appleBindGrid(){if(apple.bound)return;apple.bound=true;const wrap=$('appleGrid');
+  wrap.addEventListener('pointerdown',e=>{if(!apple.running)return;const cell=e.target.closest('.ap');if(!cell)return;e.preventDefault();
+    apple.drag=true;apple.sr=+cell.dataset.r;apple.sc=+cell.dataset.c;apple.er=apple.sr;apple.ec=apple.sc;appleUpdateSel();try{wrap.setPointerCapture(e.pointerId)}catch(_){}},{passive:false});
+  wrap.addEventListener('pointermove',e=>{if(!apple.drag)return;e.preventDefault();const el=document.elementFromPoint(e.clientX,e.clientY);const cell=el&&el.closest?el.closest('.ap'):null;
+    if(cell&&cell.dataset.r!==undefined){const r=+cell.dataset.r,c=+cell.dataset.c;if(r!==apple.er||c!==apple.ec){apple.er=r;apple.ec=c;appleUpdateSel()}}},{passive:false});
+  const end=()=>{if(!apple.drag)return;apple.drag=false;appleCommitSel();appleClearSel();appleSetSum(0,false)};
+  wrap.addEventListener('pointerup',end);wrap.addEventListener('pointercancel',end)}
+function appleBuild(){const wrap=$('appleGrid');wrap.innerHTML='';apple.grid=[];apple.els=[];
+  for(let r=0;r<apple.rows;r++){apple.grid[r]=[];apple.els[r]=[];
+    for(let c=0;c<apple.cols;c++){const v=1+Math.floor(Math.random()*9);apple.grid[r][c]=v;
+      const d=document.createElement('div');d.className='ap';d.textContent=v;d.dataset.r=r;d.dataset.c=c;wrap.appendChild(d);apple.els[r][c]=d}}
+  appleBindGrid()}
+function appleStart(){apple.time=+getChip('appleSetupOv','time');
+  $('appleSetupOv').classList.remove('show');$('appleResultOv').classList.remove('show');
+  apple.score=0;$('appleScore').textContent='0';$('appleClock').textContent=apple.time;appleSetSum(0,false);appleBuild();
+  runCountdown('appleCountOv','appleCountNum',appleRun)}
+function appleRun(){apple.running=true;apple.timeLeft=apple.time;$('appleClock').textContent=apple.timeLeft;
+  apple.tickT=setInterval(()=>{apple.timeLeft--;$('appleClock').textContent=apple.timeLeft;
+    if(apple.timeLeft<=10&&apple.timeLeft>0)beep(700,.07,'square',.1);
+    if(apple.timeLeft<=0)appleFinish()},1000)}
+function appleFinish(){appleStop();$('appleClock').textContent='0';
+  beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
+  $('appleResultMsg').innerHTML='사과 <b style="color:var(--gold)">'+apple.score+'개</b>를 제거했어요! 🍎';
+  $('appleResultOv').classList.add('show');tryRecord('apple',apple.score,false)}
+chipToggle('appleSetupOv','time');
+
+/* ===== 게임14: 헬리콥터 (1~2인 · 동굴 비행) ===== */
+const HELI_LW=800,HELI_LH=450,HELI_SLICE=8,HELI_FALL=0.8,HELI_R=9;
+const HELIDIFF={
+  low:{name:'하',grav:0.26,lift:-0.44,baseSpeed:1.9,ramp:0.0005,baseGap:330,narrow:0.004,minGap:215,blocks:false,blockMin:140,blockMax:250},
+  mid:{name:'중',grav:0.34,lift:-0.53,baseSpeed:2.4,ramp:0.0010,baseGap:280,narrow:0.0075,minGap:165,blocks:true,blockMin:110,blockMax:210},
+  high:{name:'상',grav:0.42,lift:-0.62,baseSpeed:3.0,ramp:0.0016,baseGap:230,narrow:0.012,minGap:120,blocks:true,blockMin:70,blockMax:150}
+};
+const HELI_PC=['#39ff7a','#ffb000'];
+let heli={players:1,diff:'mid',lanes:[],running:false,raf:null,frames:0,cv:null,ctx:null,bound:false,ptr:{}};
+function hrand(a,b){return a+Math.random()*(b-a)}
+function heliSetup(){heliStop();$('heliResultOv').classList.remove('show');$('heliCountOv').classList.remove('show');$('heliSetupOv').classList.add('show')}
+function heliStop(){heli.running=false;if(heli.raf){cancelAnimationFrame(heli.raf);heli.raf=null}}
+function heliResize(){if(!heli.cv)return;const dpr=Math.min(window.devicePixelRatio||1,2);heli.cv.width=HELI_LW*dpr;heli.cv.height=HELI_LH*dpr;heli.ctx.setTransform(dpr,0,0,dpr,0,0);heli.ctx.imageSmoothingEnabled=false}
+function heliMkLane(x0,w,pi){const cfg=HELIDIFF[heli.diff];const L={x0:x0,w:w,h:HELI_LH,slices:Math.ceil(w/HELI_SLICE)+4,hx:Math.max(40,w*0.19),hy:HELI_LH/2,vy:0,thrust:false,terrain:[],scrollX:0,speed:cfg.baseSpeed,gap:cfg.baseGap,centerY:HELI_LH/2,targetCenter:HELI_LH/2,wobble:0,blocks:[],blockTimer:110,dist:0,alive:true,smoke:[],particles:[],shake:0,pi:pi};
+  for(let i=0;i<L.slices;i++)L.terrain.push({top:HELI_LH/2-cfg.baseGap/2,bottom:HELI_LH/2+cfg.baseGap/2});return L}
+function heliBuild(){heli.lanes=[];if(heli.players===2){const w=HELI_LW/2-3;heli.lanes.push(heliMkLane(0,w,0));heli.lanes.push(heliMkLane(HELI_LW/2+3,w,1))}else{heli.lanes.push(heliMkLane(0,HELI_LW,0))}}
+function heliBind(){if(heli.bound)return;heli.bound=true;const cv=heli.cv;
+  const laneOf=cx=>{const rect=cv.getBoundingClientRect();const lx=(cx-rect.left)/rect.width*HELI_LW;return heli.players===2?(lx<HELI_LW/2?0:1):0};
+  cv.addEventListener('pointerdown',e=>{if(!heli.running)return;e.preventDefault();const li=laneOf(e.clientX);heli.ptr[e.pointerId]=li;if(heli.lanes[li])heli.lanes[li].thrust=true;try{cv.setPointerCapture(e.pointerId)}catch(_){}},{passive:false});
+  const up=e=>{const li=heli.ptr[e.pointerId];if(li!==undefined){delete heli.ptr[e.pointerId];const still=Object.values(heli.ptr).indexOf(li)>=0;if(heli.lanes[li])heli.lanes[li].thrust=still}};
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  window.addEventListener('keydown',e=>{if(!heli.running)return;if((e.target.tagName||'').toLowerCase()==='input')return;
+    if(heli.players===2){if(e.code==='KeyA'||e.code==='KeyF'||e.code==='ShiftLeft'){e.preventDefault();heli.lanes[0].thrust=true}if(e.code==='ArrowUp'||e.code==='Space'){e.preventDefault();if(heli.lanes[1])heli.lanes[1].thrust=true}}
+    else if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyF'||e.code==='KeyA'){e.preventDefault();heli.lanes[0].thrust=true}});
+  window.addEventListener('keyup',e=>{
+    if(heli.players===2){if((e.code==='KeyA'||e.code==='KeyF'||e.code==='ShiftLeft')&&heli.lanes[0])heli.lanes[0].thrust=false;if((e.code==='ArrowUp'||e.code==='Space')&&heli.lanes[1])heli.lanes[1].thrust=false}
+    else if((e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyF'||e.code==='KeyA')&&heli.lanes[0])heli.lanes[0].thrust=false});
+  window.addEventListener('resize',heliResize)}
+function heliStart(){heliStop();heli.players=+getChip('heliSetupOv','players');heli.diff=getChip('heliSetupOv','diff');
+  heli.cv=$('heliCanvas');heli.ctx=heli.cv.getContext('2d');heliResize();heliBind();
+  $('heliSetupOv').classList.remove('show');$('heliResultOv').classList.remove('show');
+  heli.frames=0;heli.ptr={};heliBuild();
+  $('heliHint').textContent=heli.players===2?'⬅ 왼쪽 화면 = 1P · 오른쪽 화면 = 2P ➡ · 각자 자기 쪽을 누르세요!':'누르고 있으면 상승, 떼면 하강!';
+  runCountdown('heliCountOv','heliCountNum',()=>{heli.running=true;heliLoop()})}
+function heliLaneSlice(L){const cfg=HELIDIFF[heli.diff];const t=L.dist;
+  L.gap=Math.max(cfg.minGap,cfg.baseGap-t*cfg.narrow);L.speed=cfg.baseSpeed+t*cfg.ramp;
+  if(Math.abs(L.centerY-L.targetCenter)<6){const m=L.gap/2+30;L.targetCenter=hrand(m,L.h-m)}
+  L.centerY+=(L.targetCenter-L.centerY)*0.04;L.wobble+=0.05;
+  const jag=Math.sin(L.wobble*2.3)*6+hrand(-4,4);
+  L.terrain.push({top:Math.max(6,L.centerY-L.gap/2+jag),bottom:Math.min(L.h-6,L.centerY+L.gap/2+jag)});
+  if(L.terrain.length>L.slices+2)L.terrain.shift()}
+function heliLaneBlock(L){const cfg=HELIDIFF[heli.diff];if(!cfg.blocks)return;const sl=L.terrain[Math.min(L.terrain.length-1,L.slices-1)]||{top:100,bottom:350};
+  const minY=sl.top+25,maxY=sl.bottom-25;if(maxY-minY<60)return;const bh=hrand(28,70),y=hrand(minY,maxY-bh);L.blocks.push({x:L.w+20,y:y,w:hrand(22,40),h:bh})}
+function heliDie(L){if(!L.alive)return;L.alive=false;L.shake=16;
+  for(let i=0;i<32;i++){const ang=hrand(0,Math.PI*2),sp=hrand(1.5,7);L.particles.push({x:L.hx,y:L.hy,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:hrand(20,50),max:50,c:Math.random()<.5?'#ffb000':'#ff3b3b',sz:hrand(2,5)})}
+  beep(160,.3,'sawtooth',.25);if(heli.lanes.every(x=>!x.alive))heliOver()}
+function heliLaneStep(L){const cfg=HELIDIFF[heli.diff];
+  if(L.thrust)L.vy+=cfg.lift;L.vy+=cfg.grav*HELI_FALL;L.vy=Math.max(-9,Math.min(9,L.vy));L.hy+=L.vy;
+  L.scrollX+=L.speed;while(L.scrollX>=HELI_SLICE){L.scrollX-=HELI_SLICE;heliLaneSlice(L);L.dist+=1}
+  if(cfg.blocks){L.blockTimer-=L.speed;if(L.blockTimer<=0){heliLaneBlock(L);L.blockTimer=hrand(cfg.blockMin,cfg.blockMax)-Math.min(40,L.dist*0.02)}for(const b of L.blocks)b.x-=L.speed;L.blocks=L.blocks.filter(b=>b.x+b.w>-10)}
+  if(heli.frames%2===0)L.smoke.push({x:L.hx-12,y:L.hy+hrand(-2,2),life:18,max:18,sz:hrand(2,4)});
+  for(const s of L.smoke){s.x-=L.speed*0.7;s.life--}L.smoke=L.smoke.filter(s=>s.life>0);
+  const idx=Math.floor((L.hx+L.scrollX)/HELI_SLICE);const col=L.terrain[Math.max(0,Math.min(L.terrain.length-1,idx))];
+  if(col&&(L.hy-HELI_R<col.top||L.hy+HELI_R>col.bottom)){heliDie(L);return}
+  if(L.hy-HELI_R<2||L.hy+HELI_R>L.h-2){heliDie(L);return}
+  for(const b of L.blocks){const cx=Math.max(b.x,Math.min(L.hx,b.x+b.w)),cy=Math.max(b.y,Math.min(L.hy,b.y+b.h));const dx=L.hx-cx,dy=L.hy-cy;if(dx*dx+dy*dy<(HELI_R-1)*(HELI_R-1)){heliDie(L);return}}}
+function heliDeadStep(L){for(const p of L.particles){p.x+=p.vx;p.y+=p.vy;p.vy+=0.15;p.life--}L.particles=L.particles.filter(p=>p.life>0);if(L.shake>0)L.shake*=0.85}
+function heliDrawCopter(L){const ctx=heli.ctx,col=HELI_PC[L.pi],tilt=Math.max(-0.4,Math.min(0.4,L.vy*0.05));
+  ctx.save();ctx.translate(L.hx,L.hy);ctx.rotate(tilt);
+  ctx.shadowColor=col;ctx.shadowBlur=12;ctx.fillStyle=col;
+  ctx.beginPath();ctx.ellipse(0,0,13,7,0,0,Math.PI*2);ctx.fill();ctx.fillRect(-22,-2,14,4);
+  ctx.beginPath();ctx.moveTo(-22,-2);ctx.lineTo(-26,-9);ctx.lineTo(-20,-2);ctx.closePath();ctx.fill();ctx.shadowBlur=0;
+  ctx.fillStyle='#0a0e0a';ctx.beginPath();ctx.ellipse(5,-1,4,3,0,0,Math.PI*2);ctx.fill();
+  const rp=(heli.frames*1.2)%(Math.PI*2);ctx.strokeStyle='#cfe9cf';ctx.lineWidth=2;const rw=Math.cos(rp)>0?22:8;
+  ctx.beginPath();ctx.moveTo(-rw,-10);ctx.lineTo(rw,-10);ctx.stroke();ctx.fillStyle='#cfe9cf';ctx.fillRect(-1.5,-11,3,5);
+  ctx.strokeStyle='#1f8f44';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-8,8);ctx.lineTo(8,8);ctx.moveTo(-5,7);ctx.lineTo(-5,8);ctx.moveTo(5,7);ctx.lineTo(5,8);ctx.stroke();
+  ctx.restore()}
+function heliDrawLane(L){const ctx=heli.ctx;ctx.save();ctx.beginPath();ctx.rect(L.x0,0,L.w,L.h);ctx.clip();ctx.translate(L.x0,0);
+  if(L.shake>0.5)ctx.translate(hrand(-L.shake,L.shake),hrand(-L.shake,L.shake));
+  ctx.fillStyle='#0a0e0a';ctx.fillRect(-20,-20,L.w+40,L.h+40);
+  ctx.fillStyle='#16261a';
+  ctx.beginPath();ctx.moveTo(0,0);for(let i=0;i<L.terrain.length;i++)ctx.lineTo(i*HELI_SLICE-L.scrollX,L.terrain[i].top);ctx.lineTo(L.w,0);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(0,L.h);for(let i=0;i<L.terrain.length;i++)ctx.lineTo(i*HELI_SLICE-L.scrollX,L.terrain[i].bottom);ctx.lineTo(L.w,L.h);ctx.closePath();ctx.fill();
+  ctx.lineWidth=2.5;ctx.strokeStyle='#39ff7a';ctx.shadowColor='#39ff7a';ctx.shadowBlur=8;
+  ctx.beginPath();for(let i=0;i<L.terrain.length;i++){const x=i*HELI_SLICE-L.scrollX;i===0?ctx.moveTo(x,L.terrain[i].top):ctx.lineTo(x,L.terrain[i].top)}ctx.stroke();
+  ctx.beginPath();for(let i=0;i<L.terrain.length;i++){const x=i*HELI_SLICE-L.scrollX;i===0?ctx.moveTo(x,L.terrain[i].bottom):ctx.lineTo(x,L.terrain[i].bottom)}ctx.stroke();ctx.shadowBlur=0;
+  for(const b of L.blocks){ctx.fillStyle='#0e1a0e';ctx.fillRect(b.x,b.y,b.w,b.h);ctx.strokeStyle='#ffb000';ctx.lineWidth=2;ctx.shadowColor='#ffb000';ctx.shadowBlur=6;ctx.strokeRect(b.x,b.y,b.w,b.h);ctx.shadowBlur=0}
+  for(const s of L.smoke){const a=s.life/s.max;ctx.fillStyle='rgba(150,180,150,'+(a*0.3)+')';ctx.beginPath();ctx.arc(s.x,s.y,s.sz,0,Math.PI*2);ctx.fill()}
+  if(L.alive)heliDrawCopter(L);else{for(const p of L.particles){ctx.fillStyle=p.c;ctx.globalAlpha=p.life/p.max;ctx.beginPath();ctx.arc(p.x,p.y,p.sz,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
+  ctx.fillStyle=HELI_PC[L.pi];ctx.font='bold 20px Orbitron, monospace';ctx.textAlign='left';ctx.shadowColor=HELI_PC[L.pi];ctx.shadowBlur=8;
+  ctx.fillText((heli.players===2?('P'+(L.pi+1)+' '):'')+Math.floor(L.dist),12,28);ctx.shadowBlur=0;
+  ctx.restore()}
+function heliLoop(){
+  for(const L of heli.lanes){if(heli.running&&L.alive)heliLaneStep(L);else heliDeadStep(L)}
+  heli.frames++;
+  const ctx=heli.ctx;ctx.clearRect(0,0,HELI_LW,HELI_LH);ctx.fillStyle='#000';ctx.fillRect(0,0,HELI_LW,HELI_LH);
+  for(const L of heli.lanes)heliDrawLane(L);
+  if(heli.players===2){ctx.fillStyle='#1f8f44';ctx.fillRect(HELI_LW/2-1.5,0,3,HELI_LH)}
+  if(!heli.running&&heli.lanes.every(L=>L.particles.length===0)){heli.raf=null;return}
+  heli.raf=requestAnimationFrame(heliLoop)}
+function heliOver(){heli.running=false;
+  setTimeout(()=>{beep(523,.15);setTimeout(()=>beep(659,.15),140);
+    if(heli.players===2){const d0=Math.floor(heli.lanes[0].dist),d1=Math.floor(heli.lanes[1].dist);
+      let t,m;if(d0===d1){t='🤝 무승부!';m='둘 다 거리 '+d0+'! 🚁'}else{const w=d0>d1?1:2;t='🏆 '+w+'P 승리!';m='1P '+d0+' vs 2P '+d1}
+      $('heliResultTitle').textContent=t;$('heliResultMsg').innerHTML=m}
+    else{const d=Math.floor(heli.lanes[0].dist);$('heliResultTitle').textContent='🚁 추락!';$('heliResultMsg').innerHTML='거리 <b style="color:var(--gold)">'+d+'</b> 비행 성공!';tryRecord('heli',d,false)}
+    $('heliResultOv').classList.add('show')},650)}
+chipToggle('heliSetupOv','players');chipToggle('heliSetupOv','diff');
+
+(function(){const eg=document.querySelector('.entry-games'),out=$('egDesc');if(!eg||!out)return;
+  const def='게임에 마우스를 올리거나 탭하면 설명이 나와요 👆';
+  const set=t=>{const c=t&&t.closest?t.closest('.eg'):null;if(c&&c.dataset.desc)out.textContent=c.dataset.desc};
+  eg.addEventListener('mouseover',e=>set(e.target));
+  eg.addEventListener('click',e=>set(e.target));
+  eg.addEventListener('mouseleave',()=>{out.textContent=def});})();
+
 try{MY_NICK=localStorage.getItem('cgw_nick')||''}catch(e){}
 try{MY_SCHOOL=localStorage.getItem('cgw_school')||''}catch(e){}
 if($('entryNick'))$('entryNick').value=MY_NICK;
