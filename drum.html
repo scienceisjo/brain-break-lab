@@ -34,7 +34,7 @@
   header{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
   .logo{font-family:'Black Han Sans',sans-serif;font-size:clamp(30px,6.4vw,52px);line-height:.85;
     color:var(--amber);text-shadow:0 0 18px rgba(255,122,24,.5),3px 3px 0 #6b2a00;}
-  .tag{font-size:11px;color:var(--dim);letter-spacing:1px;margin-top:4px;}
+  .tag{font-size:11px;color:var(--dim);letter-spacing:1px;margin-top:4px;max-width:540px;}
   .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .btn{font-family:'Bebas Neue';letter-spacing:1.5px;font-size:15px;
     background:linear-gradient(180deg,#241d3a,#181226);color:var(--text);border:1px solid var(--line);
@@ -46,7 +46,14 @@
   .btn.on .dot{background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
   .btn.rec.on{border-color:var(--pink);color:var(--pink);}
   .btn.rec.on .dot{background:var(--pink);animation:blink 1s infinite;}
+  .btn.loopBtn.on{border-color:#a878ec;color:#a878ec;}
   @keyframes blink{50%{opacity:.25;}}
+  .btn.kit-btn.on{background:linear-gradient(180deg,#4a3a1a,#2a1f10);border-color:var(--amber);color:var(--amber);}
+
+  .kitbar{display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:center;padding:10px 14px;margin-bottom:12px;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:12px;}
+  .grp{display:flex;gap:8px;align-items:center;}
+  .grpLbl{font-family:'Bebas Neue';letter-spacing:2px;color:var(--cyan);font-size:14px;}
+  .sel{font-family:'Space Mono',monospace;font-size:13px;background:linear-gradient(180deg,#241d3a,#181226);color:var(--text);border:1px solid var(--line);padding:6px 10px;border-radius:8px;}
 
   /* ===== STAGE (top-down) ===== */
   .stage-frame{
@@ -70,7 +77,7 @@
     border:1px dashed rgba(255,255,255,.06);}
 
   .piece{position:absolute;transform:translate(-50%,-50%);cursor:pointer;
-    display:flex;align-items:center;justify-content:center;}
+    display:flex;align-items:center;justify-content:center;touch-action:none;}
   .label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     font-family:'Bebas Neue';letter-spacing:1px;text-align:center;pointer-events:none;
     color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.7);line-height:1;}
@@ -118,12 +125,12 @@
     width:100%;height:100%;opacity:.9;animation:rip .45s ease-out forwards;}
   @keyframes rip{to{transform:translate(-50%,-50%) scale(1.7);opacity:0;}}
 
+  /* Gear always semi-visible for touch devices */
   .gear{position:absolute;top:4%;left:4%;width:22px;height:22px;border-radius:7px;
-    background:rgba(0,0,0,.45);border:1px solid var(--line);color:var(--dim);
+    background:rgba(0,0,0,.55);border:1px solid var(--line);color:var(--text);
     display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;
-    opacity:0;transition:.15s;z-index:30;}
-  .piece:hover .gear{opacity:1;}
-  .gear:hover{color:var(--amber);border-color:var(--amber);}
+    opacity:.55;transition:.15s;z-index:30;}
+  .piece:hover .gear,.gear:hover{opacity:1;color:var(--amber);border-color:var(--amber);}
 
   .keytag{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);
     font-size:2.4cqw;color:rgba(255,255,255,.6);letter-spacing:1px;pointer-events:none;
@@ -170,6 +177,30 @@
     color:var(--text);padding:11px;border-radius:11px;cursor:pointer;}
   .preview:hover{border-color:var(--amber);color:var(--amber);}
   .mclose{flex:1;justify-content:center;}
+
+  /* ===== 음색 설정 모드 ===== */
+  .stage.settings-mode{box-shadow:inset 0 0 0 4px var(--cyan),inset 0 0 50px rgba(40,224,208,.15);}
+  .stage.settings-mode::before{content:"🎛️ 음색 설정 모드 — 드럼을 눌러 음색 조절";
+    position:absolute;top:8px;left:50%;transform:translateX(-50%);
+    background:rgba(40,224,208,.92);color:#001;
+    font-family:'Bebas Neue';letter-spacing:1px;font-size:13px;
+    padding:6px 14px;border-radius:20px;z-index:40;white-space:nowrap;
+    pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.4);}
+  .stage.settings-mode .gear{opacity:1 !important;transform:scale(1.15);color:var(--cyan) !important;border-color:var(--cyan) !important;}
+  .stage.settings-mode .piece{cursor:help;}
+  .stage.settings-mode .piece .cymbal,
+  .stage.settings-mode .piece .drum,
+  .stage.settings-mode .piece .rim-ring,
+  .stage.settings-mode .piece .auxpad{filter:hue-rotate(35deg) saturate(.7) brightness(.85);}
+  .btn.sm-btn.on{border-color:var(--cyan);color:var(--cyan);background:linear-gradient(180deg,#1a3a3a,#0f2424);box-shadow:0 0 14px rgba(40,224,208,.4);}
+  /* Hide gear by default on touch devices — settings mode is the way */
+  @media (hover:none){
+    .gear{opacity:0;pointer-events:none;}
+    .stage.settings-mode .gear{opacity:1 !important;pointer-events:auto;}
+  }
+
+  .credit{margin-top:24px;font-size:11px;color:var(--dim);text-align:center;letter-spacing:1px;}
+  .credit a{color:var(--cyan);text-decoration:none;}
 </style>
 </head>
 <body>
@@ -177,15 +208,40 @@
   <header>
     <div>
       <div class="logo">드럼 연습실</div>
-      <div class="tag">위에서 내려다본 드럼 키트 · 터치 / 클릭 / 키보드 연주</div>
+      <div class="tag">위에서 내려다본 드럼 키트 · 4가지 킷 · 5가지 그루브 · 메트로놈 · 녹음·루프 · 탭 BPM</div>
     </div>
     <div class="toolbar">
-      <button class="btn" id="metroToggle"><span class="dot"></span>메트로놈</button>
-      <button class="btn rec" id="recBtn"><span class="dot"></span>녹음</button>
+      <button class="btn sm-btn" id="soundModeBtn">⚙ 음색 모드</button>
+      <button class="btn" id="metroToggle"><span class="dot"></span><span>메트로놈</span></button>
+      <button class="btn" id="tapBtn">탭 BPM</button>
+      <button class="btn rec" id="recBtn"><span class="dot"></span><span>녹음</span></button>
       <button class="btn" id="playBtn">▶ 재생</button>
+      <button class="btn loopBtn" id="loopBtn">🔁 루프</button>
       <button class="btn" id="clearBtn">초기화</button>
     </div>
   </header>
+
+  <div class="kitbar">
+    <div class="grp">
+      <span class="grpLbl">KIT</span>
+      <button class="btn kit-btn on" data-kit="acoustic">어쿠스틱</button>
+      <button class="btn kit-btn" data-kit="electronic">전자</button>
+      <button class="btn kit-btn" data-kit="rb808">808</button>
+      <button class="btn kit-btn" data-kit="lofi">로파이</button>
+    </div>
+    <div class="grp">
+      <span class="grpLbl">GROOVE</span>
+      <select class="sel" id="grooveSel">
+        <option value="">— 직접 연주 —</option>
+        <option value="rock">🥁 락</option>
+        <option value="funk">🪩 펑크</option>
+        <option value="hiphop">🎤 힙합</option>
+        <option value="disco">💃 디스코</option>
+        <option value="ballad">🎶 발라드</option>
+      </select>
+      <button class="btn" id="groovePlay">▶</button>
+    </div>
+  </div>
 
   <div class="stage-frame">
     <div class="stage" id="stage">
@@ -202,10 +258,11 @@
   </div>
 
   <div class="hint">
-    심벌·드럼을 <b>터치</b>하거나 <b>키보드</b>로 연주하세요. <b>스네어</b>는 가운데를 치면 본음, 바깥 테를 치면 <b>림샷</b> ·
-    <b>하이햇</b>은 가운데가 닫힘, 가장자리가 열림입니다.<br>
-    음색을 바꾸려면 톱니바퀴(⚙)를 누르거나, 모바일에서는 해당 악기를 <b>길게 누르세요</b>.
+    터치·클릭으로 연주 · 키보드: <b>Q W E R / A S D F / Z X C V</b> · 두 손가락 동시 연주 OK<br>
+    음색 조절은 상단 <b>⚙ 음색 모드</b> 켜고 드럼을 누르세요 (다시 끄면 연주 모드) · 메트로놈 켜고 녹음하면 박자 자동 맞춤
   </div>
+
+  <div class="credit">제작 : 과학이조선생 · Instagram <a href="https://instagram.com/science_is_jo" target="_blank">@science_is_jo</a></div>
 </div>
 
 <div class="scrim" id="scrim">
@@ -227,7 +284,34 @@
 <script>
 /* ============ Audio Engine ============ */
 const AC=window.AudioContext||window.webkitAudioContext; let ctx;
-function ac(){ if(!ctx) ctx=new AC(); if(ctx.state==='suspended') ctx.resume(); return ctx; }
+let _audioUnlocked=false;
+function _unlockAudio(){
+  try{
+    if(!ctx) ctx=new AC();
+    if(ctx.state==='suspended') ctx.resume().catch(()=>{});
+    // iOS Safari silent buffer trick — must play one silent sample inside user gesture
+    const buf=ctx.createBuffer(1,1,22050);
+    const src=ctx.createBufferSource();
+    src.buffer=buf; src.connect(ctx.destination);
+    src.start ? src.start(0) : src.noteOn(0);
+    _audioUnlocked=true;
+  }catch(e){}
+}
+function ac(){
+  if(!ctx){ctx=new AC(); _unlockAudio();}
+  if(ctx.state==='suspended') ctx.resume().catch(()=>{});
+  return ctx;
+}
+// Aggressive unlock on FIRST interaction anywhere on page (covers iOS Safari quirks)
+['touchstart','touchend','pointerdown','mousedown','click','keydown'].forEach(ev=>{
+  document.addEventListener(ev, _unlockAudio, {capture:true, passive:true});
+});
+// Re-resume when tab becomes visible again (iOS may suspend on background)
+document.addEventListener('visibilitychange', ()=>{
+  if(ctx && ctx.state==='suspended' && document.visibilityState==='visible'){
+    ctx.resume().catch(()=>{});
+  }
+});
 const master=()=>{ if(!ctx) ac(); if(!master._n){ master._n=ctx.createGain(); master._n.gain.value=.9; master._n.connect(ctx.destination);} return master._n; };
 let noiseBuf=null;
 function noise(){ const c=ac();
@@ -288,22 +372,54 @@ const KIT=[
   {id:'crash', name:'CRASH', ko:'크래시', key:'Q', shape:'cymbal', voice:'crash', x:26, y:16, d:24, z:6},
   {id:'hatO', name:'HI-HAT', ko:'하이햇(열림)', key:'E', shape:'cymbal', voice:'hatOpen', x:13, y:48, d:22, z:7},
   {id:'hatC', name:'', ko:'하이햇(닫힘)', key:'W', shape:'cymbal', voice:'hatClosed', x:13, y:48, d:11, z:8, sub:true},
-
   {id:'floor', name:'FLOOR', ko:'플로어 탐', key:'Z', shape:'drum', voice:'tom', base:110, x:82, y:60, d:24, z:4},
   {id:'tom1', name:'TOM 1', ko:'하이 탐', key:'A', shape:'drum', voice:'tom', base:240, x:42, y:37, d:17, z:5},
   {id:'tom2', name:'TOM 2', ko:'미드 탐', key:'S', shape:'drum', voice:'tom', base:170, x:59, y:37, d:18, z:5},
-
   {id:'kick', name:'KICK', ko:'베이스 드럼', key:'X', shape:'drum', voice:'kick', x:51, y:67, d:31, z:3},
-
   {id:'rim', name:'', ko:'림샷', key:'V', shape:'rim', voice:'snare', pitch:7, x:30, y:64, d:22, z:6, sub:true},
   {id:'snare', name:'SNARE', ko:'스네어', key:'D', shape:'drum', voice:'snare', x:30, y:64, d:15, z:7},
-
   {id:'kick2', name:'808', ko:'베이스 드럼 2', key:'C', shape:'aux', voice:'kick', pitch:-4, c:'#ff7a4a', x:11, y:88, w:14, h:9, z:9},
   {id:'clap', name:'CLAP', ko:'박수', key:'F', shape:'aux', voice:'clap', c:'#ff6ad5', x:90, y:88, w:14, h:9, z:9},
 ];
 
+const KIT_PRESETS={
+  acoustic:{},
+  electronic:{
+    kick:{pitch:-2,decay:1.2,tone:.7}, snare:{tone:.85,decay:1.4,pitch:2},
+    hatC:{tone:.9}, hatO:{tone:.9,decay:1.2},
+    crash:{tone:.85,decay:1.3}, ride:{tone:.85},
+    tom1:{pitch:3,decay:1.2}, tom2:{pitch:1,decay:1.2}, floor:{pitch:-2,decay:1.3},
+    clap:{vol:1.1,tone:.7}
+  },
+  rb808:{
+    kick:{pitch:-7,decay:1.9,tone:.15,vol:1.1}, kick2:{pitch:-9,decay:2.1,tone:.1,vol:1.1},
+    snare:{tone:.55,decay:.85,pitch:-2},
+    hatC:{decay:.6,tone:.7}, hatO:{decay:.9,tone:.7},
+    crash:{decay:.7}, ride:{decay:.75},
+    tom1:{pitch:-4,decay:1.2}, tom2:{pitch:-6,decay:1.4}, floor:{pitch:-9,decay:1.6},
+    clap:{tone:.85,decay:1.0}
+  },
+  lofi:{ _all:{vol:.78,tone:.28,decay:.7} }
+};
+
+const GROOVES={
+  rock:{name:'락',steps:[['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare','hatC'],['hatC'],['kick','hatC'],['hatC'],['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare','hatC'],['hatC'],['hatC'],['hatC']]},
+  funk:{name:'펑크',steps:[['kick','hatC'],['hatC'],['hatC'],['kick','hatC'],['snare','hatC'],['hatC'],['hatC'],['kick','hatC'],['hatC'],['hatC'],['kick','hatC'],['hatC'],['snare','hatC'],['hatC'],['kick','hatC'],['hatC']]},
+  hiphop:{name:'힙합',steps:[['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare'],['hatC'],['kick','hatC'],['hatC'],['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare'],['hatC'],['hatC'],['hatC']]},
+  disco:{name:'디스코',steps:[['kick','hatC'],[],['hatO'],[],['kick','snare','hatC'],[],['hatO'],[],['kick','hatC'],[],['hatO'],[],['kick','snare','hatC'],[],['hatO'],[]]},
+  ballad:{name:'발라드',steps:[['kick','hatC'],[],[],['hatC'],[],[],['hatC'],[],['snare','hatC'],[],[],['hatC'],[],[],['hatC'],[]]}
+};
+
 const settings={};
-KIT.forEach(k=> settings[k.id]={...DEFAULTS, base:k.base||150, pitch:k.pitch||0});
+let curKit='acoustic';
+function applyKit(name){
+  curKit=name;
+  KIT.forEach(k=> settings[k.id]={...DEFAULTS, base:k.base||150, pitch:k.pitch||0});
+  const p=KIT_PRESETS[name]||{};
+  if(p._all) Object.keys(settings).forEach(id=>Object.assign(settings[id],p._all));
+  Object.keys(p).forEach(pid=>{if(pid!=='_all'&&settings[pid])Object.assign(settings[pid],p[pid])});
+  document.querySelectorAll('.kit-btn').forEach(b=>b.classList.toggle('on',b.dataset.kit===name));
+}
 
 function play(k,when){ const s=settings[k.id];
   VOICES[k.voice]({vol:s.vol,pitch:s.pitch,decay:s.decay,tone:s.tone,base:s.base}, when ?? ac().currentTime); }
@@ -311,6 +427,10 @@ function play(k,when){ const s=settings[k.id];
 /* ============ Build stage ============ */
 const stage=document.getElementById('stage');
 const pieceEls={};
+let settingsMode=false;
+let activePresses=0;
+const pendingTimers=new Map();
+
 KIT.forEach(k=>{
   const el=document.createElement('div');
   el.className='piece'; el.dataset.id=k.id;
@@ -339,19 +459,42 @@ KIT.forEach(k=>{
   stage.appendChild(el);
   pieceEls[k.id]=el;
 
-  let holdT=null;
   el.addEventListener('pointerdown',(e)=>{
     if(e.target.classList.contains('gear')) return;
-    e.preventDefault(); ac();
+    e.preventDefault();
+    ac();
+
+    // ⚙ 음색 설정 모드: 누르면 설정창 열림 (소리 안 남)
+    if(settingsMode){
+      openSettings(k);
+      return;
+    }
+
+    // 평소 연주 모드: 무조건 연주만!
     play(k); hit(k.id); record(k.id);
-    clearTimeout(holdT);
-    holdT=setTimeout(()=>{ openSettings(k); },550);
+
+    // 길게 누르기 → 설정 열기: 마우스에서만 (터치/펜에서는 비활성화)
+    if(e.pointerType==='mouse'){
+      activePresses++;
+      if(activePresses>1){
+        pendingTimers.forEach(t=>clearTimeout(t));
+        pendingTimers.clear();
+      } else {
+        const t=setTimeout(()=>{ pendingTimers.delete(k.id); openSettings(k); }, 700);
+        pendingTimers.set(k.id,t);
+      }
+    }
   });
-  const cancel=()=>{ clearTimeout(holdT); };
+  const cancel=(e)=>{
+    if(e && e.pointerType && e.pointerType!=='mouse') return;
+    activePresses=Math.max(0,activePresses-1);
+    const t=pendingTimers.get(k.id);
+    if(t){ clearTimeout(t); pendingTimers.delete(k.id); }
+  };
   el.addEventListener('pointerup',cancel);
   el.addEventListener('pointerleave',cancel);
   el.addEventListener('pointercancel',cancel);
-  el.querySelector('.gear').addEventListener('pointerdown',(e)=>{ e.stopPropagation(); openSettings(k); });
+  el.querySelector('.gear').addEventListener('pointerdown',(e)=>{ e.stopPropagation(); ac(); openSettings(k); });
   el.addEventListener('contextmenu',(e)=>{ e.preventDefault(); openSettings(k); });
 });
 
@@ -365,6 +508,7 @@ function hit(id){
 
 const keyMap={}; KIT.forEach(k=> keyMap[k.key.toLowerCase()]=k);
 window.addEventListener('keydown',e=>{ if(e.repeat) return;
+  if((e.target.tagName||'').toLowerCase()==='input') return;
   const k=keyMap[e.key.toLowerCase()]; if(k){ ac(); play(k); hit(k.id); record(k.id); } });
 
 /* ============ Settings modal ============ */
@@ -388,12 +532,24 @@ $('sTone').oninput=e=>{ settings[cur.id].tone=e.target.value/100; $('vTone').tex
 $('previewBtn').onclick=()=>{ play(cur); hit(cur.id); };
 $('resetOne').onclick=()=>{ settings[cur.id]={...DEFAULTS, base:cur.base||150, pitch:cur.pitch||0}; openSettings(cur); };
 
+/* ============ Sound mode toggle ============ */
+$('soundModeBtn').onclick=()=>{
+  ac();
+  settingsMode=!settingsMode;
+  $('soundModeBtn').classList.toggle('on',settingsMode);
+  stage.classList.toggle('settings-mode',settingsMode);
+};
+
+/* ============ Kit selector ============ */
+document.querySelectorAll('.kit-btn').forEach(b=>{b.onclick=()=>{ac();applyKit(b.dataset.kit)}});
+
 /* ============ Metronome ============ */
 const beatsEl=document.getElementById('beats'); const BEATS=4;
 for(let i=0;i<BEATS;i++){ const d=document.createElement('div'); d.className='beat'+(i===0?' downbeat':''); beatsEl.appendChild(d); }
 const beatDots=[...beatsEl.children];
 let metroOn=false,metroTimer=null,beatIdx=0,bpm=100;
-$('bpm').oninput=e=>{ bpm=+e.target.value; $('bpmVal').textContent=bpm; if(metroOn) startMetro(); };
+$('bpm').oninput=e=>{ bpm=+e.target.value; $('bpmVal').textContent=bpm; if(metroOn) startMetro();
+  if(grooveTimer){ const cur=curGroove; stopGroove(); startGroove(cur); } };
 function metroTick(){ beatDots.forEach(d=>d.classList.remove('active')); beatDots[beatIdx].classList.add('active');
   const c=ac(),o=c.createOscillator(),g=c.createGain(); o.frequency.value=beatIdx===0?1500:900;
   g.gain.setValueAtTime(.25,c.currentTime); g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.05);
@@ -402,15 +558,101 @@ function startMetro(){ clearInterval(metroTimer); beatIdx=0; metroTick(); metroT
 $('metroToggle').onclick=()=>{ ac(); metroOn=!metroOn; $('metroToggle').classList.toggle('on',metroOn);
   if(metroOn) startMetro(); else { clearInterval(metroTimer); beatDots.forEach(d=>d.classList.remove('active')); } };
 
-/* ============ Record / Playback ============ */
-let recording=false,recStart=0,recData=[];
-function record(id){ if(recording) recData.push({id,t:performance.now()-recStart}); }
-$('recBtn').onclick=()=>{ ac(); recording=!recording; $('recBtn').classList.toggle('on',recording);
+/* ============ Tap BPM ============ */
+let tapTimes=[]; let tapResetT=null;
+$('tapBtn').onclick=()=>{
+  const now=performance.now();
+  tapTimes.push(now);
+  if(tapTimes.length>4) tapTimes=tapTimes.slice(-4);
+  if(tapTimes.length>=2){
+    const diffs=[]; for(let i=1;i<tapTimes.length;i++) diffs.push(tapTimes[i]-tapTimes[i-1]);
+    const avg=diffs.reduce((a,b)=>a+b)/diffs.length;
+    const newBpm=Math.round(60000/avg);
+    if(newBpm>=40 && newBpm<=220){
+      bpm=newBpm; $('bpm').value=bpm; $('bpmVal').textContent=bpm;
+      if(metroOn) startMetro();
+      if(grooveTimer){ const cur=curGroove; stopGroove(); startGroove(cur); }
+    }
+  }
+  clearTimeout(tapResetT); tapResetT=setTimeout(()=>{tapTimes=[]},2000);
+};
+
+/* ============ Groove patterns ============ */
+let grooveTimer=null, grooveStep=0, curGroove=null;
+function startGroove(name){
+  stopGroove();
+  const g=GROOVES[name]; if(!g) return;
+  curGroove=name; grooveStep=0;
+  const stepMs=15000/bpm; // 16th notes
+  const tick=()=>{
+    const hits=g.steps[grooveStep]||[];
+    hits.forEach(pid=>{ const k=KIT.find(x=>x.id===pid); if(k){ play(k); hit(pid); } });
+    grooveStep=(grooveStep+1)%g.steps.length;
+  };
+  tick();
+  grooveTimer=setInterval(tick,stepMs);
+  $('groovePlay').textContent='■';
+}
+function stopGroove(){
+  if(grooveTimer){ clearInterval(grooveTimer); grooveTimer=null; }
+  curGroove=null; grooveStep=0;
+  $('groovePlay').textContent='▶';
+}
+$('groovePlay').onclick=()=>{ ac(); const sel=$('grooveSel').value;
+  if(grooveTimer) stopGroove(); else if(sel) startGroove(sel); };
+$('grooveSel').onchange=()=>{ if(grooveTimer){ stopGroove(); const v=$('grooveSel').value; if(v) startGroove(v); } };
+
+/* ============ Record / Playback / Loop ============ */
+let recording=false, recStart=0, recData=[];
+let looping=false, loopT=null, loopDur=0;
+
+function record(id){
+  if(!recording) return;
+  let t=performance.now()-recStart;
+  // Quantize to nearest 16th when metronome is on
+  if(metroOn && bpm){
+    const ms=15000/bpm;
+    t=Math.round(t/ms)*ms;
+  }
+  recData.push({id,t});
+}
+
+$('recBtn').onclick=()=>{ ac();
+  recording=!recording;
+  $('recBtn').classList.toggle('on',recording);
   $('recBtn').lastChild.textContent=recording?'녹음 중지':'녹음';
-  if(recording){ recData=[]; recStart=performance.now(); } };
-$('playBtn').onclick=()=>{ if(!recData.length) return; ac();
-  recData.forEach(ev=>{ const k=KIT.find(x=>x.id===ev.id); setTimeout(()=>{ play(k); hit(k.id); },ev.t); }); };
-$('clearBtn').onclick=()=>{ recData=[]; };
+  if(recording){
+    recData=[]; recStart=performance.now();
+    stopLoop();
+  } else {
+    loopDur=Math.max(800,performance.now()-recStart);
+    if(looping && recData.length) startLoop();
+  }
+};
+function playRec(){
+  if(!recData.length) return; ac();
+  recData.forEach(ev=>{ const k=KIT.find(x=>x.id===ev.id); if(k) setTimeout(()=>{ play(k); hit(k.id); },ev.t); });
+}
+$('playBtn').onclick=playRec;
+function startLoop(){
+  if(loopT) clearTimeout(loopT);
+  const playOnce=()=>{ playRec(); loopT=setTimeout(playOnce,loopDur); };
+  playOnce();
+}
+function stopLoop(){
+  if(loopT){ clearTimeout(loopT); loopT=null; }
+}
+$('loopBtn').onclick=()=>{
+  looping=!looping;
+  $('loopBtn').classList.toggle('on',looping);
+  if(looping){
+    if(recData.length){ if(!loopDur) loopDur=4000; startLoop(); }
+  } else stopLoop();
+};
+$('clearBtn').onclick=()=>{ recData=[]; stopLoop(); loopDur=0; };
+
+/* ============ Init ============ */
+applyKit('acoustic');
 </script>
 </body>
 </html>
