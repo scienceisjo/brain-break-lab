@@ -486,6 +486,13 @@
   #drum .dr-modal .dr-preview{width:100%;font-family:'Bebas Neue';letter-spacing:2px;font-size:16px;background:linear-gradient(180deg,#2a2142,#1a1428);border:1px solid var(--dr-line);color:var(--dr-text);padding:9px;border-radius:9px;cursor:pointer;margin-bottom:6px}
   #drum .dr-modal .dr-preview:hover{border-color:var(--dr-amber);color:var(--dr-amber)}
   #drum .dr-modal .dr-mclose{flex:1;justify-content:center}
+  #drum .dr-stage.settings-mode{box-shadow:inset 0 0 0 4px var(--dr-cyan),inset 0 0 50px rgba(40,224,208,.15)}
+  #drum .dr-stage.settings-mode::before{content:"🎛️ 음색 설정 모드 — 드럼을 눌러 음색 조절";position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(40,224,208,.92);color:#001;font-family:'Bebas Neue';letter-spacing:1px;font-size:13px;padding:6px 14px;border-radius:20px;z-index:40;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  #drum .dr-stage.settings-mode .dr-gear{opacity:1!important;transform:scale(1.15);color:var(--dr-cyan)!important;border-color:var(--dr-cyan)!important}
+  #drum .dr-stage.settings-mode .dr-piece{cursor:help}
+  #drum .dr-stage.settings-mode .dr-cymbal,#drum .dr-stage.settings-mode .dr-drum,#drum .dr-stage.settings-mode .dr-rim-ring,#drum .dr-stage.settings-mode .dr-auxpad{filter:hue-rotate(35deg) saturate(.7) brightness(.85)}
+  #drum .dr-btn.dr-sm-btn.on{border-color:var(--dr-cyan);color:var(--dr-cyan);background:linear-gradient(180deg,#1a3a3a,#0f2424);box-shadow:0 0 14px rgba(40,224,208,.4)}
+  @media (hover:none){#drum .dr-gear{opacity:0;pointer-events:none}#drum .dr-stage.settings-mode .dr-gear{opacity:1!important;pointer-events:auto}}
   .upd-badge{display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:var(--stonedd);color:#e9f1e4;font-family:'Do Hyeon';font-size:clamp(11px,1.6vh,14px);padding:6px 12px;
     box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD);transition:transform .08s;white-space:nowrap}
   .upd-badge:hover{transform:translateY(-2px)}
@@ -1174,6 +1181,9 @@
         <button class="dr-btn dr-kit-btn" data-kit="lofi">로파이</button>
       </div>
       <div class="dr-tb-group">
+        <button class="dr-btn dr-sm-btn" id="drSoundModeBtn">⚙ 음색 모드</button>
+      </div>
+      <div class="dr-tb-group">
         <span class="dr-lbl">GROOVE</span>
         <select class="dr-select" id="drGrooveSel">
           <option value="">— 직접 연주 —</option>
@@ -1230,7 +1240,8 @@
         🎵 <b style="color:var(--gold)">그루브 백킹</b> — 락·펑크·힙합·디스코·발라드 자동 반주 위에 즉흥 연주!<br>
         🔴 <b style="color:var(--gold)">녹음·루프</b> — 자기 연주를 녹음해 재생 또는 무한 루프. 메트로놈 켜고 녹음하면 자동 박자 맞춤!<br>
         👆 <b style="color:var(--gold)">탭 BPM</b> — 박자에 맞춰 톡톡 누르면 템포 자동 설정.<br>
-        ⚙ <b style="color:var(--gold)">음색</b> — 각 드럼 톱니 아이콘 또는 길게 누르면 볼륨·피치·울림·톤 조절. <b>두 손가락 동시 연주도 OK!</b>
+        ⚙ <b style="color:var(--gold)">음색 변경</b> — 상단 <b>"⚙ 음색 모드"</b> 버튼을 켜고 드럼을 누르면 그 드럼의 볼륨·피치·울림·톤 슬라이더가 나와요. 끄면 다시 연주 모드.<br>
+        ✋ <b style="color:var(--gold)">두 손가락·여러 명 동시 연주</b> OK — 연주 중에는 절대 설정창이 안 떠요!
       </p>
       <button class="bigbtn" onclick="drumStart()">시작!</button>
     </div></div>
@@ -2247,10 +2258,11 @@ let drum={ctx:null,master:null,noiseBuf:null,kit:'acoustic',settings:{},
   metro:{on:false,bpm:100,timer:null,beatIdx:0,beats:4},
   rec:{on:false,start:0,data:[],looping:false,loopT:null,loopDur:0},
   groove:{playing:null,timer:null,step:0},
-  pieceEls:{},curM:null,bound:false,built:false,
+  pieceEls:{},curM:null,bound:false,built:false,settingsMode:false,
   pendingTimers:new Map(),activePresses:0,
   tap:{times:[],resetT:null}};
-function drumAC(){if(!drum.ctx){const AC=window.AudioContext||window.webkitAudioContext;drum.ctx=new AC()}if(drum.ctx.state==='suspended')drum.ctx.resume();return drum.ctx}
+function drumAC(){if(!drum.ctx){const AC=window.AudioContext||window.webkitAudioContext;drum.ctx=new AC();drumUnlockAudio()}if(drum.ctx.state==='suspended')drum.ctx.resume().catch(()=>{});return drum.ctx}
+function drumUnlockAudio(){try{if(!drum.ctx){const AC=window.AudioContext||window.webkitAudioContext;drum.ctx=new AC()}if(drum.ctx.state==='suspended')drum.ctx.resume().catch(()=>{});const buf=drum.ctx.createBuffer(1,1,22050);const src=drum.ctx.createBufferSource();src.buffer=buf;src.connect(drum.ctx.destination);src.start?src.start(0):src.noteOn(0)}catch(e){}}
 function drumMaster(){if(!drum.master){const c=drumAC();drum.master=c.createGain();drum.master.gain.value=.9;drum.master.connect(c.destination)}return drum.master}
 function drumNoise(){const c=drumAC();if(!drum.noiseBuf){drum.noiseBuf=c.createBuffer(1,c.sampleRate,c.sampleRate);const d=drum.noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}const s=c.createBufferSource();s.buffer=drum.noiseBuf;s.loop=true;return s}
 const DRUM_VOICES={
@@ -2278,12 +2290,16 @@ function drumBuildKit(){if(drum.built)return;drum.built=true;const stage=$('drSt
     el.innerHTML=inner+'<div class="dr-gear">⚙</div>';
     if(!k.sub)el.insertAdjacentHTML('beforeend','<div class="dr-keytag">'+k.key+'</div>');
     stage.appendChild(el);drum.pieceEls[k.id]=el;
-    el.addEventListener('pointerdown',e=>{if(e.target.classList.contains('dr-gear'))return;e.preventDefault();drumAC();drumPlay(k);drumHit(k.id);drumRecord(k.id);drum.activePresses++;
+    el.addEventListener('pointerdown',e=>{if(e.target.classList.contains('dr-gear'))return;e.preventDefault();drumAC();
+      if(drum.settingsMode){drumOpenSettings(k);return}
+      drumPlay(k);drumHit(k.id);drumRecord(k.id);
+      if(e.pointerType!=='mouse')return;
+      drum.activePresses++;
       if(drum.activePresses>1){drum.pendingTimers.forEach(t=>clearTimeout(t));drum.pendingTimers.clear()}
       else{const t=setTimeout(()=>{drum.pendingTimers.delete(k.id);drumOpenSettings(k)},700);drum.pendingTimers.set(k.id,t)}});
-    const up=()=>{drum.activePresses=Math.max(0,drum.activePresses-1);const t=drum.pendingTimers.get(k.id);if(t){clearTimeout(t);drum.pendingTimers.delete(k.id)}};
+    const up=e=>{if(e&&e.pointerType&&e.pointerType!=='mouse')return;drum.activePresses=Math.max(0,drum.activePresses-1);const t=drum.pendingTimers.get(k.id);if(t){clearTimeout(t);drum.pendingTimers.delete(k.id)}};
     el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('pointerleave',up);
-    el.querySelector('.dr-gear').addEventListener('pointerdown',e=>{e.stopPropagation();drumOpenSettings(k)});
+    el.querySelector('.dr-gear').addEventListener('pointerdown',e=>{e.stopPropagation();drumAC();drumOpenSettings(k)});
     el.addEventListener('contextmenu',e=>{e.preventDefault();drumOpenSettings(k)})})}
 function drumOpenSettings(k){drum.curM=k;drumAC();$('drMTitle').textContent=k.name||k.ko;$('drMKo').textContent=k.ko;const s=drum.settings[k.id];$('drSVol').value=Math.round(s.vol*100);$('drVVol').textContent=Math.round(s.vol*100)+'%';$('drSPitch').value=s.pitch;$('drVPitch').textContent=(s.pitch>0?'+':'')+s.pitch;$('drSDecay').value=Math.round(s.decay*100);$('drVDecay').textContent=Math.round(s.decay*100)+'%';$('drSTone').value=Math.round(s.tone*100);$('drVTone').textContent=Math.round(s.tone*100)+'%';$('drScrim').classList.add('show')}
 function drumCloseSettings(){$('drScrim').classList.remove('show')}
@@ -2296,6 +2312,10 @@ function drumStartLoop(){if(drum.rec.loopT)clearTimeout(drum.rec.loopT);const pl
 function drumStopLoop(){if(drum.rec.loopT){clearTimeout(drum.rec.loopT);drum.rec.loopT=null}}
 function drumTapBpm(){const now=performance.now();drum.tap.times.push(now);if(drum.tap.times.length>4)drum.tap.times=drum.tap.times.slice(-4);if(drum.tap.times.length>=2){const d=[];for(let i=1;i<drum.tap.times.length;i++)d.push(drum.tap.times[i]-drum.tap.times[i-1]);const avg=d.reduce((a,b)=>a+b)/d.length;const bpm=Math.round(60000/avg);if(bpm>=40&&bpm<=220){drum.metro.bpm=bpm;$('drBpm').value=bpm;$('drBpmVal').textContent=bpm;if(drum.metro.on)drumStartMetro();if(drum.groove.playing){const cur=drum.groove.playing;drumStopGroove();drumStartGroove(cur)}}}clearTimeout(drum.tap.resetT);drum.tap.resetT=setTimeout(()=>{drum.tap.times=[]},2000)}
 function drumBindControls(){if(drum.boundCtl)return;drum.boundCtl=true;
+  // aggressive audio unlock on first interaction anywhere (iOS Safari)
+  ['touchstart','touchend','pointerdown','click'].forEach(ev=>document.addEventListener(ev,drumUnlockAudio,{capture:true,passive:true}));
+  document.addEventListener('visibilitychange',()=>{if(drum.ctx&&drum.ctx.state==='suspended'&&document.visibilityState==='visible')drum.ctx.resume().catch(()=>{})});
+  $('drSoundModeBtn').onclick=()=>{drumAC();drum.settingsMode=!drum.settingsMode;$('drSoundModeBtn').classList.toggle('on',drum.settingsMode);$('drStage').classList.toggle('settings-mode',drum.settingsMode)};
   $('drMetroBtn').onclick=()=>{drumAC();drum.metro.on=!drum.metro.on;$('drMetroBtn').classList.toggle('on',drum.metro.on);if(drum.metro.on)drumStartMetro();else drumStopMetro()};
   $('drBpm').oninput=e=>{drum.metro.bpm=+e.target.value;$('drBpmVal').textContent=drum.metro.bpm;if(drum.metro.on)drumStartMetro();if(drum.groove.playing){const cur=drum.groove.playing;drumStopGroove();drumStartGroove(cur)}};
   $('drTapBtn').onclick=drumTapBpm;
