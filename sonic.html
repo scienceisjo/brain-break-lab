@@ -426,6 +426,11 @@
   #menu .hero h2{color:#e7edff;text-shadow:0 0 18px rgba(130,175,255,.5),3px 3px 0 #19245c,6px 6px 0 #04060f}
   #menu .hero p{color:#cfe0ff;text-shadow:0 2px 8px rgba(0,0,0,.8)}
   .card.cat-hide{display:none}
+  .ext-tag{position:absolute;top:clamp(8px,1.4vh,14px);right:clamp(8px,1.4vh,14px);font-family:'Do Hyeon';
+    font-size:clamp(9px,1.3vh,12px);color:#fff;background:rgba(0,0,0,.45);padding:3px 8px;border-radius:20px;
+    box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+  #menu .card[data-link]:hover{box-shadow:0 0 0 2px var(--accent),0 0 30px var(--accent),inset 0 1px 0 rgba(255,255,255,.12),0 18px 36px rgba(0,0,0,.55)}
+  #menu .card[data-link] .go{color:var(--accent)}
   @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
   @media (prefers-reduced-motion:reduce){.entry-logo,.entry-go,.hero h2,#entry::before{animation:none}}
   /* ===== 사과게임 ===== */
@@ -609,6 +614,13 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v1.6</h4>
+        <ul>
+          <li>🎉 '파티·레크' 분류 추가 — 양세찬 게임 🎤 / 라이어 게임 🕵️ 외부 링크 카드 연결</li>
+          <li>🔗 외부 게임은 카드를 누르면 새 탭에서 열려요 (모둠이 기기 하나로 즐기기 좋아요)</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v1.5</h4>
         <ul>
           <li>🌌 입장 화면 우주 3D 리뉴얼 — 워프 스타필드 + 네뷸라, 마우스를 따라 기울어지는 입체 패널</li>
@@ -709,9 +721,9 @@
 
 <section class="screen" id="menu">
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.5</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.6</span></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.06.10</b></span>
+      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.06.30</b></span>
       <button class="pillbtn" onclick="openHOF()">🏆 명예의 전당</button>
       <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
     </div>
@@ -722,6 +734,7 @@
     <button class="btab ctab" data-cat="brain" onclick="setCat('brain')">🧠 두뇌·집중</button>
     <button class="btab ctab" data-cat="arcade" onclick="setCat('arcade')">🕹️ 아케이드</button>
     <button class="btab ctab" data-cat="play" onclick="setCat('play')">🎪 협동·자유</button>
+    <button class="btab ctab" data-cat="party" onclick="setCat('party')">🎉 파티·레크</button>
   </div>
   <div class="hero">
     <div class="splash" id="splash">100% 무첨가 도파민!</div>
@@ -790,9 +803,17 @@
       <div class="top"><div class="num">15</div><div class="ico">🏀</div></div>
       <div><h3>공 튕기기</h3><p>벽에 튕기는 공을 나무 막대로 받아내세요! 점수가 올라갈수록 공이 빨라지고 더 늘어나요. 1인.</p><div class="go">▶ PLAY</div></div>
     </div>
-    <div class="card" style="--accent:#ffb02e" onclick="openGame('drum')">
-      <div class="top"><div class="num">16</div><div class="ico">🥁</div></div>
-      <div><h3>드럼 연습실</h3><p>위에서 본 드럼킷! 터치·키보드 연주, 4가지 킷 · 5가지 그루브 · 메트로놈 · 녹음·루프까지.</p><div class="go">▶ PLAY</div></div>
+    <div class="card" style="--accent:#ff5d8f" data-link="https://scienceisjo.github.io/brain-break-lab/yangsechan" onclick="openLink(this)">
+      <div class="top"><div class="num">17</div><div class="ico">🎤</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>양세찬 게임</h3><p>질문에 무조건 반대로 대답! 무한 도전 예능st 빵 터지는 순발력 토크 게임.</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:#8a7dff" data-link="liar.html" onclick="openLink(this)">
+      <div class="top"><div class="num">18</div><div class="ico">🕵️</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>라이어 게임</h3><p>한 명만 다른 제시어! 기기 하나 돌려보며 대화로 거짓말쟁이를 찾아라.</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:#ffd23f" data-link="https://scienceisjo.github.io/brain-break-lab/5sec" onclick="openLink(this)">
+      <div class="top"><div class="num">19</div><div class="ico">⏱️</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>5초 준다</h3><p>제시된 주제에 맞는 답 3개를 단 5초 안에! 똑딱똑딱 압박 속 빵 터지는 순발력 게임.</p><div class="go">▶ 열기 ↗</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
@@ -2137,11 +2158,16 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',gng:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  letterg:'play',drum:'play'};
+  letterg:'play',drum:'play',
+  yangsechan:'party',liar:'party','5sec':'party'};
+function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
+  beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
+  setTimeout(()=>window.open(u,'_blank','noopener'),140)}
 function setCat(cat){document.querySelectorAll('.ctab').forEach(b=>b.classList.toggle('on',b.dataset.cat===cat));
   document.querySelectorAll('.cards .card').forEach(c=>{
     const m=(c.getAttribute('onclick')||'').match(/openGame\('(\w+)'\)/);
-    const id=m?m[1]:'';
+    let id=m?m[1]:'';
+    if(!id){const lk=c.getAttribute('data-link')||'';const lm=lk.match(/([a-z0-9]+)(?:\.html)?$/);id=lm?lm[1]:''}
     c.classList.toggle('cat-hide',cat!=='all'&&GAME_CAT[id]!==cat)});
   cardsFlyIn();beep(660,.07,'triangle')}
 spaceInit();spaceSet(3);
