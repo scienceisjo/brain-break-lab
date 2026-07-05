@@ -376,6 +376,7 @@ body{
 @keyframes cardFlip{ 0%{ transform:rotateY(90deg) scale(.9);} 100%{ transform:rotateY(0) scale(1);} }
 .chance-card.good{ background:linear-gradient(150deg,#1f6b4a,#123f2e); border:2px solid var(--mint); }
 .chance-card.item{ background:linear-gradient(150deg,#5a3a8f,#33235e); border:2px solid var(--violet); }
+.chance-card.steal{ background:linear-gradient(150deg,#7a2b4a,#48192f); border:2px solid var(--pink); }
 .chance-card.none{ background:linear-gradient(150deg,#4a4360,#2c2740); border:2px solid var(--line); }
 .cc-face{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:16px; text-align:center; }
 .cc-back{ font-size:clamp(48px,14vw,80px); color:#fff; }
@@ -388,6 +389,7 @@ body{
 .fx-badge.x2{ background:rgba(45,229,166,.18); color:var(--mint); }
 .fx-badge.time{ background:rgba(255,210,63,.18); color:var(--amber); }
 .fx-badge.item{ background:rgba(138,125,255,.2); color:#c6bcff; }
+.fx-badge.steal{ background:rgba(255,107,163,.2); color:var(--pink); }
 .mini-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
 .mini-btn{ font-family:var(--font-round); font-size:clamp(13px,3.2vw,16px); padding:9px 16px; border-radius:12px;
   background:var(--bg-3); color:var(--ink); border:1.5px solid var(--line); cursor:pointer; }
@@ -802,7 +804,7 @@ body{
         <h4>대전 방식</h4>
         <p><b>개인전</b> — 학생 이름을 넣으면 한 명씩 번갈아 도전해요. 성공하면 그 선수 +점.<br>
         <b>모둠전</b> — 2~6모둠이 차례로 도전해요. 한 문제는 <b>한 모둠 전체가 함께</b>! 점수로 겨뤄 우승 모둠을 가려요.<br>
-        🎴 <b>찬스 카드</b> — 문제 전에 카드를 뽑아 점수 2배·시간+3초·공짜 1점·주제 교체권·패스권 등 이벤트! (설정에서 끌 수 있어요)</p>
+        🎴 <b>찬스 카드</b> — 문제 전에 카드를 뽑아 점수 2배·시간+3초·공짜 1점·주제 교체권·패스권·🥷상대 점수 뺏기 등 이벤트! (설정에서 끌 수 있어요)</p>
       </section>
 
       <section class="qsec">
@@ -931,6 +933,7 @@ const state = {
   bonusTime: 0,     // 시간 보너스(초)
   canSwap: false,   // 주제 교체권
   canPass: false,   // 패스권
+  steal: false,     // 상대 점수 뺏기(성공 시)
   stats: { success:0, pass:0 }
 };
 
@@ -1492,14 +1495,21 @@ const CARD_DECK = [
   { key:"plus", emoji:"🎁", name:"공짜 1점",    desc:"뽑자마자 1점 획득! 문제도 그대로 도전.", tone:"good" },
   { key:"swap", emoji:"🔄", name:"주제 교체권", desc:"주제가 마음에 안 들면 한 번 바꿀 수 있어요.", tone:"item" },
   { key:"pass", emoji:"⏭", name:"패스권",      desc:"이번 문제를 그냥 넘길 수 있어요. (점수 없음)", tone:"item" },
+  { key:"steal",emoji:"🥷", name:"점수 뺏기",   desc:"성공하면 1등 상대의 점수 1점을 뺏어와요!", tone:"steal" },
   { key:"none", emoji:"🍀", name:"꽝!",         desc:"특별 효과는 없어요. 정정당당 승부!",     tone:"none" }
 ];
+function applySteal(){
+  if(!state.steal) return;
+  let best = null;
+  state.teams.forEach((t,i)=>{ if(i === state.turnIdx) return; if(t.score > 0 && (!best || t.score > best.score)) best = t; });
+  if(best){ best.score -= 1; const p = curPlayer(); if(p) p.score += 1; }
+}
 function drawCard(){ return CARD_DECK[Math.floor(Math.random() * CARD_DECK.length)]; }
 function curPlayer(){ return state.teams[state.turnIdx] || null; }
 function turnTag(){ const p = curPlayer(); return p ? `🎯 ${escHtml(p.name)} 차례` : ""; }
 
 function beginRound(){
-  state.mult = 1; state.bonusTime = 0; state.canSwap = false; state.canPass = false; state.card = null;
+  state.mult = 1; state.bonusTime = 0; state.canSwap = false; state.canPass = false; state.steal = false; state.card = null;
   if(state.useCards) showCard();
   else showReady();
 }
@@ -1525,6 +1535,7 @@ function revealCard(){
   else if(c.key === "plus"){ const p = curPlayer(); if(p){ p.score += 1; snd.success(); updateTopbar(); } }
   else if(c.key === "swap") state.canSwap = true;
   else if(c.key === "pass") state.canPass = true;
+  else if(c.key === "steal") state.steal = true;
   const el = $("#chanceCard");
   if(el){
     el.className = "chance-card flip " + c.tone;
@@ -1550,6 +1561,7 @@ function showReady(){
   if(state.bonusTime > 0)  badges.push(`<span class="fx-badge time">⏳ +${state.bonusTime}초</span>`);
   if(state.canSwap)        badges.push(`<span class="fx-badge item">🔄 주제 교체권</span>`);
   if(state.canPass)        badges.push(`<span class="fx-badge item">⏭ 패스권</span>`);
+  if(state.steal)          badges.push(`<span class="fx-badge steal">🥷 성공 시 점수 뺏기</span>`);
   const badgeRow = badges.length ? `<div class="fx-row">${badges.join("")}</div>` : "";
   const extra = [];
   if(state.canSwap) extra.push(`<button class="mini-btn" id="swapBtn">🔄 주제 바꾸기</button>`);
@@ -1654,7 +1666,7 @@ function endRound(){
     </div>`;
   $("#stage").querySelectorAll(".act").forEach(btn=>{
     btn.onclick = ()=>{
-      if(btn.dataset.act === "success"){ if(who) who.score += gain; state.stats.success++; snd.success(); }
+      if(btn.dataset.act === "success"){ if(who) who.score += gain; applySteal(); state.stats.success++; snd.success(); }
       else { state.stats.pass++; snd.click(); }
       advanceRound();
     };
@@ -1720,7 +1732,7 @@ document.addEventListener("keydown", e=>{
     e.preventDefault();
     if(state.phase === "card"){ if(!state.card) revealCard(); else showReady(); }
     else if(state.phase === "ready") startCountdown();
-    else if(state.phase === "result"){ const p = curPlayer(); if(p) p.score += state.mult; state.stats.success++; snd.success(); advanceRound(); }
+    else if(state.phase === "result"){ const p = curPlayer(); if(p) p.score += state.mult; applySteal(); state.stats.success++; snd.success(); advanceRound(); }
   } else if((e.key === "p" || e.key === "P") && state.phase === "result"){
     state.stats.pass++; snd.click(); advanceRound();
   } else if(e.key === "Escape"){
