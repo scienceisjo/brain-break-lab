@@ -364,6 +364,34 @@ body{
 .team-card .ts{ font-family:var(--font-pixel); font-size:22px; }
 .team-card.lead{ border-color:var(--amber); box-shadow:0 0 0 1px var(--amber) inset; }
 .team-card.lead .ts{ color:var(--amber); }
+/* 🎴 찬스 카드 · 차례 · 배지 */
+.turn-tag{ font-family:var(--font-round); font-size:clamp(15px,3.6vw,20px); color:var(--amber); background:var(--bg-2);
+  border:1.5px solid var(--line); border-radius:999px; padding:6px 16px; display:inline-block; margin-bottom:6px; }
+.score-chip.cur{ border-color:var(--amber); box-shadow:0 0 0 1px var(--amber) inset; }
+.card-draw{ display:flex; flex-direction:column; align-items:center; gap:16px; }
+.chance-card{ width:min(64vw,220px); aspect-ratio:3/4.2; border-radius:18px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 16px 40px -14px rgba(0,0,0,.6); transition:transform .3s; }
+.chance-card.back{ background:linear-gradient(150deg,#3a2b6b,#241a45); border:2px solid var(--violet); }
+.chance-card.flip{ animation:cardFlip .5s ease; }
+@keyframes cardFlip{ 0%{ transform:rotateY(90deg) scale(.9);} 100%{ transform:rotateY(0) scale(1);} }
+.chance-card.good{ background:linear-gradient(150deg,#1f6b4a,#123f2e); border:2px solid var(--mint); }
+.chance-card.item{ background:linear-gradient(150deg,#5a3a8f,#33235e); border:2px solid var(--violet); }
+.chance-card.none{ background:linear-gradient(150deg,#4a4360,#2c2740); border:2px solid var(--line); }
+.cc-face{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:16px; text-align:center; }
+.cc-back{ font-size:clamp(48px,14vw,80px); color:#fff; }
+.cc-back span{ font-family:var(--font-round); font-size:clamp(14px,3.4vw,18px); color:var(--muted); }
+.cc-emoji{ font-size:clamp(44px,13vw,74px); }
+.cc-name{ font-family:var(--font-round); font-size:clamp(20px,5vw,28px); color:#fff; }
+.cc-desc{ font-family:var(--font-round); font-size:clamp(13px,3.2vw,16px); color:rgba(255,255,255,.85); line-height:1.4; }
+.fx-row{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:8px 0; }
+.fx-badge{ font-family:var(--font-round); font-size:clamp(12px,3vw,15px); padding:5px 12px; border-radius:999px; display:inline-block; }
+.fx-badge.x2{ background:rgba(45,229,166,.18); color:var(--mint); }
+.fx-badge.time{ background:rgba(255,210,63,.18); color:var(--amber); }
+.fx-badge.item{ background:rgba(138,125,255,.2); color:#c6bcff; }
+.mini-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+.mini-btn{ font-family:var(--font-round); font-size:clamp(13px,3.2vw,16px); padding:9px 16px; border-radius:12px;
+  background:var(--bg-3); color:var(--ink); border:1.5px solid var(--line); cursor:pointer; }
+.mini-btn:active{ transform:scale(.96); }
 
 /* 화면 긴급 틴트 (카운트다운 막판) */
 .tint{ position:fixed; inset:0; z-index:3; pointer-events:none; opacity:0;
@@ -644,17 +672,19 @@ body{
         </div>
       </div>
 
-      <div class="team-setup" id="teamSetup" hidden>
+      <label class="toggle" id="cardToggle"><span>🎴 찬스 카드 사용 <small style="color:var(--muted)">· 문제 전에 카드 뽑기</small></span><span class="switch"></span></label>
+
+      <div class="team-setup" id="teamSetup">
         <div class="team-setup-top">
-          <h2>모둠 설정</h2>
+          <h2 id="teamSetupTitle">참가자 설정</h2>
           <div class="stepper">
-            <button id="teamMinus" aria-label="모둠 줄이기">−</button>
+            <button id="teamMinus" aria-label="줄이기">−</button>
             <b id="teamCountNum">2</b>
-            <button id="teamPlus" aria-label="모둠 늘리기">＋</button>
+            <button id="teamPlus" aria-label="늘리기">＋</button>
           </div>
         </div>
         <div class="team-names" id="teamNames"></div>
-        <p class="team-hint">이름을 학생 이름으로 바꾸면 개인 대결로도 쓸 수 있어요. (2~6모둠)</p>
+        <p class="team-hint" id="teamHint">한 문제는 한 명(또는 한 모둠)이 차례로 도전해요.</p>
       </div>
 
       <button class="manage-btn" id="openQ">📋 우리 반 문제 관리 · 일괄 업로드</button>
@@ -760,18 +790,19 @@ body{
       <section class="qsec">
         <h4>진행 방법</h4>
         <ol class="info-steps">
-          <li>주제 카드를 확인해요. (예: <em>“매운 음식 3가지!”</em>)</li>
-          <li><b>시작</b>(또는 Space)을 누르면 카운트다운이 돌아가요.</li>
-          <li>시간이 끝나기 전에 3가지를 큰 소리로 외쳐요.</li>
-          <li>버저가 울리면 선생님이 <b>성공 / 패스</b>(모둠전은 점수 줄 모둠)를 눌러요.</li>
-          <li>다음 주제로 자동으로 넘어가요.</li>
+          <li><b>이번 차례</b>인 선수(또는 모둠)를 확인해요. 한 문제는 한 명/한 모둠이 도전!</li>
+          <li>🎴 <b>찬스 카드</b>를 켰다면, 문제 전에 카드를 뽑아요. (점수 2배·시간 보너스·주제 교체·패스 등)</li>
+          <li>주제를 확인하고 <b>시작</b>(또는 Space) → 시간이 끝나기 전에 3가지를 큰 소리로!</li>
+          <li>버저가 울리면 선생님이 <b>성공(현재 선수/모둠 +점) / 실패·패스</b>를 눌러요.</li>
+          <li>다음 차례로 자동으로 넘어가고, 마지막에 순위가 나와요.</li>
         </ol>
       </section>
 
       <section class="qsec">
         <h4>대전 방식</h4>
-        <p><b>개인전</b> — 성공한 횟수를 자동으로 모아 마지막에 성공률을 보여줘요. 반 전체가 함께 도전할 때 좋아요.<br>
-        <b>모둠전</b> — 2~6모둠이 점수로 겨뤄요. 모둠 이름을 학생 이름으로 바꾸면 개인 대결로도 쓸 수 있어요.</p>
+        <p><b>개인전</b> — 학생 이름을 넣으면 한 명씩 번갈아 도전해요. 성공하면 그 선수 +점.<br>
+        <b>모둠전</b> — 2~6모둠이 차례로 도전해요. 한 문제는 <b>한 모둠 전체가 함께</b>! 점수로 겨뤄 우승 모둠을 가려요.<br>
+        🎴 <b>찬스 카드</b> — 문제 전에 카드를 뽑아 점수 2배·시간+3초·공짜 1점·주제 교체권·패스권 등 이벤트! (설정에서 끌 수 있어요)</p>
       </section>
 
       <section class="qsec">
@@ -879,19 +910,27 @@ const state = {
   duration: 5,
   mode: "solo",                                            // "solo" | "team"
   teamCount: 2,                                            // 2 ~ MAX_TEAMS
-  teamNames: ["1모둠","2모둠","3모둠","4모둠","5모둠","6모둠"],
+  teamNames: ["","","","","",""],
   totalRounds: 10,                                         // 0 = 무제한
-  teams: [],
+  useCards: true,                                          // 🎴 찬스 카드 사용
+  teams: [],                                               // 참가자(모둠/선수) [{name,score}]
+  turnIdx: 0,                                              // 이번 차례
   custom: [],
   deck: [],
   deckPos: 0,
   topic: "",
   topicEmoji: "",
+  topicCat: "",
   round: 0,
-  phase: "ready",   // ready | counting | result | done
+  phase: "ready",   // card | ready | counting | result | done
   raf: null,
   endAt: 0,
   lastTickShown: null,
+  card: null,       // 이번 라운드 카드
+  mult: 1,          // 점수 배수
+  bonusTime: 0,     // 시간 보너스(초)
+  canSwap: false,   // 주제 교체권
+  canPass: false,   // 패스권
   stats: { success:0, pass:0 }
 };
 
@@ -978,6 +1017,7 @@ function loadSettings(){
           if(typeof s.teamNames[i] === "string") state.teamNames[i] = s.teamNames[i];
       }
       if(Number.isInteger(s.totalRounds) && s.totalRounds >= 0) state.totalRounds = s.totalRounds;
+      if(typeof s.useCards === "boolean") state.useCards = s.useCards;
     }
   }catch(e){}
 }
@@ -985,7 +1025,7 @@ function saveSettings(){
   try{
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({
       selected:[...state.selected], duration:state.duration,
-      mode:state.mode, teamCount:state.teamCount, teamNames:state.teamNames, totalRounds:state.totalRounds
+      mode:state.mode, teamCount:state.teamCount, teamNames:state.teamNames, totalRounds:state.totalRounds, useCards:state.useCards
     }));
   }catch(e){}
 }
@@ -1334,12 +1374,20 @@ function wireHome(){
   // 모둠 수 스테퍼
   $("#teamMinus").onclick = ()=>{ if(state.teamCount > MIN_TEAMS){ snd.click(); state.teamCount--; updateTeamCount(); } };
   $("#teamPlus").onclick  = ()=>{ if(state.teamCount < MAX_TEAMS){ snd.click(); state.teamCount++; updateTeamCount(); } };
+  // 찬스 카드 토글
+  $("#cardToggle").classList.toggle("on", state.useCards);
+  $("#cardToggle").onclick = ()=>{ snd.click(); state.useCards = !state.useCards; $("#cardToggle").classList.toggle("on", state.useCards); saveSettings(); };
   applyModeUI();
   // 시작
   $("#startBtn").onclick = startGame;
 }
 function applyModeUI(){
-  $("#teamSetup").hidden = state.mode !== "team";
+  const isTeam = state.mode === "team";
+  $("#teamSetup").hidden = false;                       // 두 모드 모두 참가자 설정
+  $("#teamSetupTitle").textContent = isTeam ? "모둠 설정" : "선수(학생) 설정";
+  $("#teamHint").textContent = isTeam
+    ? "한 문제는 한 모둠이 차례로 도전해요. 모둠 전체가 함께! (2~6모둠)"
+    : "학생 이름을 넣으면 한 명씩 번갈아 도전해요. (2~6명)";
   updateTeamCount();
 }
 function updateTeamCount(){
@@ -1352,8 +1400,8 @@ function renderTeamNames(){
   for(let i=0;i<state.teamCount;i++){
     const inp = document.createElement("input");
     inp.className = "team-name-in"; inp.maxLength = 8;
-    inp.value = state.teamNames[i] || (i+1)+"모둠";
-    inp.placeholder = (i+1)+"모둠";
+    inp.value = state.teamNames[i] || "";
+    inp.placeholder = (i+1)+(state.mode === "team" ? "모둠" : "번");
     inp.oninput = ()=>{ state.teamNames[i] = inp.value; saveSettings(); };
     wrap.appendChild(inp);
   }
@@ -1382,17 +1430,20 @@ function drawTopic(){
   state.topicEmoji = item.emoji;
   state.topicCat = item.cat;
   state.round++;
+  if(state.teams.length) state.turnIdx = (state.round - 1) % state.teams.length;   // 차례 로테이션
 }
 function buildTeams(){
+  const unit = state.mode === "team" ? "모둠" : "번";
   state.teams = Array.from({ length:state.teamCount }, (_, i)=>({
-    name: (state.teamNames[i] || "").trim() || (i+1)+"모둠",
+    name: (state.teamNames[i] || "").trim() || (i+1)+unit,
     score: 0
   }));
 }
 function resetMatch(){
   state.round = 0;
+  state.turnIdx = 0;
   state.stats = { success:0, pass:0 };
-  if(state.mode === "team") buildTeams();
+  buildTeams();                 // 두 모드 모두 참가자 생성
 }
 function startGame(){
   ensureAudio(); snd.go();
@@ -1402,14 +1453,14 @@ function startGame(){
   $("#screenHome").classList.remove("active");
   $("#screenPlay").classList.add("active");
   drawTopic();
-  showReady();
+  beginRound();
 }
 function restartMatch(){
   snd.go();
   buildDeck();
   resetMatch();
   drawTopic();
-  showReady();
+  beginRound();
 }
 function backHome(){
   cancelAnimationFrame(state.raf);
@@ -1426,35 +1477,99 @@ function updateTopbar(){
   $("#roundPill").textContent = roundLabel();
   $("#catPill").innerHTML = `${state.topicEmoji} ${escHtml(state.topicCat || "")}`;
   const sb = $("#scoreBoard");
-  if(state.mode === "team"){
-    const max = Math.max(...state.teams.map(t=>t.score));
-    sb.innerHTML = state.teams.map(t=>{
-      const lead = t.score === max && max > 0 ? " lead" : "";
-      return `<div class="score-chip${lead}">${escHtml(t.name)} <b>${t.score}</b></div>`;
-    }).join("");
-  } else {
-    sb.innerHTML =
-      `<div class="score-chip s">성공 <b>${state.stats.success}</b></div>` +
-      `<div class="score-chip p">패스 <b>${state.stats.pass}</b></div>`;
-  }
+  const max = Math.max(0, ...state.teams.map(t=>t.score));
+  sb.innerHTML = state.teams.map((t,i)=>{
+    const lead = t.score === max && max > 0 ? " lead" : "";
+    const cur = i === state.turnIdx ? " cur" : "";
+    return `<div class="score-chip${lead}${cur}">${escHtml(t.name)} <b>${t.score}</b></div>`;
+  }).join("");
 }
+
+/* ── 찬스 카드 ─────────────────────────────────────── */
+const CARD_DECK = [
+  { key:"x2",   emoji:"✨", name:"점수 2배!",   desc:"이번 문제 성공하면 점수가 2배!",        tone:"good" },
+  { key:"time", emoji:"⏳", name:"시간 보너스", desc:"이번 문제는 제한시간 +3초!",            tone:"good" },
+  { key:"plus", emoji:"🎁", name:"공짜 1점",    desc:"뽑자마자 1점 획득! 문제도 그대로 도전.", tone:"good" },
+  { key:"swap", emoji:"🔄", name:"주제 교체권", desc:"주제가 마음에 안 들면 한 번 바꿀 수 있어요.", tone:"item" },
+  { key:"pass", emoji:"⏭", name:"패스권",      desc:"이번 문제를 그냥 넘길 수 있어요. (점수 없음)", tone:"item" },
+  { key:"none", emoji:"🍀", name:"꽝!",         desc:"특별 효과는 없어요. 정정당당 승부!",     tone:"none" }
+];
+function drawCard(){ return CARD_DECK[Math.floor(Math.random() * CARD_DECK.length)]; }
+function curPlayer(){ return state.teams[state.turnIdx] || null; }
+function turnTag(){ const p = curPlayer(); return p ? `🎯 ${escHtml(p.name)} 차례` : ""; }
+
+function beginRound(){
+  state.mult = 1; state.bonusTime = 0; state.canSwap = false; state.canPass = false; state.card = null;
+  if(state.useCards) showCard();
+  else showReady();
+}
+function showCard(){
+  state.phase = "card";
+  resetEffects();
+  updateTopbar();
+  $("#stage").innerHTML = `
+    <div class="card fade-in card-draw">
+      <div class="turn-tag">${turnTag()}</div>
+      <div class="chance-card back" id="chanceCard"><div class="cc-face cc-back">🎴<span>찬스 카드</span></div></div>
+      <button class="go-btn" id="drawBtn">카드 뽑기 🎴</button>
+      <div class="kbd-hint">문제 풀기 전, 카드를 뽑아요 (SPACE)</div>
+    </div>`;
+  $("#drawBtn").onclick = revealCard;
+  $("#chanceCard").onclick = ()=>{ if(!state.card) revealCard(); };
+}
+function revealCard(){
+  if(state.card) return;
+  const c = drawCard(); state.card = c; snd.click();
+  if(c.key === "x2") state.mult = 2;
+  else if(c.key === "time") state.bonusTime = 3;
+  else if(c.key === "plus"){ const p = curPlayer(); if(p){ p.score += 1; snd.success(); updateTopbar(); } }
+  else if(c.key === "swap") state.canSwap = true;
+  else if(c.key === "pass") state.canPass = true;
+  const el = $("#chanceCard");
+  if(el){
+    el.className = "chance-card flip " + c.tone;
+    el.innerHTML = `<div class="cc-face cc-front"><div class="cc-emoji">${c.emoji}</div><div class="cc-name">${c.name}</div><div class="cc-desc">${escHtml(c.desc)}</div></div>`;
+  }
+  const btn = $("#drawBtn"); if(btn){ btn.textContent = "문제 보기 ▶"; btn.onclick = showReady; }
+}
+function swapTopic(){
+  if(state.deckPos >= state.deck.length) buildDeck();
+  const item = state.deck[state.deckPos++];
+  state.topic = item.text; state.topicEmoji = item.emoji; state.topicCat = item.cat;
+  state.canSwap = false; snd.click(); showReady();
+}
+function passRound(){ snd.click(); advanceRound(); }
 
 /* ── 준비 화면 ─────────────────────────────────────── */
 function showReady(){
   state.phase = "ready";
   resetEffects();
   updateTopbar();
-  const stage = $("#stage");
-  stage.innerHTML = `
+  const badges = [];
+  if(state.mult > 1)       badges.push(`<span class="fx-badge x2">✨ 점수 2배</span>`);
+  if(state.bonusTime > 0)  badges.push(`<span class="fx-badge time">⏳ +${state.bonusTime}초</span>`);
+  if(state.canSwap)        badges.push(`<span class="fx-badge item">🔄 주제 교체권</span>`);
+  if(state.canPass)        badges.push(`<span class="fx-badge item">⏭ 패스권</span>`);
+  const badgeRow = badges.length ? `<div class="fx-row">${badges.join("")}</div>` : "";
+  const extra = [];
+  if(state.canSwap) extra.push(`<button class="mini-btn" id="swapBtn">🔄 주제 바꾸기</button>`);
+  if(state.canPass) extra.push(`<button class="mini-btn" id="passBtn">⏭ 이 문제 패스</button>`);
+  const extraRow = extra.length ? `<div class="mini-row">${extra.join("")}</div>` : "";
+  $("#stage").innerHTML = `
     <div class="card fade-in">
+      <div class="turn-tag">${turnTag()}</div>
       <div class="eyebrow">${state.topicEmoji} 다음 주제</div>
       <div class="topic">${escHtml(state.topic)}<br><em>3가지!</em></div>
+      ${badgeRow}
       <div>
-        <button class="go-btn" id="goBtn">시작 (${state.duration}초)</button>
+        <button class="go-btn" id="goBtn">시작 (${state.duration + state.bonusTime}초)</button>
         <div class="kbd-hint">SPACE 또는 클릭</div>
       </div>
+      ${extraRow}
     </div>`;
   $("#goBtn").onclick = startCountdown;
+  if(state.canSwap) $("#swapBtn").onclick = swapTopic;
+  if(state.canPass) $("#passBtn").onclick = passRound;
 }
 
 /* ── 카운트다운 ────────────────────────────────────── */
@@ -1462,6 +1577,7 @@ function startCountdown(){
   ensureAudio();
   state.phase = "counting";
   const stage = $("#stage");
+  const dur = state.duration + state.bonusTime;
   const C = 2 * Math.PI * 110;     // 둘레
   stage.innerHTML = `
     <div class="count-wrap">
@@ -1470,18 +1586,18 @@ function startCountdown(){
         <circle class="ring-progress" id="ringProg" cx="120" cy="120" r="110"
           stroke-dasharray="${C}" stroke-dashoffset="0"></circle>
       </svg>
-      <div class="count-num" id="countNum">${state.duration}</div>
+      <div class="count-num" id="countNum">${dur}</div>
       <div class="count-topic">${state.topicEmoji} ${escHtml(state.topic)} <b style="color:var(--pink)">3가지!</b></div>
     </div>`;
   const numEl = $("#countNum");
   const ring = $("#ringProg");
-  state.endAt = performance.now() + state.duration * 1000;
-  state.lastTickShown = state.duration;
-  snd.tick(state.duration);
+  state.endAt = performance.now() + dur * 1000;
+  state.lastTickShown = dur;
+  snd.tick(dur);
 
   function frame(now){
     const remainMs = Math.max(0, state.endAt - now);
-    const frac = remainMs / (state.duration * 1000);   // 1 → 0
+    const frac = remainMs / (dur * 1000);   // 1 → 0
     // 링
     ring.style.strokeDashoffset = (C * (1 - frac)).toFixed(2);
     // 구역 색
@@ -1522,35 +1638,24 @@ function endRound(){
   setTimeout(()=> $(".app").classList.remove("shaking"), 500);
   $("#tint").style.opacity = "0";
 
-  const stage = $("#stage");
-  const isTeam = state.mode === "team";
-  let actions, hint;
-  if(isTeam){
-    const teamBtns = state.teams.map((t,i)=>
-      `<button class="act team" data-team="${i}">${escHtml(t.name)}<small>+1 · 현재 ${t.score}</small></button>`).join("");
-    actions = `<div class="award-grid">${teamBtns}<button class="act pass" data-act="skip">아무도 못함 ➜</button></div>`;
-    hint = "성공한 모둠을 누르면 +1점";
-  } else {
-    actions = `<div class="result-actions">
-        <button class="act success" data-act="success">성공 ✓</button>
-        <button class="act pass" data-act="pass">패스 ➜</button>
-      </div>`;
-    hint = "SPACE = 성공 · P = 패스";
-  }
-  stage.innerHTML = `
+  const who = curPlayer();
+  const gain = state.mult;
+  const multNote = state.mult > 1 ? ` <span class="fx-badge x2">✨ 2배!</span>` : "";
+  $("#stage").innerHTML = `
     <div class="result fade-in">
       <div class="timesup">⏱ 시간 끝!</div>
-      <div class="what"><em>${escHtml(state.topic)}</em> 3가지 — 다 말했나요?</div>
-      ${actions}
-      <div class="kbd-hint">${hint}</div>
+      <div class="turn-tag">${turnTag()}</div>
+      <div class="what"><em>${escHtml(state.topic)}</em> 3가지 — 다 말했나요?${multNote}</div>
+      <div class="result-actions">
+        <button class="act success" data-act="success">성공 ✓ (+${gain})</button>
+        <button class="act pass" data-act="pass">실패 / 패스 ➜</button>
+      </div>
+      <div class="kbd-hint">SPACE = 성공 · P = 패스</div>
     </div>`;
-
-  stage.querySelectorAll(".act").forEach(btn=>{
+  $("#stage").querySelectorAll(".act").forEach(btn=>{
     btn.onclick = ()=>{
-      const a = btn.dataset.act, team = btn.dataset.team;
-      if(team !== undefined){ state.teams[+team].score++; snd.success(); }
-      else if(a === "success"){ state.stats.success++; snd.success(); }
-      else { if(a === "pass") state.stats.pass++; snd.click(); }
+      if(btn.dataset.act === "success"){ if(who) who.score += gain; state.stats.success++; snd.success(); }
+      else { state.stats.pass++; snd.click(); }
       advanceRound();
     };
   });
@@ -1561,7 +1666,7 @@ function advanceRound(){
 }
 function nextRound(){
   drawTopic();
-  showReady();
+  beginRound();
 }
 function showResults(){
   cancelAnimationFrame(state.raf);
@@ -1571,51 +1676,31 @@ function showResults(){
   updateTopbar();
   const stage = $("#stage");
   const played = state.round;
-  if(state.mode === "team"){
-    const ranked = [...state.teams].sort((a,b)=> b.score - a.score);
-    const top = ranked.length ? ranked[0].score : 0;
-    const winners = ranked.filter(t=> t.score === top && top > 0).map(t=> t.name);
-    const hasWin = winners.length > 0;
-    const title = !hasWin ? "무승부!"
-      : (winners.length === 1 ? `🏆 ${escHtml(winners[0])} 우승!` : "🏆 공동 우승!");
-    const rows = ranked.map((t, idx)=>{
-      const medal = ["🥇","🥈","🥉"][idx] || (idx+1);
-      const win = t.score === top && top > 0 ? " win" : "";
-      return `<div class="rank-row${win}">
-          <span class="rank-medal">${medal}</span>
-          <span class="rank-name">${escHtml(t.name)}</span>
-          <span class="rank-score">${t.score}점</span>
-        </div>`;
-    }).join("");
-    stage.innerHTML = `
-      <div class="final fade-in">
-        <div class="final-title${hasWin?" win":""}">${title}</div>
-        <div class="final-sub">${played}라운드 진행${winners.length>1?` · ${escHtml(winners.join(", "))}`:""}</div>
-        <div class="rank-list">${rows}</div>
-        <div class="final-actions">
-          <button class="act success" id="againBtn">다시 하기</button>
-          <button class="act pass" id="toHomeBtn">홈으로</button>
-        </div>
+  const ranked = [...state.teams].sort((a,b)=> b.score - a.score);
+  const top = ranked.length ? ranked[0].score : 0;
+  const winners = ranked.filter(t=> t.score === top && top > 0).map(t=> t.name);
+  const hasWin = winners.length > 0;
+  const title = !hasWin ? "무승부!"
+    : (winners.length === 1 ? `🏆 ${escHtml(winners[0])} 우승!` : "🏆 공동 우승!");
+  const rows = ranked.map((t, idx)=>{
+    const medal = ["🥇","🥈","🥉"][idx] || (idx+1);
+    const win = t.score === top && top > 0 ? " win" : "";
+    return `<div class="rank-row${win}">
+        <span class="rank-medal">${medal}</span>
+        <span class="rank-name">${escHtml(t.name)}</span>
+        <span class="rank-score">${t.score}점</span>
       </div>`;
-  } else {
-    const succ = state.stats.success, pass = state.stats.pass;
-    const rate = played ? Math.round(succ / played * 100) : 0;
-    const msg = rate >= 80 ? "대단해요! 순발력 만점 🎉" : rate >= 50 ? "잘했어요! 👏" : "다음엔 더 잘할 수 있어요! 💪";
-    stage.innerHTML = `
-      <div class="final fade-in">
-        <div class="final-title win">⏱ 결과</div>
-        <div class="final-sub">${played}라운드 진행 · ${msg}</div>
-        <div class="final-stats">
-          <div class="stat-card"><div class="v mint">${succ}</div><div class="l">성공</div></div>
-          <div class="stat-card"><div class="v">${pass}</div><div class="l">패스</div></div>
-          <div class="stat-card"><div class="v amber">${rate}%</div><div class="l">성공률</div></div>
-        </div>
-        <div class="final-actions">
-          <button class="act success" id="againBtn">다시 하기</button>
-          <button class="act pass" id="toHomeBtn">홈으로</button>
-        </div>
-      </div>`;
-  }
+  }).join("");
+  stage.innerHTML = `
+    <div class="final fade-in">
+      <div class="final-title${hasWin?" win":""}">${title}</div>
+      <div class="final-sub">${played}라운드 진행${winners.length>1?` · ${escHtml(winners.join(", "))}`:""}</div>
+      <div class="rank-list">${rows}</div>
+      <div class="final-actions">
+        <button class="act success" id="againBtn">다시 하기</button>
+        <button class="act pass" id="toHomeBtn">홈으로</button>
+      </div>
+    </div>`;
   $("#againBtn").onclick = ()=> restartMatch();
   $("#toHomeBtn").onclick = ()=>{ snd.click(); backHome(); };
 }
@@ -1633,9 +1718,10 @@ document.addEventListener("keydown", e=>{
   if($("#screenPlay").classList.contains("active") === false) return;
   if(e.key === " "){
     e.preventDefault();
-    if(state.phase === "ready") startCountdown();
-    else if(state.phase === "result" && state.mode === "solo"){ state.stats.success++; snd.success(); advanceRound(); }
-  } else if((e.key === "p" || e.key === "P") && state.phase === "result" && state.mode === "solo"){
+    if(state.phase === "card"){ if(!state.card) revealCard(); else showReady(); }
+    else if(state.phase === "ready") startCountdown();
+    else if(state.phase === "result"){ const p = curPlayer(); if(p) p.score += state.mult; state.stats.success++; snd.success(); advanceRound(); }
+  } else if((e.key === "p" || e.key === "P") && state.phase === "result"){
     state.stats.pass++; snd.click(); advanceRound();
   } else if(e.key === "Escape"){
     backHome();
