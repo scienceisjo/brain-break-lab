@@ -413,6 +413,17 @@
   .tc-name{font-family:'Do Hyeon';color:#fff;font-size:clamp(13px,2vh,18px);white-space:nowrap}
   .tc-score{font-family:'Press Start 2P';color:var(--tc);font-size:clamp(13px,2.2vh,20px);text-shadow:1px 1px 0 var(--outline)}
   .tour-bar-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .tour-cta{background:linear-gradient(135deg,var(--emerald),#1fc77a)!important;color:#04200f!important}
+  .tour-guide{background:rgba(255,255,255,.05);border-radius:10px;padding:12px 14px;margin:0 0 16px;text-align:left}
+  .tour-guide-t{font-family:'Do Hyeon';color:var(--gold);font-size:clamp(15px,2.4vh,20px);margin-bottom:9px}
+  .tour-guide-step{font-family:'Do Hyeon';color:#e8f1e1;font-size:clamp(13px,2vh,17px);line-height:1.5;margin-bottom:7px;display:flex;gap:9px;align-items:flex-start}
+  .tour-guide-step>b:first-child{flex:0 0 auto;width:1.7em;height:1.7em;line-height:1.7em;text-align:center;background:var(--emerald);color:#04200f;border-radius:50%;font-family:'Press Start 2P';font-size:clamp(8px,1.3vh,11px)}
+  .tour-guide-step b{color:var(--gold)}
+  .tour-help-sec{text-align:left;margin-bottom:14px}
+  .tour-help-sec h4{font-family:'Do Hyeon';color:var(--emerald);font-size:clamp(15px,2.3vh,20px);margin-bottom:6px}
+  .tour-help-sec p{font-family:'Do Hyeon';color:#dbe7d5;font-size:clamp(13px,2vh,16px);line-height:1.55;margin-bottom:5px}
+  .tour-help-sec p b{color:var(--gold)}
+  .tour-resulthint{background:rgba(255,255,255,.06)!important;border-radius:8px;padding:10px 12px!important;color:#fff!important}
   .tour-erow{display:flex;align-items:center;gap:10px;margin-bottom:9px}
   .tour-sw{width:clamp(34px,4.4vh,44px);height:clamp(34px,4.4vh,44px);flex:0 0 auto;cursor:pointer;border:none;
     box-shadow:0 0 0 3px var(--outline),inset 4px 4px 0 rgba(255,255,255,.25),inset -4px -4px 0 rgba(0,0,0,.3)}
@@ -642,6 +653,7 @@
           <li>🏆 <b>모둠 대전</b> 추가! 메뉴 상단 버튼 → 팀(2~8) 등록 → 게임 자유롭게 진행 → 승리팀/등수 입력 → 실시간 순위·우승 시상식 (이 기기에 자동 저장)</li>
           <li>🏅 결과 입력 2가지: '승리 팀 +1' 또는 '등수 매기기(1등 3점·2등 2점·3등 1점)' · 무승부·되돌리기 지원</li>
           <li>🗑 게임 정리: '참아! Go/No-Go', '몸으로 글자!', '양세찬 게임' 삭제</li>
+          <li>📖 모둠 대전 <b>사용법 안내</b> 추가 — 시작 화면 진행순서, 어디서나 '❓ 사용법', 결과입력 방법 설명(첫 사용도 쉽게)</li>
         </ul>
       </div>
       <div class="patch-ver">
@@ -709,11 +721,21 @@
 <div class="overlay" id="tourSetupOv" style="position:fixed;z-index:120">
   <div class="panel" style="max-width:560px;max-height:90vh;overflow:auto">
     <h3>🏆 모둠 대전 시작</h3>
-    <p class="sub">팀(모둠) 이름과 색을 정하세요. 색 동그라미를 누르면 색이 바뀝니다. (2~8팀 · 이름은 비워도 돼요)</p>
+    <div class="tour-guide">
+      <div class="tour-guide-t">📖 이렇게 진행해요</div>
+      <div class="tour-guide-step"><b>1</b><span>팀(모둠)을 만들고 <b>🚀 대전 시작</b></span></div>
+      <div class="tour-guide-step"><b>2</b><span>메뉴에서 게임을 골라 <b>평소처럼 플레이</b></span></div>
+      <div class="tour-guide-step"><b>3</b><span>끝나면 화면 위 <b>✅ 이번 판 결과</b>를 눌러 이긴 팀(또는 등수)을 입력 → 점수 올라감</span></div>
+      <div class="tour-guide-step"><b>4</b><span>계속 반복하다 <b>🏁 대전 종료</b>를 누르면 우승팀 발표!</span></div>
+    </div>
+    <p class="sub" style="margin-bottom:10px">아래에서 팀 이름·색을 정하세요. 색 동그라미를 누르면 색이 바뀝니다. (2~8팀 · 이름은 비워도 자동으로 'N모둠')</p>
     <div id="tourTeamList" style="margin-bottom:12px"></div>
     <button class="pillbtn" id="tourAddBtn" onclick="tourAddTeam()" style="margin-bottom:18px">➕ 팀 추가</button>
     <div><button class="bigbtn" onclick="tourStart()">🚀 대전 시작</button></div>
-    <button class="pillbtn ghost" style="margin-top:14px" onclick="tourCloseSetup()">닫기</button>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+      <button class="pillbtn ghost" onclick="tourHelp()">❓ 사용법 더보기</button>
+      <button class="pillbtn ghost" onclick="tourCloseSetup()">닫기</button>
+    </div>
   </div>
 </div>
 <div class="overlay" id="tourResultOv" style="position:fixed;z-index:120">
@@ -723,7 +745,8 @@
       <button class="chip on" id="tourModeWin" onclick="tourSetMode('win')">🏅 승리 팀</button>
       <button class="chip" id="tourModeRank" onclick="tourSetMode('rank')">🥇 등수 매기기</button>
     </div>
-    <p class="sub" id="tourResultHint" style="margin-bottom:8px">이번 판에서 이긴 팀을 누르세요 (+1점)</p>
+    <p class="sub" style="margin-bottom:8px;font-size:clamp(12px,1.9vh,15px)"><b style="color:var(--emerald)">🏅 승리 팀</b> = 이긴 팀 하나만 눌러 +1점 · <b style="color:var(--gold)">🥇 등수 매기기</b> = 1등부터 순서대로 눌러 차등 점수</p>
+    <p class="sub tour-resulthint" id="tourResultHint" style="margin-bottom:8px">이번 판에서 이긴 팀을 누르세요 (+1점)</p>
     <div class="tour-ptscfg" id="tourPtsCfg" style="display:none">
       <span class="tpc-lab">등수 점수 설정</span>
       <span class="tpc-item">1등<button class="tpc-btn" onclick="tourAdjPts(0,-1)">−</button><b id="tourP0">3</b><button class="tpc-btn" onclick="tourAdjPts(0,1)">＋</button></span>
@@ -734,6 +757,7 @@
     <button class="bigbtn" id="tourApplyBtn" onclick="tourApply()" style="display:none;margin-top:4px">✔ 등수 확정</button>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
       <button class="pillbtn ghost" onclick="tourDraw()">🤝 무승부(전원 +1)</button>
+      <button class="pillbtn ghost" onclick="tourHelp()">❓ 도움말</button>
       <button class="pillbtn ghost" onclick="tourCloseResult()">취소</button>
     </div>
   </div>
@@ -747,6 +771,7 @@
       <button class="bigbtn" onclick="tourCloseRank();tourResult()">✅ 결과 입력</button>
       <button class="pillbtn" onclick="tourUndo()">↩ 마지막 취소</button>
       <button class="pillbtn" onclick="tourEnd()">🏁 대전 종료</button>
+      <button class="pillbtn ghost" onclick="tourHelp()">❓ 사용법</button>
       <button class="pillbtn ghost" onclick="tourReset()">🗑 초기화</button>
       <button class="pillbtn ghost" onclick="tourCloseRank()">닫기</button>
     </div>
@@ -761,6 +786,32 @@
       <button class="bigbtn" onclick="tourCloseEnd()">계속 이어하기</button>
       <button class="pillbtn red" onclick="tourReset(true)">🗑 새 대전</button>
     </div>
+  </div>
+</div>
+
+<div class="overlay" id="tourHelpOv" style="position:fixed;z-index:125">
+  <div class="panel" style="max-width:600px;max-height:90vh;overflow:auto">
+    <div class="winner-tag">📖 모둠 대전 사용법</div>
+    <div class="tour-guide">
+      <div class="tour-guide-t">진행 순서</div>
+      <div class="tour-guide-step"><b>1</b><span>팀(모둠)을 만들고 <b>🚀 대전 시작</b> — 화면 위에 팀별 점수판이 생겨요.</span></div>
+      <div class="tour-guide-step"><b>2</b><span>메뉴에서 게임을 골라 <b>평소처럼 플레이</b>하고 <b>← 메뉴</b>로 돌아와요.</span></div>
+      <div class="tour-guide-step"><b>3</b><span>점수판의 <b>✅ 이번 판 결과</b>를 눌러 이긴 팀(또는 등수)을 입력 → 점수가 올라가요.</span></div>
+      <div class="tour-guide-step"><b>4</b><span>원하는 만큼 반복 → <b>📊 순위·관리 → 🏁 대전 종료</b>로 우승팀 시상식!</span></div>
+    </div>
+    <div class="tour-help-sec">
+      <h4>🏅 점수 주는 2가지 방법</h4>
+      <p><b>승리 팀 +1</b> — 이긴 팀 하나만 누르면 바로 1점. 1대1이나 간단한 승부에 좋아요.</p>
+      <p><b>등수 매기기</b> — 1등부터 순서대로 팀을 누른 뒤 <b>✔ 등수 확정</b>. 기본 1등 3점·2등 2점·3등 1점이고, <b>−/＋</b>로 점수를 바꿀 수 있어요. 여러 팀이 함께 겨룰 때 좋아요.</p>
+      <p><b>🤝 무승부</b> — 전원 +1점.</p>
+    </div>
+    <div class="tour-help-sec">
+      <h4>💡 알아두면 좋아요</h4>
+      <p>· 잘못 입력했으면 <b>📊 순위·관리 → ↩ 마지막 취소</b>로 되돌려요.</p>
+      <p>· 점수는 <b>이 기기에 자동 저장</b> — 새로고침하거나 껐다 켜도 안 사라져요.</p>
+      <p>· 게임 종류는 상관없어요. 어떤 게임을 하든 <b>승자만 정해주면</b> 점수가 쌓여요.</p>
+    </div>
+    <button class="bigbtn" onclick="tourCloseHelp()">알겠어요!</button>
   </div>
 </div>
 
@@ -820,8 +871,9 @@
     <div class="tour-bar-title">🏆 모둠 대전</div>
     <div class="tour-teams" id="tourBarTeams"></div>
     <div class="tour-bar-actions">
-      <button class="pillbtn" onclick="tourResult()">✅ 이번 판 결과</button>
+      <button class="pillbtn tour-cta" onclick="tourResult()">✅ 이번 판 결과</button>
       <button class="pillbtn ghost" onclick="tourRank()">📊 순위·관리</button>
+      <button class="pillbtn ghost" onclick="tourHelp()">❓</button>
     </div>
   </div>
   <div class="biome-tabs cat-tabs">
@@ -2403,6 +2455,8 @@ function tourCycColor(i){const cur=TCOLORS.indexOf(tourEdit[i].color);tourEdit[i
 function tourAddTeam(){if(tourEdit.length>=8)return;tourEdit.push({name:'',color:TCOLORS[tourEdit.length%TCOLORS.length]});tourRenderEdit();beep(620,.06)}
 function tourDelTeam(i){if(tourEdit.length<=2)return;tourEdit.splice(i,1);tourRenderEdit();beep(400,.06)}
 function tourCloseSetup(){$('tourSetupOv').classList.remove('show')}
+function tourHelp(){$('tourHelpOv').classList.add('show')}
+function tourCloseHelp(){$('tourHelpOv').classList.remove('show')}
 /* --- 시작 --- */
 function tourStart(){const teams=tourEdit.map((t,i)=>({name:(t.name||'').trim()||((i+1)+'모둠'),color:t.color,score:0,wins:0}));
   if(teams.length<2)return;
