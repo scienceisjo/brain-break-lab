@@ -192,7 +192,7 @@
      ─ 파일이 없거나 못 읽으면 자동으로 합성 북소리로 폴백됩니다.
      ─ 초성은 음성이 "끝나는 순간"에 공개됩니다(자동 싱크).
   ========================================================= */
-  var CHANT_SRC = "chant.mp3";
+  var CHANT_SRC = "";   // 기본: 합성 북소리 사용(로딩 시도 없음). 녹음을 쓰려면 "chant.mp3" 등 경로/ data URI 지정
   var chantAudio=null, chantState="none";   // none | loading | ready | failed
   function initChantAudio(){
     if(!CHANT_SRC){ chantState="failed"; return; }
