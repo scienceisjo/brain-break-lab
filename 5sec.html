@@ -1495,14 +1495,14 @@ const CARD_DECK = [
   { key:"plus", emoji:"🎁", name:"공짜 1점",    desc:"뽑자마자 1점 획득! 문제도 그대로 도전.", tone:"good" },
   { key:"swap", emoji:"🔄", name:"주제 교체권", desc:"주제가 마음에 안 들면 한 번 바꿀 수 있어요.", tone:"item" },
   { key:"pass", emoji:"⏭", name:"패스권",      desc:"이번 문제를 그냥 넘길 수 있어요. (점수 없음)", tone:"item" },
-  { key:"steal",emoji:"🥷", name:"점수 뺏기",   desc:"성공하면 1등 상대의 점수 1점을 뺏어와요!", tone:"steal" },
+  { key:"steal",emoji:"🥷", name:"점수 뺏기",   desc:"성공하면 1등 상대의 점수 2점을 뺏어와요!", tone:"steal" },
   { key:"none", emoji:"🍀", name:"꽝!",         desc:"특별 효과는 없어요. 정정당당 승부!",     tone:"none" }
 ];
 function applySteal(){
   if(!state.steal) return;
   let best = null;
   state.teams.forEach((t,i)=>{ if(i === state.turnIdx) return; if(t.score > 0 && (!best || t.score > best.score)) best = t; });
-  if(best){ best.score -= 1; const p = curPlayer(); if(p) p.score += 1; }
+  if(best){ const amt = Math.min(2, best.score); best.score -= amt; const p = curPlayer(); if(p) p.score += amt; }
 }
 function drawCard(){ return CARD_DECK[Math.floor(Math.random() * CARD_DECK.length)]; }
 function curPlayer(){ return state.teams[state.turnIdx] || null; }
