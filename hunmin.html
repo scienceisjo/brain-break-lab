@@ -210,7 +210,7 @@
   var S={
     screen:"home",
     len: saved.len||2,
-    cd: (saved.cd!=null)? saved.cd : 5,     // 외침 제한(초), 0=없음
+    cd: 0,     // 외침 시간 제한 없음 (시간이 아니라 '못 외친 마지막 팀'을 찾는 게임)
     ssang: (saved.ssang!=null)? saved.ssang : false,
     sound: (saved.sound!=null)? saved.sound : true,
     game:null   // {targets, used[], usedSet, round, stage:ready|chant|reveal, cdLeft, timeUp}
@@ -263,7 +263,7 @@
           '<p style="margin:0 0 10px"><span class="chip-num">3</span> 초성이 보이는 순간, <b style="color:var(--gold)">순서 없이 동시에!</b> 그 초성에 맞는 단어를 외치며 재빨리 엄지를 잡으시오. (예: ㄱㅇ → 게임! 고요! 기억!)</p>'+
           '<p style="margin:0"><span class="chip-num">4</span> <b style="color:var(--red-l)">맨 마지막</b>이거나, <b style="color:var(--red-l)">남과 같은 단어</b>거나, <b style="color:var(--red-l)">틀린 단어</b>면 벌칙! 다툼이 나면 아래 <b>판정 도우미</b>에 단어를 넣어 확인하시오.</p>'+
         '</div></div>'+
-        '<div class="lead" style="text-align:center">앱은 순서를 정하지 않소. 오직 출제·시간·판정만 도울 뿐!</div>'+
+        '<div class="lead" style="text-align:center">앱은 순서를 정하지 않소. 오직 출제·판정만 도울 뿐!</div>'+
         '<div class="spacer"></div>'+
         '<button class="btn btn-primary" data-action="rules-back">알겠소</button>'+
       '</div>';
@@ -277,11 +277,9 @@
         '<div class="panel">'+
           '<div class="grp-label" style="margin-top:0">글자 수 (초성 개수)</div>'+
           seg("set-len",[{v:"2",t:"두 글자",on:S.len===2},{v:"3",t:"세 글자",on:S.len===3}])+
-          '<div class="grp-label">외침 시간 (초성 공개 후)</div>'+
-          seg("set-cd",[{v:"0",t:"없음",on:S.cd===0},{v:"3",t:"3초",on:S.cd===3},{v:"5",t:"5초",on:S.cd===5},{v:"7",t:"7초",on:S.cd===7}])+
           '<div class="opt-row"><div class="nm">쌍자음도 출제<small>ㄲ ㄸ ㅃ ㅆ ㅉ 포함</small></div><div class="toggle '+(S.ssang?'on':'')+'" data-action="toggle-ssang"></div></div>'+
         '</div>'+
-        '<div class="lead" style="text-align:center">시간이 끝나기 전에 단어를 외치며 엄지를 잡으시오!</div>'+
+        '<div class="lead" style="text-align:center">동시에 단어를 외치며 엄지를 잡으시오! 끝내 못 외친 마지막 팀이 지는 것이오.</div>'+
         '<div class="spacer" style="min-height:12px"></div>'+
         '<div class="row">'+
           '<button class="btn btn-ghost" data-action="to-home" style="flex:.5">돌아가기</button>'+
@@ -317,12 +315,8 @@
       }
       // reveal + 판정 도우미
       var choBoxes='<div class="cho-disp">'+g.targets.map(function(t){ return '<div class="cho-box">'+t+'</div>'; }).join("")+'</div>';
-      var shout = g.timeUp
-        ? '<div class="shout-label over">그만! 판정할 시간이오 ⚖️</div>'
-        : '<div class="shout-label">동시에 외치며 엄지를 잡으시오!</div>';
-      var timeRow = S.cd>0
-        ? '<div class="time-row"><div class="time-bar-wrap"><div class="time-bar" id="timeBar"></div></div><div class="time-num" id="timeNum"></div></div>'
-        : '';
+      var shout = '<div class="shout-label">동시에 단어를 외치며 엄지를 잡으시오!</div>';
+      var timeRow = '';
       var chips = g.used.length? g.used.map(function(w){ return '<span class="used-chip">'+esc(w)+'</span>'; }).join("") : '<span class="used-empty">확인한 단어가 아직 없소</span>';
       return '<div class="screen">'+roundTag+
         choBoxes+
@@ -448,7 +442,6 @@
       case "to-home": stopTimers(); SFX.tap(); go("home"); break;
 
       case "set-len": S.len=parseInt(el.dataset.v,10); SFX.tap(); saveCfg(); render(); break;
-      case "set-cd": S.cd=parseInt(el.dataset.v,10); SFX.tap(); saveCfg(); render(); break;
       case "toggle-ssang": S.ssang=!S.ssang; SFX.tap(); saveCfg(); render(); break;
       case "begin": begin(); break;
 
