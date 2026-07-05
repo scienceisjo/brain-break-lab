@@ -256,20 +256,6 @@
   .stp-marker.bad{background:var(--redstone);box-shadow:0 0 16px var(--redstone),0 0 0 2px var(--outline)}
   .stp-fb{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'Press Start 2P';font-size:clamp(11px,1.8vh,18px);color:#fff;text-shadow:2px 2px 0 #000;pointer-events:none}
 
-  /* ===== 게임9 참아 (Go/No-Go) ===== */
-  .gng-top{flex:0 0 auto;text-align:center;margin:6px 0}
-  .gng-signal{font-family:'Do Hyeon';font-size:clamp(30px,7vh,80px);line-height:1.1;text-shadow:3px 3px 0 var(--outline);min-height:1.1em}
-  .gng-signal.wait{color:var(--muted)}.gng-signal.go{color:var(--emerald);animation:pulse .3s}.gng-signal.nogo{color:var(--redstone);animation:pulse .3s}
-  .gng-pads{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;margin-top:8px}
-  .gng-pad{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;touch-action:none;min-width:0;background:#3a3f47;transition:background .05s;
-    box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--c),inset 6px 6px 0 rgba(255,255,255,.07),inset -6px -6px 0 rgba(0,0,0,.4)}
-  .gng-pad.go{background:#1f8a3f;box-shadow:0 0 0 4px var(--outline),0 0 0 6px #caffda,inset 6px 6px 0 rgba(255,255,255,.25),inset -6px -6px 0 rgba(0,0,0,.3)}
-  .gng-pad.nogo{background:#9a2424;box-shadow:0 0 0 4px var(--outline),0 0 0 6px #ffcaca,inset 6px 6px 0 rgba(255,255,255,.2),inset -6px -6px 0 rgba(0,0,0,.3)}
-  .gng-pad.good{background:#1f8a3f}.gng-pad.bad{background:#9a2a14;animation:tugFlash .22s}
-  .gng-pad .pname{font-family:'Do Hyeon';font-size:clamp(14px,2.2vh,24px);color:#fff;text-shadow:1px 1px 0 var(--outline)}
-  .gng-pad .pscore{font-family:'Press Start 2P';font-size:clamp(20px,4vh,44px);color:#fff;text-shadow:2px 2px 0 var(--outline)}
-  .gng-pad .pstate{font-family:'Do Hyeon';font-size:clamp(15px,2.6vh,28px);color:#fff;text-align:center}
-
   /* ===== 게임10 다른 것 찾기 ===== */
   .find-lanes{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,14px);min-height:0;margin-top:6px}
   .find-lane{flex:1 1 0;background:var(--stonedd);display:flex;flex-direction:column;padding:clamp(7px,1.2vh,12px);min-width:0;transition:.12s;
@@ -281,24 +267,6 @@
     font-size:clamp(18px,5.5vh,52px);box-shadow:inset 3px 3px 0 rgba(255,255,255,.08),inset -3px -3px 0 rgba(0,0,0,.32),0 0 0 2px var(--outline)}
   .fcell:active{transform:scale(.94)}
   .fcell.bad{background:var(--redstone);animation:tugFlash .25s}
-
-  /* ===== 게임11 몸으로 글자 (카메라) ===== */
-  .cam-wrap{flex:1 1 auto;display:flex;gap:clamp(8px,1.4vw,16px);min-height:0;margin-top:8px}
-  .cam-stage{flex:1 1 auto;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 4px var(--outline),inset 0 0 0 3px rgba(255,255,255,.05)}
-  .cam-stage canvas{max-width:100%;max-height:100%;display:block}
-  .cam-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;font-family:'Do Hyeon';font-size:clamp(15px,2.4vh,24px);background:rgba(8,12,8,.72);padding:20px;line-height:1.5}
-  .cam-side{width:clamp(180px,26vw,320px);flex:0 0 auto;display:flex;flex-direction:column;gap:10px;background:var(--stonedd);padding:12px;
-    box-shadow:0 0 0 4px var(--outline),inset 4px 4px 0 rgba(255,255,255,.06),inset -4px -4px 0 rgba(0,0,0,.4)}
-  .cam-tbox{background:var(--board);padding:6px;text-align:center;box-shadow:0 0 0 3px var(--outline),0 0 0 6px #3a5240}
-  .cam-target{font-family:'Black Han Sans';font-size:clamp(56px,15vh,140px);color:var(--gold);line-height:1.15;text-shadow:3px 3px 0 var(--outline)}
-  .cam-turn{font-family:'Do Hyeon';font-size:clamp(18px,3vh,30px);text-align:center;text-shadow:1px 1px 0 var(--outline)}
-  .cam-live{font-family:'Do Hyeon';text-align:center;font-size:clamp(14px,2.1vh,20px);color:var(--muted)}
-  .cam-live span{font-family:'Press Start 2P';color:var(--emerald);font-size:clamp(18px,3vh,32px)}
-  .cam-board{margin-top:auto;display:flex;flex-direction:column;gap:6px}
-  .cam-board .row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--stonedd);box-shadow:0 0 0 3px var(--outline),0 0 0 5px var(--c)}
-  .cam-board .row .nm{font-family:'Do Hyeon';color:var(--c);font-size:clamp(12px,1.8vh,18px)}
-  .cam-board .row .pt{font-family:'Press Start 2P';color:#fff;font-size:clamp(13px,2vh,20px)}
-  @media(max-width:720px){.cam-wrap{flex-direction:column}.cam-side{width:auto}}
 
   /* ===== 오버레이 공통 ===== */
   .overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;flex-direction:column;
@@ -432,6 +400,53 @@
   #menu .card[data-link]:hover{box-shadow:0 0 0 2px var(--accent),0 0 30px var(--accent),inset 0 1px 0 rgba(255,255,255,.12),0 18px 36px rgba(0,0,0,.55)}
   #menu .card[data-link] .go{color:var(--accent)}
   @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  /* ===== 🏆 모둠 대전 (Tournament) ===== */
+  .tour-btn{background:var(--gold)!important;color:#3a2600!important}
+  .tour-bar{flex:0 0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;
+    margin:8px 0 2px;padding:8px 12px;background:rgba(13,19,38,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:12px;
+    box-shadow:0 0 0 1px rgba(255,205,90,.35),0 0 24px rgba(255,176,0,.12)}
+  .tour-bar-title{font-family:'Press Start 2P';font-size:clamp(9px,1.4vh,13px);color:var(--gold);white-space:nowrap;text-shadow:1px 1px 0 var(--outline)}
+  .tour-teams{display:flex;gap:8px;flex:1 1 auto;flex-wrap:wrap;min-width:0;justify-content:center}
+  .tour-chip{display:flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.06);border-radius:8px;box-shadow:0 0 0 2px var(--tc)}
+  .tour-chip.lead{box-shadow:0 0 0 2px var(--tc),0 0 16px var(--tc)}
+  .tc-crown{font-size:clamp(13px,2vh,18px)}
+  .tc-name{font-family:'Do Hyeon';color:#fff;font-size:clamp(13px,2vh,18px);white-space:nowrap}
+  .tc-score{font-family:'Press Start 2P';color:var(--tc);font-size:clamp(13px,2.2vh,20px);text-shadow:1px 1px 0 var(--outline)}
+  .tour-bar-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .tour-erow{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .tour-sw{width:clamp(34px,4.4vh,44px);height:clamp(34px,4.4vh,44px);flex:0 0 auto;cursor:pointer;border:none;
+    box-shadow:0 0 0 3px var(--outline),inset 4px 4px 0 rgba(255,255,255,.25),inset -4px -4px 0 rgba(0,0,0,.3)}
+  .tour-nin{flex:1 1 auto;min-width:0;font-family:'Do Hyeon';font-size:clamp(16px,2.6vh,24px);text-align:center;padding:9px 12px;border:none;
+    background:#1c2620;color:#fff;box-shadow:0 0 0 3px var(--outline),inset 3px 3px 0 rgba(0,0,0,.4);outline:none}
+  .tour-del{flex:0 0 auto;font-family:'Do Hyeon';font-size:clamp(16px,2.4vh,22px);cursor:pointer;border:none;color:#fff;background:var(--stoned);
+    padding:8px 13px;box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .tour-mode{display:flex;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+  .tour-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+  .tour-pbtn{position:relative;cursor:pointer;border:none;padding:16px 10px;font-family:'Do Hyeon';color:#fff;
+    background:rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .06s;
+    box-shadow:0 0 0 3px var(--tc),var(--bevelL),var(--bevelD)}
+  .tour-pbtn:active{transform:translate(2px,2px)}
+  .tour-pbtn.picked{background:var(--tc);color:#0c160a}
+  .tp-name{font-size:clamp(16px,2.6vh,24px)}
+  .tp-score{font-family:'Press Start 2P';font-size:clamp(10px,1.5vh,13px);opacity:.85}
+  .tour-rankbadge{position:absolute;top:-12px;right:-8px;font-size:clamp(20px,3.4vh,30px);filter:drop-shadow(1px 1px 0 #000)}
+  .tour-standings{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .tour-strow{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--stonedd);box-shadow:0 0 0 3px var(--outline),0 0 0 5px var(--tc)}
+  .ts-rank{font-size:clamp(18px,3vh,26px);min-width:1.7em;text-align:center}
+  .ts-name{font-family:'Do Hyeon';color:#fff;font-size:clamp(15px,2.4vh,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 0 auto;width:clamp(66px,17vw,150px);text-align:left}
+  .ts-bar{flex:1 1 auto;height:clamp(12px,1.8vh,18px);background:#0c0905;box-shadow:inset 0 0 0 2px var(--outline);min-width:40px}
+  .ts-fill{display:block;height:100%;width:0;background:var(--tc);box-shadow:0 0 10px var(--tc);transition:width .3s}
+  .ts-score{font-family:'Press Start 2P';color:#fff;font-size:clamp(14px,2.4vh,22px);min-width:1.7em;text-align:right}
+  .tour-log{font-family:'Do Hyeon';color:var(--muted);font-size:clamp(12px,1.8vh,15px);text-align:center;margin-top:6px}
+  .tour-log b{color:var(--gold)}
+  .tour-full-rank{display:flex;flex-direction:column;gap:4px;margin-top:14px}
+  .tfr-row{display:flex;justify-content:space-between;gap:10px;font-family:'Do Hyeon';font-size:clamp(13px,2vh,17px);color:#fff;padding:4px 12px;background:var(--stonedd);box-shadow:0 0 0 2px var(--outline)}
+  .confetti{position:fixed;top:-24px;width:11px;height:15px;z-index:200;pointer-events:none;opacity:.95;animation:confFall linear forwards}
+  @keyframes confFall{to{transform:translateY(112vh) rotate(680deg);opacity:.9}}
+  .tour-pop{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);z-index:210;pointer-events:none;
+    font-family:'Do Hyeon';font-size:clamp(30px,7vh,72px);color:#fff;text-shadow:3px 3px 0 var(--outline),0 0 24px rgba(0,0,0,.6);
+    animation:tourPop 1.5s ease forwards;white-space:nowrap;text-align:center}
+  @keyframes tourPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}30%{transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-64%) scale(1)}}
   @media (prefers-reduced-motion:reduce){.entry-logo,.entry-go,.hero h2,#entry::before{animation:none}}
   /* ===== 사과게임 ===== */
   .apple-sum{font-family:'Do Hyeon';color:#e9f1e4;font-size:clamp(13px,2vh,20px);text-align:center;background:var(--stonedd);padding:5px 16px;min-width:220px;
@@ -614,6 +629,14 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v1.7 · 2026.07.06</h4>
+        <ul>
+          <li>🏆 <b>모둠 대전</b> 추가! 메뉴 상단 버튼 → 팀(2~8) 등록 → 게임 자유롭게 진행 → 승리팀/등수 입력 → 실시간 순위·우승 시상식 (이 기기에 자동 저장)</li>
+          <li>🏅 결과 입력 2가지: '승리 팀 +1' 또는 '등수 매기기(1등 3점·2등 2점·3등 1점)' · 무승부·되돌리기 지원</li>
+          <li>🗑 게임 정리: '참아! Go/No-Go', '몸으로 글자!', '양세찬 게임' 삭제</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v1.6</h4>
         <ul>
           <li>🎉 '파티·레크' 분류 추가 — 양세찬 게임 🎤 / 라이어 게임 🕵️ 외부 링크 카드 연결</li>
@@ -675,6 +698,58 @@
   </div>
 </div>
 
+<div class="overlay" id="tourSetupOv" style="position:fixed;z-index:120">
+  <div class="panel" style="max-width:560px;max-height:90vh;overflow:auto">
+    <h3>🏆 모둠 대전 시작</h3>
+    <p class="sub">팀(모둠) 이름과 색을 정하세요. 색 동그라미를 누르면 색이 바뀝니다. (2~8팀 · 이름은 비워도 돼요)</p>
+    <div id="tourTeamList" style="margin-bottom:12px"></div>
+    <button class="pillbtn" id="tourAddBtn" onclick="tourAddTeam()" style="margin-bottom:18px">➕ 팀 추가</button>
+    <div><button class="bigbtn" onclick="tourStart()">🚀 대전 시작</button></div>
+    <button class="pillbtn ghost" style="margin-top:14px" onclick="tourCloseSetup()">닫기</button>
+  </div>
+</div>
+<div class="overlay" id="tourResultOv" style="position:fixed;z-index:120">
+  <div class="panel" style="max-width:640px;max-height:90vh;overflow:auto">
+    <h3>이번 판 결과</h3>
+    <div class="tour-mode">
+      <button class="chip on" id="tourModeWin" onclick="tourSetMode('win')">🏅 승리 팀</button>
+      <button class="chip" id="tourModeRank" onclick="tourSetMode('rank')">🥇 등수 매기기</button>
+    </div>
+    <p class="sub" id="tourResultHint" style="margin-bottom:8px">이번 판에서 이긴 팀을 누르세요 (+1점)</p>
+    <div class="tour-pick" id="tourPick"></div>
+    <button class="bigbtn" id="tourApplyBtn" onclick="tourApply()" style="display:none;margin-top:4px">✔ 등수 확정</button>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+      <button class="pillbtn ghost" onclick="tourDraw()">🤝 무승부(전원 +1)</button>
+      <button class="pillbtn ghost" onclick="tourCloseResult()">취소</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="tourRankOv" style="position:fixed;z-index:120">
+  <div class="panel" style="max-width:600px;max-height:90vh;overflow:auto">
+    <div class="winner-tag">📊 모둠 대전 현황</div>
+    <div class="tour-standings" id="tourStandings"></div>
+    <div class="tour-log" id="tourLog"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+      <button class="bigbtn" onclick="tourCloseRank();tourResult()">✅ 결과 입력</button>
+      <button class="pillbtn" onclick="tourUndo()">↩ 마지막 취소</button>
+      <button class="pillbtn" onclick="tourEnd()">🏁 대전 종료</button>
+      <button class="pillbtn ghost" onclick="tourReset()">🗑 초기화</button>
+      <button class="pillbtn ghost" onclick="tourCloseRank()">닫기</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="tourEndOv" style="position:fixed;z-index:130">
+  <div class="panel" style="max-width:660px;max-height:90vh;overflow:auto">
+    <div class="winner-tag" id="tourChampTag">🏆 우승 모둠!</div>
+    <div class="podium" id="tourPodium"></div>
+    <div class="tour-full-rank" id="tourFullRank"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+      <button class="bigbtn" onclick="tourCloseEnd()">계속 이어하기</button>
+      <button class="pillbtn red" onclick="tourReset(true)">🗑 새 대전</button>
+    </div>
+  </div>
+</div>
+
 <canvas id="spaceFx"></canvas>
 <div id="warpFlash"></div>
 <section class="screen active" id="entry">
@@ -693,9 +768,7 @@
         <span class="eg" data-desc="정답을 가장 먼저 누르는 사람이 승점! 누가 더 빠른가.">🧮 인간 계산기를 찾아라 🏆</span>
         <span class="eg" data-desc="곡괭이 광클! 콤보로 더 빨리 캐서 목표 깊이까지 먼저.">⛏️ 다이아 러시</span>
         <span class="eg" data-desc="움직이는 막대를 금색 중앙선에 딱 멈추기! 타이밍 승부.">🎯 정확히 멈춰! 🏆</span>
-        <span class="eg" data-desc="초록엔 빨리 누르고 빨강엔 꾹 참기! 잘못 누르면 감점.">🚦 참아! Go/No-Go 🏆</span>
         <span class="eg" data-desc="똑같은 그림 속 딱 하나 다른 것! 가장 먼저 찾아 누르기.">🔍 다른 것 찾기 🏆</span>
-        <span class="eg" data-desc="📷 카메라로 모둠이 몸을 합쳐 글자를 표현! 닮을수록 고득점.">🤸 몸으로 글자!</span>
         <span class="eg" data-desc="글자는 함정! 화살표가 가리키는 진짜 방향을 먼저 누르기.">🧭 방향 맞추기 🏆</span>
         <span class="eg" data-desc="지나간 사과 숫자 합이 10이면 제거! ㄱ·ㄴ·ㄷ·대각선 어떤 모양이든 OK. (1인)">🍎 사과게임 🏆</span>
         <span class="eg" data-desc="누르면 상승·떼면 하강! 좁아지는 동굴을 부딪히지 않고 멀리. 1~2인 대결.">🚁 헬리콥터 🏆</span>
@@ -721,11 +794,20 @@
 
 <section class="screen" id="menu">
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.6</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.7</span></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.06.30</b></span>
+      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.06</b></span>
+      <button class="pillbtn tour-btn" onclick="tourOpen()">🏆 모둠 대전</button>
       <button class="pillbtn" onclick="openHOF()">🏆 명예의 전당</button>
       <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
+    </div>
+  </div>
+  <div class="tour-bar" id="tourBar" style="display:none">
+    <div class="tour-bar-title">🏆 모둠 대전</div>
+    <div class="tour-teams" id="tourBarTeams"></div>
+    <div class="tour-bar-actions">
+      <button class="pillbtn" onclick="tourResult()">✅ 이번 판 결과</button>
+      <button class="pillbtn ghost" onclick="tourRank()">📊 순위·관리</button>
     </div>
   </div>
   <div class="biome-tabs cat-tabs">
@@ -775,55 +857,43 @@
       <div class="top"><div class="num">08</div><div class="ico">🎯</div></div>
       <div><h3>정확히 멈춰!</h3><p>움직이는 막대를 금색 중앙선에 딱! 속도가 아닌 타이밍 승부.</p><div class="go">▶ PLAY</div></div>
     </div>
-    <div class="card" style="--accent:var(--emerald)" onclick="openGame('gng')">
-      <div class="top"><div class="num">09</div><div class="ico">🚦</div></div>
-      <div><h3>참아! Go/No-Go</h3><p>초록엔 빨리 누르고 빨강엔 꾹 참기! 잘못 누르면 감점.</p><div class="go">▶ PLAY</div></div>
-    </div>
     <div class="card" style="--accent:var(--p1)" onclick="openGame('find')">
-      <div class="top"><div class="num">10</div><div class="ico">🔍</div></div>
+      <div class="top"><div class="num">09</div><div class="ico">🔍</div></div>
       <div><h3>다른 것 찾기</h3><p>똑같은 그림 속 딱 하나 다른 것! 가장 먼저 찾아 누르면 승점.</p><div class="go">▶ PLAY</div></div>
     </div>
-    <div class="card" style="--accent:#ff7eb6" onclick="openGame('letterg')">
-      <div class="top"><div class="num">11</div><div class="ico">🤸</div></div>
-      <div><h3>몸으로 글자!</h3><p>📷 카메라 게임! 모둠이 몸을 합쳐 글자를 표현 — 닮을수록 고득점.</p><div class="go">▶ PLAY</div></div>
-    </div>
     <div class="card" style="--accent:#8a7dff" onclick="openGame('arrow')">
-      <div class="top"><div class="num">12</div><div class="ico">🧭</div></div>
+      <div class="top"><div class="num">10</div><div class="ico">🧭</div></div>
       <div><h3>방향 맞추기</h3><p>글자는 함정! 화살표가 가리키는 진짜 방향을 먼저 누르면 승점.</p><div class="go">▶ PLAY</div></div>
     </div>
     <div class="card" style="--accent:#e0533f" onclick="openGame('apple')">
-      <div class="top"><div class="num">13</div><div class="ico">🍎</div></div>
+      <div class="top"><div class="num">11</div><div class="ico">🍎</div></div>
       <div><h3>사과게임 (10 만들기)</h3><p>지나간 사과 숫자 합이 10이면 제거! 사각형·ㄱ·ㄴ·대각선 자유롭게 드래그. 2분 도전(1인).</p><div class="go">▶ PLAY</div></div>
     </div>
     <div class="card" style="--accent:#39ff7a" onclick="openGame('heli')">
-      <div class="top"><div class="num">14</div><div class="ico">🚁</div></div>
+      <div class="top"><div class="num">12</div><div class="ico">🚁</div></div>
       <div><h3>헬리콥터</h3><p>누르면 상승, 떼면 하강! 좁아지는 동굴을 부딪히지 않고 멀리. 1~2인 대결.</p><div class="go">▶ PLAY</div></div>
     </div>
     <div class="card" style="--accent:#ffb84a" onclick="openGame('bnc')">
-      <div class="top"><div class="num">15</div><div class="ico">🏀</div></div>
+      <div class="top"><div class="num">13</div><div class="ico">🏀</div></div>
       <div><h3>공 튕기기</h3><p>벽에 튕기는 공을 나무 막대로 받아내세요! 점수가 올라갈수록 공이 빨라지고 더 늘어나요. 1인.</p><div class="go">▶ PLAY</div></div>
     </div>
-    <div class="card" style="--accent:#ff5d8f" data-link="yangsechan.html" onclick="openLink(this)">
-      <div class="top"><div class="num">17</div><div class="ico">🎤</div><span class="ext-tag">🔗 외부</span></div>
-      <div><h3>양세찬 게임</h3><p>나만 모르는 내 단어 맞추기!</p><div class="go">▶ 열기 ↗</div></div>
-    </div>
     <div class="card" style="--accent:#8a7dff" data-link="liar.html" onclick="openLink(this)">
-      <div class="top"><div class="num">18</div><div class="ico">🕵️</div><span class="ext-tag">🔗 외부</span></div>
+      <div class="top"><div class="num">14</div><div class="ico">🕵️</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>라이어 게임</h3><p>한 명만 다른 제시어! 기기 하나 돌려보며 대화로 거짓말쟁이를 찾아라.</p><div class="go">▶ 열기 ↗</div></div>
     </div>
     <div class="card" style="--accent:#ffd23f" data-link="https://scienceisjo.github.io/brain-break-lab/5sec" onclick="openLink(this)">
-      <div class="top"><div class="num">19</div><div class="ico">⏱️</div><span class="ext-tag">🔗 외부</span></div>
+      <div class="top"><div class="num">15</div><div class="ico">⏱️</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>5초 준다</h3><p>제시된 주제에 맞는 답 3개를 단 5초 안에! 똑딱똑딱 압박 속 빵 터지는 순발력 게임.</p><div class="go">▶ 열기 ↗</div></div>
     </div>
     <div class="card" style="--accent:#4ec9b0" data-link="hunmin.html" onclick="openLink(this)">
-      <div class="top"><div class="num">20</div><div class="ico">📜</div><span class="ext-tag">🔗 외부</span></div>
+      <div class="top"><div class="num">16</div><div class="ico">📜</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>훈민정음</h3><p>"훈민정~음!" 북소리에 맞춰 다 같이 외치고, 나타난 초성으로 낱말을 대는 초성 대결!</p><div class="go">▶ 열기 ↗</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
   <div class="footnote">⛏ 손가락으로 동시에 누르세요 · 멀티터치 전자칠판 최적화</div>
   <div class="credit">제작 : 과학이조선생 <span class="sep">·</span> 인스타그램 : <a href="https://instagram.com/science_is_jo" target="_blank" rel="noopener">@science_is_jo</a></div>
-  <div class="mc-ver">CLASS GAME WORLD 1.4</div>
+  <div class="mc-ver">CLASS GAME WORLD 1.7</div>
   <div class="mc-copy">팬 제작 테마 · Minecraft™ / Mojang</div>
 </section>
 
@@ -1028,37 +1098,10 @@
   </div>
 </section>
 
-<!-- ===================== 게임9: 참아! (Go/No-Go) ===================== -->
-<section class="screen" id="gng">
-  <div class="topbar">
-    <div class="brand"><span class="tag" style="background:var(--emerald);color:#053">GAME 09</span><h1>참아! Go/No-Go</h1></div>
-    <div style="display:flex;gap:10px">
-      <div class="sb-clock" style="min-width:92px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="gngClock" style="font-size:clamp(20px,3.4vh,32px)">30</span></div>
-      <button class="pillbtn" onclick="gngSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
-  </div>
-  <div class="gng-top"><div class="gng-signal" id="gngSignal">준비</div></div>
-  <div class="arena" id="gngArena" style="flex-direction:column">
-    <div class="gng-pads" id="gngPads"></div>
-    <div class="rt-note">🟢 초록 "눌러!" 엔 빨리 · 🔴 빨강 "참아!" 엔 절대 누르지 마세요 (누르면 -2)</div>
-    <div class="overlay" id="gngSetupOv"><div class="panel">
-      <h3>참아! Go/No-Go</h3><p class="sub">신호를 잘 보고 반응하세요!<br><b style="color:var(--emerald)">초록(눌러!)</b> → 빨리 누르면 +점 (1등 +2, 나머지 +1)<br><b style="color:var(--redstone)">빨강(참아!)</b> → 누르면 -2점! 신호 전 성급한 터치도 -1점.</p>
-      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="1">1</button><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
-      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="30">30초</button><button class="chip on" data-time="45">45초</button><button class="chip" data-time="60">60초</button></div>
-      <div class="opt-row"><span class="lab">난이도</span><button class="chip" data-diff="easy">쉬움</button><button class="chip on" data-diff="normal">보통</button><button class="chip" data-diff="hard">어려움</button></div>
-      <button class="bigbtn" onclick="gngStart()">출발 준비!</button>
-    </div></div>
-    <div class="overlay" id="gngCountOv"><div class="countnum" id="gngCountNum">3</div></div>
-    <div class="overlay" id="gngResultOv"><div class="panel">
-      <div class="winner-tag" id="gngWinner">🏆 우승!</div><div class="podium" id="gngPodium"></div>
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="gngStart()">🔁 다시</button><button class="bigbtn" onclick="gngSetup()">⚙ 설정</button></div>
-    </div></div>
-  </div>
-</section>
-
 <!-- ===================== 게임10: 다른 것 찾기 ===================== -->
 <section class="screen" id="find">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:var(--p1);color:#053">GAME 10</span><h1>다른 것 찾기</h1></div>
+    <div class="brand"><span class="tag" style="background:var(--p1);color:#053">GAME 09</span><h1>다른 것 찾기</h1></div>
     <div style="display:flex;gap:10px">
       <div class="sb-clock" style="min-width:92px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="findClock" style="font-size:clamp(20px,3.4vh,32px)">30</span></div>
       <button class="pillbtn" onclick="findSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
@@ -1081,54 +1124,10 @@
   </div>
 </section>
 
-<!-- ===================== 게임11: 몸으로 글자! (카메라) ===================== -->
-<section class="screen" id="letterg">
-  <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#ff7eb6;color:#3a0a22">GAME 11</span><h1>몸으로 글자!</h1></div>
-    <div style="display:flex;gap:10px"><span class="rt-round" id="lgRound" style="align-self:center"></span><button class="pillbtn" onclick="lgSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
-  </div>
-  <div class="arena" id="lgArena" style="flex-direction:column">
-    <div class="cam-wrap">
-      <div class="cam-stage">
-        <video id="lgVideo" playsinline muted style="display:none"></video>
-        <canvas id="lgProc" style="display:none"></canvas>
-        <canvas id="lgCanvas" width="480" height="360"></canvas>
-        <div class="cam-msg" id="lgMsg">카메라 준비 중…</div>
-      </div>
-      <div class="cam-side">
-        <div class="rt-round" id="lgRound2" style="text-align:center"></div>
-        <div class="cam-tbox"><div class="cam-target" id="lgTarget">?</div></div>
-        <div class="cam-turn" id="lgTurn">대기</div>
-        <div class="cam-live">유사도 <span id="lgLive">0%</span></div>
-        <button class="bigbtn" id="lgMeasure" onclick="lgMeasure()" style="padding:12px 20px;font-size:clamp(20px,3.4vh,32px)">📸 측정!</button>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-          <button class="pillbtn" onclick="lgRecalib()">🔄 배경 다시</button>
-          <button class="pillbtn ghost" onclick="lgSkip()">⏭ 패스</button>
-        </div>
-        <div class="cam-board" id="lgScore"></div>
-      </div>
-    </div>
-    <div class="overlay" id="lgSetupOv"><div class="panel">
-      <h3>몸으로 글자!</h3>
-      <p class="sub">한 <b style="color:var(--ink)">모둠씩</b> 카메라 앞에 서서, 화면에 흐릿하게 보이는 <b style="color:var(--gold)">목표 글자</b>를 몸으로 채워 표현하세요!<br>글자 모양과 <b style="color:var(--emerald)">닮을수록(겹칠수록) 점수↑</b>. "📸측정!"을 누른 순간의 유사도가 점수가 됩니다.</p>
-      <p class="sub" style="color:var(--gold);font-size:clamp(12px,1.8vh,15px);margin-bottom:18px">⚠️ 카메라 권한 필요 · https(깃허브 페이지스)에서 열기 · 배경은 단순하게 · 시작 시 무대를 잠깐 비워 배경을 잡아요</p>
-      <div class="opt-row"><span class="lab">모둠</span><button class="chip" data-groups="2">2</button><button class="chip on" data-groups="3">3</button><button class="chip" data-groups="4">4</button></div>
-      <div class="opt-row"><span class="lab">라운드</span><button class="chip" data-rounds="2">2</button><button class="chip on" data-rounds="3">3</button><button class="chip" data-rounds="5">5</button></div>
-      <div class="opt-row"><span class="lab">글자</span><button class="chip on" data-set="kr">한글</button><button class="chip" data-set="en">알파벳</button><button class="chip" data-set="num">숫자</button></div>
-      <div class="opt-row"><span class="lab">감도</span><button class="chip" data-sens="low">낮음</button><button class="chip on" data-sens="mid">보통</button><button class="chip" data-sens="high">높음</button></div>
-      <button class="bigbtn" onclick="lgStart()">📷 카메라 켜고 시작!</button>
-    </div></div>
-    <div class="overlay" id="lgResultOv"><div class="panel">
-      <div class="winner-tag" id="lgWinner">🏆 우승 모둠!</div><div class="podium" id="lgPodium"></div>
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="lgStart()">🔁 다시</button><button class="bigbtn" onclick="lgSetup()">⚙ 설정</button></div>
-    </div></div>
-  </div>
-</section>
-
 <!-- ===================== 게임12: 방향 맞추기 ===================== -->
 <section class="screen" id="arrow">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#8a7dff;color:#fff">GAME 12</span><h1>방향 맞추기</h1></div>
+    <div class="brand"><span class="tag" style="background:#8a7dff;color:#fff">GAME 10</span><h1>방향 맞추기</h1></div>
     <div style="display:flex;gap:10px">
       <div class="sb-clock" style="min-width:92px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="arrowClock" style="font-size:clamp(20px,3.4vh,32px)">30</span></div>
       <button class="pillbtn" onclick="arrSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
@@ -1154,7 +1153,7 @@
 <!-- ===================== 게임13: 사과게임 (1인) ===================== -->
 <section class="screen" id="apple">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#e0533f;color:#fff">GAME 13</span><h1>사과게임</h1></div>
+    <div class="brand"><span class="tag" style="background:#e0533f;color:#fff">GAME 11</span><h1>사과게임</h1></div>
     <div style="display:flex;gap:10px;align-items:center">
       <div class="sb-clock" style="min-width:88px;padding:4px 12px"><span class="lbl">SCORE</span><span class="val" id="appleScore" style="font-size:clamp(18px,3.2vh,30px)">0</span></div>
       <div class="sb-clock" style="min-width:88px;padding:4px 12px"><span class="lbl">TIME</span><span class="val" id="appleClock" style="font-size:clamp(18px,3.2vh,30px)">120</span></div>
@@ -1180,7 +1179,7 @@
 <!-- ===================== 게임14: 헬리콥터 (1~2인) ===================== -->
 <section class="screen" id="heli">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#39ff7a;color:#063">GAME 14</span><h1>헬리콥터</h1></div>
+    <div class="brand"><span class="tag" style="background:#39ff7a;color:#063">GAME 12</span><h1>헬리콥터</h1></div>
     <div style="display:flex;gap:10px;align-items:center">
       <button class="pillbtn" onclick="heliSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
   </div>
@@ -1212,7 +1211,7 @@
 <!-- ===================== 게임15: 공 튕기기 (1인 · 인스타 이모지 게임 스타일) ===================== -->
 <section class="screen" id="bnc">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#ffb84a;color:#3a2200">GAME 15</span><h1>공 튕기기</h1></div>
+    <div class="brand"><span class="tag" style="background:#ffb84a;color:#3a2200">GAME 13</span><h1>공 튕기기</h1></div>
     <div style="display:flex;gap:10px;align-items:center">
       <div class="sb-clock" style="min-width:90px;padding:4px 12px"><span class="lbl">SCORE</span><span class="val" id="bncScore" style="font-size:clamp(20px,3.4vh,32px)">0</span></div>
       <button class="pillbtn" onclick="bncSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
@@ -1250,7 +1249,7 @@
 <!-- ===================== 게임16: 드럼 연습실 (악기/도구) ===================== -->
 <section class="screen" id="drum">
   <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#ffb02e;color:#3a2200">GAME 16</span><h1>드럼 연습실</h1></div>
+    <div class="brand"><span class="tag" style="background:#ffb02e;color:#3a2200">GAME 14</span><h1>드럼 연습실</h1></div>
     <div style="display:flex;gap:10px;align-items:center">
       <button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button>
     </div>
@@ -1348,7 +1347,7 @@ const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)','var(--p5)','var(
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수','5번 선수','6번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');try{if(id==='entry')spaceSet(3);else if(id==='menu')spaceSet(.8);else spaceStop()}catch(e){}}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();gngStop();findStop();lgStop();arrStop();appleStop();heliStop();bncStop();drumStop();setSplash();sortCards();loadGlobalPlays();show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();drumStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
 /* ===== 인기 게임 정렬 (플레이 횟수) ===== */
 function playKey(g){return 'cgw_play_'+g}
 function getPlay(g){return +(lsGet(playKey(g))||0)}
@@ -1382,9 +1381,9 @@ function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>
 const REC={rt:{label:'🧠 신경 반응속도',low:true,unit:'ms'},stp:{label:'🎯 정확히 멈춰!',low:false,unit:'점'},
   mole:{label:'🦔 고슴+더지 잡기',low:false,unit:'점'},stroop:{label:'🎨 컬러·단어 매칭',low:false,unit:'점'},
   arrow:{label:'🧭 방향 맞추기',low:false,unit:'점'},calc:{label:'🧮 인간 계산기를 찾아라',low:false,unit:'점'},
-  find:{label:'🔍 다른 것 찾기',low:false,unit:'점'},gng:{label:'🚦 참아!',low:false,unit:'점'},mem:{label:'💡 순간 기억',low:false,unit:'점'},
+  find:{label:'🔍 다른 것 찾기',low:false,unit:'점'},mem:{label:'💡 순간 기억',low:false,unit:'점'},
   apple:{label:'🍎 사과게임',low:false,unit:'개'},heli:{label:'🚁 헬리콥터',low:false,unit:'m'},bnc:{label:'🏀 공 튕기기',low:false,unit:'회'}};
-const REC_ORDER=['bnc','heli','apple','rt','stp','mole','stroop','arrow','calc','find','gng','mem'];
+const REC_ORDER=['bnc','heli','apple','rt','stp','mole','stroop','arrow','calc','find','mem'];
 let recPending=null;
 let MY_NICK='', MY_SCHOOL='';
 function bdKey(k){return 'cgw_bd_'+k}
@@ -1491,7 +1490,7 @@ function renderPodium(podId,winId,scores,names){
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})
   const _rk=podId.replace('Podium','');if(REC[_rk])tryRecord(_rk,rank[0].s,false)}
-const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,gng:gngSetup,find:findSetup,letterg:lgSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,drum:drumSetup};
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,drum:drumSetup};
 let pendingGame=null,pledgeOK=false;
 function openGame(g){pendingGame=g;pledgeOK=false;
   $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
@@ -1900,38 +1899,6 @@ function stpLock(p){const R=stp.rows[p];if(R.stopped)return;R.stopped=true;
   if(stp.rows.every(r=>r.stopped)){stp.running=false;cancelAnimationFrame(stp.raf);clearTimeout(stp._t);stp._t=setTimeout(stpRound,1500)}}
 function stpFinish(){stpStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);$('stpRound').textContent='';renderPodium('stpPodium','stpWinner',stp.scores,PNAMES);$('stpResultOv').classList.add('show')}
 
-/* ============ 게임9: 참아! (Go/No-Go) ============ */
-let gng={players:3,time:30,diff:'normal',dm:1,goP:0.68,scores:[],pads:[],running:false,state:'idle',signal:null,answered:[],firstDone:false,timeLeft:0,tickT:null,_t:null};
-chipToggle('gngSetupOv','players');chipToggle('gngSetupOv','time');chipToggle('gngSetupOv','diff');
-function gngSetup(){gngStop();$('gngResultOv').classList.remove('show');$('gngCountOv').classList.remove('show');$('gngSignal').textContent='준비';$('gngSignal').className='gng-signal';$('gngSetupOv').classList.add('show')}
-function gngStop(){gng.running=false;gng.state='idle';clearInterval(gng.tickT);clearTimeout(gng._t)}
-function buildGngPads(){const wrap=$('gngPads');wrap.innerHTML='';gng.pads=[];gng.scores=new Array(gng.players).fill(0);
-  for(let p=0;p<gng.players;p++){const pad=document.createElement('div');pad.className='gng-pad';pad.style.setProperty('--c',PCOLORS[p]);
-    pad.innerHTML=`<div class="pname">${PNAMES[p]}</div><div class="pscore" id="gSc${p}">0</div><div class="pstate" id="gSt${p}">대기</div>`;
-    const pp=p;pad.addEventListener('pointerdown',ev=>{ev.preventDefault();gngTap(pp)},{passive:false});wrap.appendChild(pad);gng.pads.push(pad)}}
-function gngPadState(p,cls,txt){const pad=gng.pads[p];pad.className='gng-pad'+(cls?' '+cls:'');pad.style.setProperty('--c',PCOLORS[p]);$('gSt'+p).textContent=txt}
-function gngStart(){gng.players=+getChip('gngSetupOv','players');gng.time=+getChip('gngSetupOv','time');gng.diff=getChip('gngSetupOv','diff');
-  gng.dm=({easy:1.4,normal:1,hard:0.6})[gng.diff]||1;gng.goP=({easy:0.75,normal:0.68,hard:0.58})[gng.diff]||0.68;
-  $('gngSetupOv').classList.remove('show');$('gngResultOv').classList.remove('show');buildGngPads();$('gngClock').textContent=gng.time;runCountdown('gngCountOv','gngCountNum',runGng)}
-function runGng(){gng.running=true;gng.timeLeft=gng.time;$('gngClock').textContent=gng.timeLeft;
-  gng.tickT=setInterval(()=>{gng.timeLeft--;$('gngClock').textContent=gng.timeLeft;if(gng.timeLeft<=5&&gng.timeLeft>0)beep(700,.1,'square',.12);if(gng.timeLeft<=0)gngFinish()},1000);
-  nextSignal()}
-function nextSignal(){if(!gng.running)return;gng.state='wait';gng.answered=new Array(gng.players).fill(false);
-  $('gngSignal').className='gng-signal wait';$('gngSignal').textContent='준비…';
-  gng.pads.forEach((_,p)=>gngPadState(p,'','대기'));
-  gng._t=setTimeout(showSignal,(550+Math.random()*950)*gng.dm)}
-function showSignal(){if(!gng.running)return;const go=Math.random()<gng.goP;gng.signal=go?'go':'nogo';gng.firstDone=false;gng.answered=new Array(gng.players).fill(false);gng.state='signal';
-  if(go){$('gngSignal').className='gng-signal go';$('gngSignal').textContent='🟢 눌러!';gng.pads.forEach((_,p)=>gngPadState(p,'go','눌러!'));beep(880,.2,'sawtooth',.2)}
-  else{$('gngSignal').className='gng-signal nogo';$('gngSignal').textContent='🔴 참아!';gng.pads.forEach((_,p)=>gngPadState(p,'nogo','참아!'));beep(200,.22,'square',.2)}
-  gng._t=setTimeout(()=>{if(gng.running)nextSignal()},(go?1000:1150)*gng.dm)}
-function gngTap(p){if(!gng.running)return;
-  if(gng.state==='wait'){if(gng.answered[p])return;gng.answered[p]=true;gng.scores[p]=Math.max(0,gng.scores[p]-1);$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'bad','성급! -1');beep(160,.15,'sawtooth',.2);return}
-  if(gng.state==='signal'){if(gng.answered[p])return;gng.answered[p]=true;
-    if(gng.signal==='go'){const pts=gng.firstDone?1:2;gng.firstDone=true;gng.scores[p]+=pts;$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'good',pts===2?'1등! +2':'+1');beep(740,.1,'triangle')}
-    else{gng.scores[p]=Math.max(0,gng.scores[p]-2);$('gSc'+p).textContent=gng.scores[p];gngPadState(p,'bad','으악! -2');beep(140,.2,'sawtooth',.22)}}}
-function gngFinish(){gngStop();$('gngSignal').className='gng-signal';$('gngSignal').textContent='끝!';beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
-  renderPodium('gngPodium','gngWinner',gng.scores,PNAMES);$('gngResultOv').classList.add('show')}
-
 /* ============ 게임10: 다른 것 찾기 ============ */
 const FIND_PAIRS=[['🟦','🟪'],['🟧','🟨'],['🟥','🟧'],['🟩','🟦'],['🔵','🟣'],['🟢','🔵'],['😀','😄'],['😀','😁'],['🙂','😊'],['🐶','🐺'],['🐱','🐯'],['🐰','🐹'],['🐭','🐹'],['🌕','🌝'],['⭐','🌟'],['🍎','🍏'],['🐸','🐢']];
 let find={players:3,time:45,size:3,scores:[],lanes:[],running:false,timeLeft:0,tickT:null,resolved:false,locked:[],odd:0};
@@ -1963,111 +1930,6 @@ function runFind(){find.running=true;find.timeLeft=find.time;$('findClock').text
 function findFinish(){findStop();beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
   renderPodium('findPodium','findWinner',find.scores,PNAMES);$('findResultOv').classList.add('show')}
 
-/* ============ 게임11: 몸으로 글자! (카메라 유사도) ============ */
-const GROUPNAMES=['1모둠','2모둠','3모둠','4모둠'];
-const CHARSETS={
-  kr:['ㄱ','ㄴ','ㄷ','ㅁ','ㅅ','ㅇ','ㅈ','ㅋ','ㅌ','ㅍ','ㅗ','ㅏ','ㅣ','ㅜ','ㅡ','ㄹ','ㅂ','ㅎ'],
-  en:['T','L','I','O','X','Y','V','C','H','K','A','U','Z','N'],
-  num:['1','2','3','4','5','7','0']
-};
-let lg={groups:3,rounds:3,charset:'kr',thr:40,W:192,H:144,cur:0,turn:0,curGroup:0,scores:[],target:'',
-  stream:null,video:null,proc:null,pctx:null,disp:null,dctx:null,lcanvas:null,ovcanvas:null,ovctx:null,ovImg:null,
-  bg:null,letterMask:null,letterCount:1,score:0,raf:null,phase:'idle'};
-chipToggle('lgSetupOv','groups');chipToggle('lgSetupOv','rounds');chipToggle('lgSetupOv','set');chipToggle('lgSetupOv','sens');
-function lgSetup(){lgStop();$('lgResultOv').classList.remove('show');$('lgRound').textContent='';$('lgRound2').textContent='';
-  $('lgTurn').textContent='대기';$('lgTarget').textContent='?';$('lgLive').textContent='0%';$('lgSetupOv').classList.add('show')}
-function lgStop(){cancelAnimationFrame(lg.raf);if(lg.stream){lg.stream.getTracks().forEach(t=>t.stop());lg.stream=null}lg.phase='idle'}
-async function lgStart(){
-  lg.groups=+getChip('lgSetupOv','groups');lg.rounds=+getChip('lgSetupOv','rounds');lg.charset=getChip('lgSetupOv','set');
-  lg.thr={low:55,mid:40,high:28}[getChip('lgSetupOv','sens')];
-  $('lgSetupOv').classList.remove('show');$('lgResultOv').classList.remove('show');
-  lg.scores=new Array(lg.groups).fill(0);buildLgScore();
-  const ok=await initLgCam();if(!ok)return;
-  await lgCalibrate();
-  lg.cur=0;lgNextRound();
-}
-async function initLgCam(){
-  try{
-    lg.video=$('lgVideo');
-    const s=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});
-    lg.stream=s;lg.video.srcObject=s;await lg.video.play();
-    lg.proc=$('lgProc');lg.proc.width=lg.W;lg.proc.height=lg.H;lg.pctx=lg.proc.getContext('2d',{willReadFrequently:true});
-    lg.disp=$('lgCanvas');lg.dctx=lg.disp.getContext('2d');
-    lg.lcanvas=document.createElement('canvas');lg.lcanvas.width=lg.W;lg.lcanvas.height=lg.H;
-    lg.ovcanvas=document.createElement('canvas');lg.ovcanvas.width=lg.W;lg.ovcanvas.height=lg.H;lg.ovctx=lg.ovcanvas.getContext('2d');
-    lg.ovImg=lg.ovctx.createImageData(lg.W,lg.H);
-    $('lgMsg').style.display='none';
-    cancelAnimationFrame(lg.raf);lg.raf=requestAnimationFrame(lgLoop);
-    return true;
-  }catch(e){
-    $('lgMsg').style.display='flex';
-    $('lgMsg').innerHTML='📷 카메라를 사용할 수 없어요.<br><span style="font-size:.72em;color:#cfe0c8">권한을 허용했는지, https(깃허브 페이지스)에서 여는지 확인하세요.<br>이 채팅 미리보기에서는 카메라가 막혀 있을 수 있어요.</span><br><button class="pillbtn" style="margin-top:16px" onclick="lgSetup()">⚙ 설정으로</button>';
-    return false;
-  }
-}
-function lgCaptureBG(){const W=lg.W,H=lg.H;lg.pctx.drawImage(lg.video,0,0,W,H);const d=lg.pctx.getImageData(0,0,W,H).data;
-  const bg=new Float32Array(W*H);for(let i=0;i<W*H;i++)bg[i]=d[i*4]*0.3+d[i*4+1]*0.59+d[i*4+2]*0.11;lg.bg=bg}
-function lgCalibrate(){return new Promise(res=>{
-  let c=3;$('lgMsg').style.display='flex';
-  $('lgMsg').innerHTML='무대를 잠깐 비워주세요!<br>배경을 잡는 중…<br><span class="px" style="font-size:2.4em;color:var(--gold)">3</span>';
-  const span=()=>$('lgMsg').querySelector('.px');beep(330,.15);
-  const t=setInterval(()=>{c--;if(c>0){if(span())span().textContent=c;beep(330,.15)}
-    else{clearInterval(t);lgCaptureBG();$('lgMsg').style.display='none';beep(880,.22,'sawtooth');res()}},900)})}
-async function lgRecalib(){if(!lg.stream)return;const keep=lg.phase;lg.phase='calib';await lgCalibrate();lg.phase=keep}
-function makeLetterMask(ch){const W=lg.W,H=lg.H,x=lg.lcanvas.getContext('2d');
-  x.clearRect(0,0,W,H);x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
-  const size=Math.min(W,H)*0.82;x.font="900 "+size+"px 'Black Han Sans','Arial Black',sans-serif";
-  const r=Math.max(2,Math.round(size*0.05));
-  for(let dx=-r;dx<=r;dx+=r)for(let dy=-r;dy<=r;dy+=r)x.fillText(ch,W/2+dx,H/2+dy);
-  const d=x.getImageData(0,0,W,H).data;const m=new Uint8Array(W*H);let cnt=0;
-  for(let i=0;i<W*H;i++){if(d[i*4+3]>100){m[i]=1;cnt++}}lg.letterMask=m;lg.letterCount=cnt||1}
-function lgLoop(){
-  if(!lg.stream){return}
-  const W=lg.W,H=lg.H;
-  try{lg.pctx.drawImage(lg.video,0,0,W,H)}catch(e){lg.raf=requestAnimationFrame(lgLoop);return}
-  const d=lg.pctx.getImageData(0,0,W,H).data;const ov=lg.ovImg.data;
-  let inter=0,fg=0;
-  for(let i=0;i<W*H;i++){
-    const r=d[i*4],g=d[i*4+1],b=d[i*4+2];const gray=r*0.3+g*0.59+b*0.11;
-    const isFg=lg.bg&&Math.abs(gray-lg.bg[i])>lg.thr;
-    const inL=lg.letterMask&&lg.letterMask[i]===1;
-    let R=0,G=0,B=0,A=0;
-    if(inL){R=247;G=201;B=72;A=60}
-    if(isFg){fg++;if(inL){inter++;R=57;G=255;B=122;A=160}else{R=226;G=59;B=59;A=110}}
-    ov[i*4]=R;ov[i*4+1]=G;ov[i*4+2]=B;ov[i*4+3]=A;
-  }
-  if(lg.letterMask&&lg.bg){const recall=inter/lg.letterCount,prec=fg?inter/fg:0,b2=2.25;
-    lg.score=(prec+recall>0)?Math.round((1+b2)*prec*recall/(b2*prec+recall)*100):0}
-  const DW=lg.disp.width,DH=lg.disp.height;
-  lg.dctx.drawImage(lg.video,0,0,DW,DH);
-  lg.ovctx.putImageData(lg.ovImg,0,0);
-  lg.dctx.imageSmoothingEnabled=false;lg.dctx.drawImage(lg.ovcanvas,0,0,W,H,0,0,DW,DH);
-  if(lg.phase==='pose')$('lgLive').textContent=lg.score+'%';
-  lg.raf=requestAnimationFrame(lgLoop)}
-function buildLgScore(){const wrap=$('lgScore');wrap.innerHTML='';
-  for(let p=0;p<lg.groups;p++){const row=document.createElement('div');row.className='row';row.style.setProperty('--c',PCOLORS[p]);
-    row.innerHTML=`<span class="nm">${GROUPNAMES[p]}</span><span class="pt" id="lgPt${p}">0</span>`;wrap.appendChild(row)}}
-function updateLgScore(){for(let p=0;p<lg.groups;p++)$('lgPt'+p).textContent=lg.scores[p]}
-function lgNextRound(){lg.cur++;if(lg.cur>lg.rounds){lgFinish();return}
-  const set=CHARSETS[lg.charset];lg.target=set[Math.floor(Math.random()*set.length)];makeLetterMask(lg.target);
-  $('lgRound').textContent='ROUND '+lg.cur+'/'+lg.rounds;$('lgRound2').textContent='ROUND '+lg.cur+' / '+lg.rounds;
-  $('lgTarget').textContent=lg.target;lg.turn=0;lgNextTurn()}
-function lgNextTurn(){if(lg.turn>=lg.groups){lgNextRound();return}
-  lg.curGroup=lg.turn;lg.phase='pose';
-  $('lgTurn').textContent=GROUPNAMES[lg.turn]+' 차례!';$('lgTurn').style.color=PCOLORS[lg.turn];
-  $('lgLive').textContent='0%';$('lgMeasure').classList.remove('disabled');beep(520,.1)}
-function lgMeasure(){if(lg.phase!=='pose')return;lg.phase='result';
-  const sc=lg.score;lg.scores[lg.curGroup]+=sc;updateLgScore();
-  $('lgTurn').textContent='유사도 '+sc+'%! 🎉';$('lgLive').textContent=sc+'%';
-  $('lgMeasure').classList.add('disabled');
-  if(sc>=75){beep(880,.15,'triangle');setTimeout(()=>beep(1175,.25,'triangle'),130)}
-  else if(sc>=45)beep(660,.16,'triangle');else beep(330,.18,'square');
-  lg.turn++;setTimeout(lgNextTurn,1900)}
-function lgSkip(){if(lg.phase!=='pose')return;lg.phase='result';
-  $('lgTurn').textContent='패스!';$('lgMeasure').classList.add('disabled');beep(220,.15,'square');
-  lg.turn++;setTimeout(lgNextTurn,800)}
-function lgFinish(){lg.phase='done';beep(523,.15);setTimeout(()=>beep(659,.15),140);setTimeout(()=>beep(784,.3),300);
-  $('lgRound').textContent='';renderPodium('lgPodium','lgWinner',lg.scores,GROUPNAMES);$('lgResultOv').classList.add('show')}
 /* ===== 사과게임 (1인 · 자유 경로 선택: 사각형·ㄱ·ㄴ·ㄷ·대각선 모두 가능) ===== */
 let apple={time:120,score:0,grid:[],els:[],cols:17,rows:10,running:false,tickT:null,timeLeft:0,drag:false,sel:null,lastR:0,lastC:0,bound:false};
 function appleSetup(){appleStop();$('appleResultOv').classList.remove('show');$('appleCountOv').classList.remove('show');$('appleSetupOv').classList.add('show')}
@@ -2159,11 +2021,11 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
   cs.addEventListener('pointerout',e=>{const c=e.target.closest('.card');
     if(c&&!c.contains(e.relatedTarget))c.style.transform=''},{passive:true})})();
 /* ===== 게임 분류 필터 ===== */
-const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',gng:'react',arrow:'react',
+const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  letterg:'play',drum:'play',
-  yangsechan:'party',liar:'party','5sec':'party',hunmin:'party'};
+  drum:'play',
+  liar:'party','5sec':'party',hunmin:'party'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
@@ -2498,6 +2360,115 @@ function drumStop(){
   drum.pendingTimers.forEach(t=>clearTimeout(t));drum.pendingTimers.clear();drum.activePresses=0
 }
 
+/* ============ 🏆 모둠 대전 (Tournament) ============ */
+const TKEY='cgw_tourney';
+const TCOLORS=['#e23b3b','#3a8bff','#46c24a','#f5c518','#f0843c','#a878ec','#34d6d6','#f06db0'];
+let TOUR={active:false,teams:[],log:[]};   // teams:[{name,color,score,wins}]  log:[{kind,text,deltas:[{i,score,wins}]}]
+let tourEdit=[];      // setup 편집용 [{name,color}]
+let tourMode='win', tourRankPick=[];
+function tourLoad(){try{const v=JSON.parse(localStorage.getItem(TKEY));if(v&&Array.isArray(v.teams))TOUR=v}catch(e){}}
+function tourSave(){try{localStorage.setItem(TKEY,JSON.stringify(TOUR))}catch(e){}}
+function tourSorted(){return TOUR.teams.map((t,i)=>Object.assign({i},t)).sort((a,b)=>b.score-a.score||b.wins-a.wins)}
+/* --- 진입 --- */
+function tourOpen(){tourLoad();if(TOUR.active){tourRenderRank();$('tourRankOv').classList.add('show')}else{tourEditInit();$('tourSetupOv').classList.add('show')}beep(720,.09,'triangle')}
+/* --- 팀 편집 --- */
+function tourEditInit(){if(!tourEdit.length)tourEdit=[0,1,2,3].map(i=>({name:'',color:TCOLORS[i]}));tourRenderEdit()}
+function tourRenderEdit(){const wrap=$('tourTeamList');if(!wrap)return;wrap.innerHTML='';
+  tourEdit.forEach((t,i)=>{const row=document.createElement('div');row.className='tour-erow';
+    row.innerHTML=`<button class="tour-sw" style="background:${t.color}" onclick="tourCycColor(${i})" title="색 바꾸기"></button>`+
+      `<input class="tour-nin" maxlength="6" placeholder="${i+1}모둠" value="${esc(t.name)}" oninput="tourEditName(${i},this.value)">`+
+      `<button class="tour-del" onclick="tourDelTeam(${i})"${tourEdit.length<=2?' style="visibility:hidden"':''}>✕</button>`;
+    wrap.appendChild(row)});
+  const add=$('tourAddBtn');if(add)add.style.display=tourEdit.length>=8?'none':''}
+function tourEditName(i,v){if(tourEdit[i])tourEdit[i].name=v}
+function tourCycColor(i){const cur=TCOLORS.indexOf(tourEdit[i].color);tourEdit[i].color=TCOLORS[(cur+1)%TCOLORS.length];tourRenderEdit();beep(560,.05)}
+function tourAddTeam(){if(tourEdit.length>=8)return;tourEdit.push({name:'',color:TCOLORS[tourEdit.length%TCOLORS.length]});tourRenderEdit();beep(620,.06)}
+function tourDelTeam(i){if(tourEdit.length<=2)return;tourEdit.splice(i,1);tourRenderEdit();beep(400,.06)}
+function tourCloseSetup(){$('tourSetupOv').classList.remove('show')}
+/* --- 시작 --- */
+function tourStart(){const teams=tourEdit.map((t,i)=>({name:(t.name||'').trim()||((i+1)+'모둠'),color:t.color,score:0,wins:0}));
+  if(teams.length<2)return;
+  TOUR={active:true,teams,log:[]};tourSave();tourCloseSetup();tourRenderBar();
+  beep(660,.1);setTimeout(()=>beep(880,.14),110);setTimeout(()=>beep(1046,.18),240);tourConfetti(50)}
+/* --- 스코어 바 --- */
+function tourRenderBar(){const bar=$('tourBar');if(!bar)return;
+  if(!TOUR.active){bar.style.display='none';return}
+  bar.style.display='';const max=Math.max(0,...TOUR.teams.map(t=>t.score));
+  const wrap=$('tourBarTeams');wrap.innerHTML='';
+  TOUR.teams.forEach(t=>{const lead=t.score===max&&max>0;const el=document.createElement('div');
+    el.className='tour-chip'+(lead?' lead':'');el.style.setProperty('--tc',t.color);
+    el.innerHTML=`<span class="tc-crown">${lead?'👑':''}</span><span class="tc-name">${esc(t.name)}</span><span class="tc-score">${t.score}</span>`;
+    wrap.appendChild(el)})}
+/* --- 결과 입력 (A: 승리팀 +1 / B: 등수 3·2·1) --- */
+function tourResult(){if(!TOUR.active){tourOpen();return}tourRankPick=[];$('tourResultOv').classList.add('show');tourSetMode('win')}
+function tourSetMode(m){tourMode=m;tourRankPick=[];
+  $('tourModeWin').classList.toggle('on',m==='win');$('tourModeRank').classList.toggle('on',m==='rank');
+  $('tourResultHint').textContent=m==='win'?'이번 판에서 이긴 팀을 누르세요 (바로 +1점)':'1등부터 순서대로 팀을 누르세요 · 1등 +3 · 2등 +2 · 3등 +1';
+  $('tourApplyBtn').style.display=m==='rank'?'':'none';tourRenderPick()}
+function tourRenderPick(){const wrap=$('tourPick');if(!wrap)return;wrap.innerHTML='';
+  TOUR.teams.forEach((t,i)=>{const btn=document.createElement('button');btn.className='tour-pbtn';btn.style.setProperty('--tc',t.color);
+    const pos=tourRankPick.indexOf(i);let badge='';
+    if(tourMode==='rank'&&pos>=0){const medal=['🥇','🥈','🥉'][pos]||((pos+1)+'위');badge=`<span class="tour-rankbadge">${medal}</span>`;btn.classList.add('picked')}
+    btn.innerHTML=`${badge}<span class="tp-name">${esc(t.name)}</span><span class="tp-score">${t.score}점</span>`;
+    btn.onclick=()=>tourPickTeam(i);wrap.appendChild(btn)})}
+function tourPickTeam(i){if(tourMode==='win'){tourApplyWin(i);return}
+  const pos=tourRankPick.indexOf(i);if(pos>=0)tourRankPick.splice(pos,1);else tourRankPick.push(i);beep(560,.05);tourRenderPick()}
+function tourApplyWin(i){const t=TOUR.teams[i];t.score+=1;t.wins+=1;
+  TOUR.log.push({kind:'win',text:t.name+' 승리 (+1)',deltas:[{i,score:1,wins:1}]});tourSave();
+  tourCloseResult();tourRenderBar();tourCelebrate('🏅 '+t.name+' 승리! +1',t.color)}
+function tourApply(){if(!tourRankPick.length){beep(200,.15);return}
+  const pts=[3,2,1];const deltas=[];
+  tourRankPick.forEach((ti,pos)=>{const add=pts[pos]||0;const w=pos===0?1:0;if(add<=0&&w<=0)return;
+    TOUR.teams[ti].score+=add;TOUR.teams[ti].wins+=w;deltas.push({i:ti,score:add,wins:w})});
+  const first=TOUR.teams[tourRankPick[0]];
+  TOUR.log.push({kind:'rank',text:'등수: '+tourRankPick.map((ti,pos)=>(pos+1)+'위 '+TOUR.teams[ti].name).join(', '),deltas});
+  tourSave();tourCloseResult();tourRenderBar();tourCelebrate('🥇 '+first.name+' 1위!',first.color)}
+function tourDraw(){const deltas=[];TOUR.teams.forEach((t,i)=>{t.score+=1;deltas.push({i,score:1,wins:0})});
+  TOUR.log.push({kind:'draw',text:'무승부 (전원 +1)',deltas});tourSave();tourCloseResult();tourRenderBar();tourCelebrate('🤝 무승부! 전원 +1',null)}
+function tourCloseResult(){$('tourResultOv').classList.remove('show')}
+function tourUndo(){const last=TOUR.log.pop();if(!last){beep(200,.15);return}
+  last.deltas.forEach(d=>{const t=TOUR.teams[d.i];if(t){t.score-=d.score;t.wins-=d.wins}});
+  tourSave();tourRenderBar();tourRenderRank();beep(320,.1)}
+/* --- 순위/관리 --- */
+function tourRank(){tourRenderRank();$('tourRankOv').classList.add('show')}
+function tourRenderRank(){const wrap=$('tourStandings');if(!wrap)return;wrap.innerHTML='';
+  const sorted=tourSorted();const max=Math.max(1,...sorted.map(t=>t.score));
+  sorted.forEach((t,rank)=>{const medal=['🥇','🥈','🥉'][rank]||((rank+1)+'위');
+    const row=document.createElement('div');row.className='tour-strow';row.style.setProperty('--tc',t.color);
+    row.innerHTML=`<span class="ts-rank">${medal}</span><span class="ts-name">${esc(t.name)}</span>`+
+      `<span class="ts-bar"><span class="ts-fill" style="width:${Math.round(t.score/max*100)}%"></span></span>`+
+      `<span class="ts-score">${t.score}</span>`;
+    wrap.appendChild(row)});
+  const log=$('tourLog');if(log){const n=TOUR.log.length;log.innerHTML=`<b>${n}</b>판 진행됨`+(n?' · 최근: '+esc(TOUR.log[n-1].text):' · 아직 결과가 없어요')}}
+function tourCloseRank(){$('tourRankOv').classList.remove('show')}
+/* --- 시상식 --- */
+function tourEnd(){if(!TOUR.active)return;const sorted=tourSorted();tourCloseRank();tourRenderPodium(sorted);
+  $('tourEndOv').classList.add('show');
+  beep(523,.15);setTimeout(()=>beep(659,.15),150);setTimeout(()=>beep(784,.15),300);setTimeout(()=>beep(1046,.4),450);
+  tourConfetti(120);setTimeout(()=>tourConfetti(80),500)}
+function tourRenderPodium(sorted){const champ=sorted[0];if(!champ)return;
+  $('tourChampTag').innerHTML='🏆 '+esc(champ.name)+' 우승!';
+  const pod=$('tourPodium');pod.innerHTML='';const top=sorted.slice(0,3);
+  const order=top.length===1?[0]:top.length===2?[1,0]:[1,0,2];const heights=[104,76,56];const medals=['🥇','🥈','🥉'];
+  order.forEach(r=>{const t=top[r];const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',t.color);
+    d.innerHTML=`<div class="medal">${medals[r]}</div><div class="name">${esc(t.name)}</div><div class="bar" style="height:${heights[r]}px">${t.score}</div>`;
+    pod.appendChild(d)});
+  const fr=$('tourFullRank');if(fr)fr.innerHTML=sorted.map((t,r)=>`<div class="tfr-row"><span>${['🥇','🥈','🥉'][r]||((r+1)+'위')}</span><span style="color:${t.color}">${esc(t.name)}</span><span>${t.score}점 · ${t.wins}승</span></div>`).join('')}
+function tourCloseEnd(){$('tourEndOv').classList.remove('show')}
+/* --- 초기화 --- */
+function tourReset(fromEnd){if(!fromEnd&&!confirm('대전 점수를 모두 지우고 초기화할까요?'))return;
+  TOUR={active:false,teams:[],log:[]};tourEdit=[];try{localStorage.removeItem(TKEY)}catch(e){}
+  tourRenderBar();tourCloseRank();tourCloseEnd();
+  if(fromEnd){tourEditInit();$('tourSetupOv').classList.add('show')}beep(400,.1)}
+/* --- 연출 --- */
+function tourConfetti(n){n=n||60;const cols=['#e23b3b','#3a8bff','#46c24a','#f5c518','#f0843c','#a878ec','#34d6d6','#f06db0','#fff'];
+  for(let k=0;k<n;k++){const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'vw';c.style.background=cols[Math.floor(Math.random()*cols.length)];
+    c.style.animationDuration=(1.5+Math.random()*1.8)+'s';c.style.animationDelay=(Math.random()*0.4)+'s';
+    if(Math.random()<0.5)c.style.borderRadius='50%';document.body.appendChild(c);setTimeout(()=>c.remove(),3800)}}
+function tourCelebrate(text,color){const el=document.createElement('div');el.className='tour-pop';el.textContent=text;if(color)el.style.color=color;
+  document.body.appendChild(el);tourConfetti(40);beep(740,.1,'triangle');setTimeout(()=>beep(988,.14,'triangle'),110);setTimeout(()=>el.remove(),1500)}
+
 (function(){const eg=document.querySelector('.entry-games'),out=$('egDesc');if(!eg||!out)return;
   const def='게임에 마우스를 올리거나 탭하면 설명이 나와요 👆';
   const set=t=>{const c=t&&t.closest?t.closest('.eg'):null;if(c&&c.dataset.desc)out.textContent=c.dataset.desc};
@@ -2514,6 +2485,7 @@ setBiome('wild');
 sortCards();
 loadGlobalPlays();
 loadVisits();
+try{tourLoad();tourRenderBar()}catch(e){}
 </script>
 </body>
 </html>
