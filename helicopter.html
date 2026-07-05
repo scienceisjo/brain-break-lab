@@ -8,12 +8,12 @@
   @import url('https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700;900&display=swap');
 
   :root {
-    --bg: #0a0e0a;
     --neon: #39ff7a;
     --neon-dim: #1f8f44;
     --amber: #ffb000;
     --danger: #ff3b3b;
-    --scan: rgba(57,255,122,0.03);
+    --glow-rgb: 57,255,122;
+    --scan: rgba(var(--glow-rgb),0.03);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,17 +41,18 @@
     max-height: 100vh;
     box-shadow:
       0 0 0 2px var(--neon-dim),
-      0 0 40px rgba(57,255,122,0.25),
+      0 0 40px rgba(var(--glow-rgb),0.25),
       inset 0 0 120px rgba(0,0,0,0.9);
     border-radius: 14px;
     overflow: hidden;
+    transition: box-shadow .3s ease;
   }
 
   canvas {
     display: block;
     width: 100%;
     height: 100%;
-    background: var(--bg);
+    background: #0a0e0a;
     image-rendering: pixelated;
     cursor: pointer;
   }
@@ -85,7 +86,7 @@
   .hud-val {
     font-family: 'VT323', monospace;
     font-size: clamp(24px,4.6vw,42px); line-height: 0.9;
-    color: var(--neon); text-shadow: 0 0 12px rgba(57,255,122,0.7);
+    color: var(--neon); text-shadow: 0 0 12px rgba(var(--glow-rgb),0.7);
   }
   .hud-val.best { color: var(--amber); text-shadow: 0 0 12px rgba(255,176,0,0.6); }
   .hud-who {
@@ -98,25 +99,26 @@
     position: absolute; inset: 0; z-index: 7;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; background: rgba(5,10,5,0.82); backdrop-filter: blur(2px);
-    gap: 4px; padding: 16px;
+    gap: 4px; padding: 14px;
   }
   .screen.hidden { display: none; }
+  #startScreen { gap: 6px; overflow-y: auto; }
 
   .title {
     font-family: 'Orbitron', sans-serif; font-weight: 900;
-    font-size: clamp(28px,7.5vw,72px); letter-spacing: 5px; color: var(--neon);
-    text-shadow: 0 0 18px rgba(57,255,122,0.8), 0 0 40px rgba(57,255,122,0.4);
+    font-size: clamp(26px,6.5vw,62px); letter-spacing: 5px; color: var(--neon);
+    text-shadow: 0 0 18px rgba(var(--glow-rgb),0.8), 0 0 40px rgba(var(--glow-rgb),0.4);
     animation: pulse 2.2s ease-in-out infinite; line-height: 1;
   }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.82;transform:scale(.99)} }
 
-  .sub { font-size: clamp(14px,2.2vw,20px); color: var(--amber); letter-spacing: 2px; margin-bottom: 4px; }
+  .sub { font-size: clamp(13px,2.1vw,19px); color: var(--amber); letter-spacing: 2px; margin-bottom: 2px; }
   .hint { font-size: clamp(13px,2vw,19px); color: #cfe9cf; letter-spacing: 1px; line-height: 1.35; }
   .blink { animation: blink 1s steps(2) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
 
   /* inputs */
-  .form { display: flex; gap: 8px; margin: 4px 0; flex-wrap: wrap; justify-content: center; }
+  .form { display: flex; gap: 8px; margin: 2px 0; flex-wrap: wrap; justify-content: center; }
   .field { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
   .field label {
     font-family: 'Orbitron', sans-serif; font-size: clamp(8px,1.2vw,11px);
@@ -131,33 +133,58 @@
     font-size: clamp(16px,2.4vw,22px);
     padding: 5px 9px; border-radius: 6px; outline: none; letter-spacing: 1px;
   }
-  .field input:focus { border-color: var(--neon); box-shadow: 0 0 12px rgba(57,255,122,0.4); }
+  .field input:focus { border-color: var(--neon); box-shadow: 0 0 12px rgba(var(--glow-rgb),0.4); }
   .field input::placeholder { color: #2d5a2d; }
 
   .greet {
     font-size: clamp(14px,2.2vw,21px); color: var(--amber); letter-spacing: 1px;
-    min-height: 1.4em; line-height: 1.35; text-shadow: 0 0 10px rgba(255,176,0,0.4);
-    margin: 6px 0; max-width: 90%;
+    min-height: 1.4em; line-height: 1.3; text-shadow: 0 0 10px rgba(255,176,0,0.4);
+    margin: 4px 0; max-width: 90%;
+  }
+
+  /* section labels */
+  .sec-label {
+    font-family:'Orbitron',sans-serif; font-size: clamp(9px,1.3vw,12px);
+    letter-spacing:3px; color: var(--neon-dim); font-weight:700; margin-top:4px;
+  }
+
+  /* map theme chips */
+  .themes { display: flex; gap: 8px; margin-top: 3px; flex-wrap: wrap; justify-content: center; }
+  .theme-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 9px; border-radius: 9px; cursor: pointer;
+    background: rgba(10,15,10,0.85); border: 2px solid rgba(255,255,255,0.12);
+    transition: all .15s; min-width: 56px;
+  }
+  .theme-chip .ticon { font-size: clamp(16px,2.6vw,22px); line-height: 1; }
+  .theme-chip .tname {
+    font-family:'Orbitron',sans-serif; font-weight:700;
+    font-size: clamp(9px,1.3vw,12px); letter-spacing:1px; color:#cfe9cf;
+  }
+  .theme-chip .tdot { width: 100%; height: 5px; border-radius: 3px; }
+  .theme-chip:hover, .theme-chip:active { transform: translateY(-2px); filter: brightness(1.25); }
+  .theme-chip.selected {
+    border-color: #fff;
+    box-shadow: 0 0 14px rgba(255,255,255,0.28);
+    background: rgba(24,32,24,0.95);
   }
 
   /* difficulty buttons */
-  .diff-label { font-family:'Orbitron',sans-serif; font-size: clamp(9px,1.3vw,12px); letter-spacing:3px; color: var(--neon-dim); font-weight:700; margin-top:4px; }
-  .diffs { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; justify-content: center; }
+  .diffs { display: flex; gap: 8px; margin-top: 3px; flex-wrap: wrap; justify-content: center; }
   .diff-btn {
     font-family: 'Orbitron', sans-serif; font-weight: 700;
-    font-size: clamp(13px,2vw,18px); letter-spacing: 2px;
-    padding: 9px 18px; border-radius: 8px; cursor: pointer;
+    font-size: clamp(13px,1.9vw,17px); letter-spacing: 1px;
+    padding: 8px 13px; border-radius: 8px; cursor: pointer;
     background: rgba(10,20,10,0.9); border: 2px solid; transition: all .15s;
     display: flex; flex-direction: column; align-items: center; gap: 1px;
   }
-  .diff-btn small { font-family:'VT323',monospace; font-size: clamp(10px,1.5vw,13px); letter-spacing:0; opacity:.75; font-weight:400; }
-  .diff-btn.low  { border-color: var(--neon);   color: var(--neon); }
-  .diff-btn.mid  { border-color: var(--amber);  color: var(--amber); }
-  .diff-btn.high { border-color: var(--danger); color: var(--danger); }
-  .diff-btn:hover, .diff-btn:active { transform: translateY(-2px) scale(1.04); filter: brightness(1.3); }
-  .diff-btn.low:hover  { box-shadow: 0 0 16px rgba(57,255,122,0.5); }
-  .diff-btn.mid:hover  { box-shadow: 0 0 16px rgba(255,176,0,0.5); }
-  .diff-btn.high:hover { box-shadow: 0 0 16px rgba(255,59,59,0.5); }
+  .diff-btn small { font-family:'VT323',monospace; font-size: clamp(10px,1.4vw,13px); letter-spacing:0; opacity:.75; font-weight:400; }
+  .diff-btn:hover, .diff-btn:active { transform: translateY(-2px) scale(1.04); filter: brightness(1.3); box-shadow: 0 0 16px var(--gc); }
+  .diff-btn.lv1 { --gc: rgba(57,255,192,0.5);  border-color:#39ffc0; color:#39ffc0; }
+  .diff-btn.lv2 { --gc: rgba(57,255,122,0.5);  border-color:#39ff7a; color:#39ff7a; }
+  .diff-btn.lv3 { --gc: rgba(255,210,58,0.5);  border-color:#ffd23a; color:#ffd23a; }
+  .diff-btn.lv4 { --gc: rgba(255,138,58,0.5);  border-color:#ff8a3a; color:#ff8a3a; }
+  .diff-btn.lv5 { --gc: rgba(255,59,59,0.5);   border-color:#ff3b3b; color:#ff3b3b; }
 
   .credit {
     position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; z-index: 8;
@@ -175,24 +202,24 @@
     color: var(--amber); font-size: clamp(15px,2.4vw,21px); letter-spacing: 2px;
     text-shadow: 0 0 12px rgba(255,176,0,0.6); animation: blink .6s steps(2) infinite;
   }
-  .copter-deco { font-size: clamp(24px,4.5vw,42px); margin-bottom: 2px; }
+  .copter-deco { font-size: clamp(22px,4vw,40px); margin-bottom: 0; }
   .btn-row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; justify-content:center; }
   .ghost-btn {
     font-family:'Orbitron',sans-serif; font-weight:700; font-size:clamp(12px,1.8vw,16px);
     letter-spacing:2px; padding:8px 16px; border-radius:8px; cursor:pointer;
     background: rgba(10,20,10,0.9); border:2px solid var(--neon-dim); color: var(--neon); transition: all .15s;
   }
-  .ghost-btn:hover { border-color: var(--neon); box-shadow:0 0 14px rgba(57,255,122,0.4); transform: translateY(-2px); }
+  .ghost-btn:hover { border-color: var(--neon); box-shadow:0 0 14px rgba(var(--glow-rgb),0.4); transform: translateY(-2px); }
 
   /* help screen */
   .help-body {
     max-width: 560px; width: 90%;
-    text-align: left; margin-top: 10px;
-    display: flex; flex-direction: column; gap: 9px;
+    text-align: left; margin-top: 8px;
+    display: flex; flex-direction: column; gap: 8px;
   }
   .help-body p {
     font-family: 'VT323', monospace;
-    font-size: clamp(14px,2.2vw,20px); line-height: 1.4; color: #cfe9cf; letter-spacing: 0.5px;
+    font-size: clamp(14px,2.2vw,20px); line-height: 1.35; color: #cfe9cf; letter-spacing: 0.5px;
   }
   .help-body .k {
     display: inline-block; min-width: 78px;
@@ -203,7 +230,7 @@
   .help-body b { color: var(--amber); }
   .help-body .tip {
     color: var(--amber); border-top: 1px solid var(--neon-dim);
-    padding-top: 9px; margin-top: 3px; line-height: 1.45;
+    padding-top: 8px; margin-top: 2px; line-height: 1.4;
   }
 </style>
 </head>
@@ -228,7 +255,7 @@
   <div class="screen" id="startScreen">
     <div class="copter-deco">🚁</div>
     <div class="title">HELICOPTER</div>
-    <div class="sub">동굴 탈출 비행</div>
+    <div class="sub" id="subLine">동굴 탈출 비행</div>
 
     <div class="form">
       <div class="field">
@@ -243,27 +270,33 @@
 
     <div class="greet" id="greet"></div>
 
-    <div class="diff-label">난이도를 선택하세요</div>
-    <div class="diffs">
-      <button class="diff-btn low"  data-diff="low">하<small>편안하게</small></button>
-      <button class="diff-btn mid"  data-diff="mid">중<small>적당하게</small></button>
-      <button class="diff-btn high" data-diff="high">상<small>도전!</small></button>
+    <div class="sec-label">맵 테마 선택</div>
+    <div class="themes" id="themeRow"></div>
+
+    <div class="sec-label">난이도 선택</div>
+    <div class="diffs" id="diffRow">
+      <button class="diff-btn lv1" data-diff="intro">입문<small>아주 쉽게</small></button>
+      <button class="diff-btn lv2" data-diff="low">하<small>편안하게</small></button>
+      <button class="diff-btn lv3" data-diff="mid">중<small>적당하게</small></button>
+      <button class="diff-btn lv4" data-diff="high">상<small>도전!</small></button>
+      <button class="diff-btn lv5" data-diff="extreme">극한<small>극한도전!!</small></button>
     </div>
 
-    <button class="ghost-btn" id="helpBtn" style="margin-top:14px;">❔ 게임 방법</button>
+    <button class="ghost-btn" id="helpBtn" style="margin-top:10px;">❔ 게임 방법</button>
   </div>
 
   <!-- HELP -->
   <div class="screen hidden" id="helpScreen">
     <div class="title" style="font-size:clamp(22px,5vw,42px);">게임 방법</div>
     <div class="help-body">
-      <p><span class="k">🚁 목표</span> 헬리콥터를 조종해 동굴 벽에 부딪히지 않고 최대한 멀리 날아가세요.</p>
+      <p><span class="k">🚁 목표</span> 헬리콥터를 조종해 벽에 부딪히지 않고 최대한 멀리 날아가세요.</p>
       <p><span class="k">🖱️ 조작</span> 누르고 있으면 <b>상승</b>, 떼면 <b>하강</b>합니다.<br>마우스 클릭 · 스페이스바 · ↑ 화살표 · 화면 터치 모두 가능해요.</p>
-      <p><span class="k">⚠️ 주의</span> 위·아래 벽과 주황색 블록 장애물에 닿으면 추락! 갈수록 통로가 좁아지고 빨라집니다.</p>
-      <p><span class="k">🏆 기록</span> 학교·닉네임별로 최고 기록(DISTANCE)이 저장돼요. 난이도(하·중·상)마다 따로 기록됩니다.</p>
+      <p><span class="k">⚠️ 주의</span> 위·아래 벽과 블록 장애물에 닿으면 추락! 갈수록 통로가 좁아지고 빨라집니다.</p>
+      <p><span class="k">🗺️ 맵 테마</span> 동굴·얼음·용암·심해·우주 5종 중 원하는 배경으로 즐기세요. 기록은 <b>난이도별</b>로 함께 저장돼 어느 맵에서 깨도 인정됩니다.</p>
+      <p><span class="k">🎚️ 난이도</span> 입문 → 하 → 중 → 상 → 극한 5단계. 중부터 블록 장애물이 등장해요.</p>
       <p class="tip">💡 팁: 미리 살짝 띄워두는 것보다, 짧게 톡톡 끊어 누르며 높이를 미세하게 맞추는 게 오래 버티는 비결이에요.</p>
     </div>
-    <button class="ghost-btn" id="helpCloseBtn" style="margin-top:16px;">◀ 돌아가기</button>
+    <button class="ghost-btn" id="helpCloseBtn" style="margin-top:14px;">◀ 돌아가기</button>
   </div>
 
   <!-- GAME OVER -->
@@ -274,7 +307,7 @@
     <div class="scoreline" id="overBest" style="font-size:clamp(14px,2.2vw,19px);color:var(--amber);"></div>
     <div class="btn-row">
       <button class="ghost-btn" id="retryBtn">▶ 다시 (<span id="retryDiff">상</span>)</button>
-      <button class="ghost-btn" id="homeBtn">난이도 변경</button>
+      <button class="ghost-btn" id="homeBtn">맵 · 난이도 변경</button>
     </div>
   </div>
 
@@ -296,6 +329,8 @@
   const schoolIn = document.getElementById('schoolIn');
   const nickIn = document.getElementById('nickIn');
   const greetEl = document.getElementById('greet');
+  const subLine = document.getElementById('subLine');
+  const themeRow = document.getElementById('themeRow');
   const retryBtn = document.getElementById('retryBtn');
   const homeBtn = document.getElementById('homeBtn');
   const retryDiffEl = document.getElementById('retryDiff');
@@ -314,17 +349,49 @@
   resize();
   window.addEventListener('resize', resize);
 
-  // ---- Difficulty presets ----
-  // 상(high) = 기존 난이도. 중/하는 점점 완만하게.
-  const DIFF = {
-    low:  { name:'하', grav:0.26, lift:-0.44, baseSpeed:1.9, ramp:0.0005, baseGap:330, narrow:0.004, minGap:215, blocks:false, blockMin:140, blockMax:250 },
-    mid:  { name:'중', grav:0.34, lift:-0.53, baseSpeed:2.4, ramp:0.0010, baseGap:280, narrow:0.0075,minGap:165, blocks:true,  blockMin:110, blockMax:210 },
-    high: { name:'상', grav:0.42, lift:-0.62, baseSpeed:3.0, ramp:0.0016, baseGap:230, narrow:0.012, minGap:120, blocks:true,  blockMin:70,  blockMax:150 },
+  function rand(a,b){ return a + Math.random()*(b-a); }
+
+  // ---- Map themes (visual only; records shared by difficulty) ----
+  const THEMES = {
+    cave:  { name:'동굴', short:'동굴', icon:'🕳️', sub:'동굴 탈출 비행',
+             bg:'#0a0e0a', terrainFill:'#16261a', line:'#39ff7a', glow:'#39ff7a',
+             heli:'#39ff7a', rotor:'#cfe9cf', block:'#ffb000',
+             ui:'#39ff7a', dim:'#1f8f44', glowRGB:'57,255,122', ambient:null },
+    ice:   { name:'얼음 동굴', short:'얼음', icon:'❄️', sub:'얼음 동굴 비행',
+             bg:'#050d14', terrainFill:'#0e2233', line:'#5fd8ff', glow:'#5fd8ff',
+             heli:'#aef0ff', rotor:'#ffffff', block:'#7ad0ff',
+             ui:'#5fd8ff', dim:'#2a6a8a', glowRGB:'95,216,255', ambient:'snow' },
+    lava:  { name:'용암 지대', short:'용암', icon:'🌋', sub:'용암 지대 비행',
+             bg:'#140604', terrainFill:'#2a0e08', line:'#ff6a2a', glow:'#ff8a3a',
+             heli:'#ffd070', rotor:'#ffe0a0', block:'#ff3b3b',
+             ui:'#ff8a3a', dim:'#8a3a1a', glowRGB:'255,138,58', ambient:'ember' },
+    ocean: { name:'심해 협곡', short:'심해', icon:'🌊', sub:'심해 협곡 비행',
+             bg:'#020a14', terrainFill:'#08202e', line:'#3affd0', glow:'#3affd0',
+             heli:'#7affe0', rotor:'#d0fff0', block:'#ffd23a',
+             ui:'#3affd0', dim:'#1a6a5a', glowRGB:'58,255,208', ambient:'bubble' },
+    space: { name:'우주 정거장', short:'우주', icon:'🌌', sub:'우주 정거장 비행',
+             bg:'#08040f', terrainFill:'#160a26', line:'#c080ff', glow:'#c080ff',
+             heli:'#e0b0ff', rotor:'#f5e6ff', block:'#ff4090',
+             ui:'#c080ff', dim:'#5a2a8a', glowRGB:'192,128,255', ambient:'star' },
   };
-  let cfg = DIFF.high;
+  const THEME_ORDER = ['cave','ice','lava','ocean','space'];
+
+  // ---- Difficulty presets (5 tiers) ----
+  const DIFF = {
+    intro:  { name:'입문', grav:0.22, lift:-0.40, baseSpeed:1.5, ramp:0.0003, baseGap:380, narrow:0.0025, minGap:270, blocks:false, blockMin:160, blockMax:280 },
+    low:    { name:'하',   grav:0.26, lift:-0.44, baseSpeed:1.9, ramp:0.0005, baseGap:330, narrow:0.004,  minGap:215, blocks:false, blockMin:140, blockMax:250 },
+    mid:    { name:'중',   grav:0.34, lift:-0.53, baseSpeed:2.4, ramp:0.0010, baseGap:280, narrow:0.0075, minGap:165, blocks:true,  blockMin:110, blockMax:210 },
+    high:   { name:'상',   grav:0.42, lift:-0.62, baseSpeed:3.0, ramp:0.0016, baseGap:230, narrow:0.012,  minGap:120, blocks:true,  blockMin:70,  blockMax:150 },
+    extreme:{ name:'극한', grav:0.50, lift:-0.70, baseSpeed:3.6, ramp:0.0022, baseGap:195, narrow:0.017,  minGap:92,  blocks:true,  blockMin:55,  blockMax:120 },
+  };
+  const IDLE = { name:'—', grav:0.3, lift:-0.5, baseSpeed:1.2, ramp:0, baseGap:300, narrow:0, minGap:300, blocks:false, blockMin:999, blockMax:999 };
+
+  let T = THEMES.cave;
+  let curTheme = 'cave';
+  let cfg = IDLE;
   let curDiff = 'high';
 
-  // ---- localStorage helpers ----
+  // ---- localStorage helpers (records keyed by difficulty, theme-agnostic) ----
   function safe(s){ return (s||'').trim(); }
   function keyFor(school, nick, diff){
     return 'heli_best::' + encodeURIComponent(safe(school)) + '::' + encodeURIComponent(safe(nick)) + '::' + diff;
@@ -337,7 +404,9 @@
     try { localStorage.setItem(keyFor(school,nick,diff), String(val)); } catch(e){}
   }
   function bestAcrossDiffs(school, nick){
-    return Math.max(getBest(school,nick,'low'), getBest(school,nick,'mid'), getBest(school,nick,'high'));
+    let m = 0;
+    for (const d of ['intro','low','mid','high','extreme']) m = Math.max(m, getBest(school,nick,d));
+    return m;
   }
 
   // remember last entered identity
@@ -358,7 +427,30 @@
   }
   schoolIn.addEventListener('input', updateGreeting);
   nickIn.addEventListener('input', updateGreeting);
-  updateGreeting();
+
+  // ---- build theme chips ----
+  THEME_ORDER.forEach(id=>{
+    const t = THEMES[id];
+    const b = document.createElement('button');
+    b.className = 'theme-chip'; b.dataset.theme = id;
+    b.innerHTML = `<span class="ticon">${t.icon}</span><span class="tname">${t.short}</span><span class="tdot" style="background:${t.ui}"></span>`;
+    b.addEventListener('click', ()=> applyTheme(id));
+    themeRow.appendChild(b);
+  });
+
+  function applyTheme(id){
+    if (!THEMES[id]) id = 'cave';
+    curTheme = id; T = THEMES[id];
+    const r = document.documentElement.style;
+    r.setProperty('--neon', T.ui);
+    r.setProperty('--neon-dim', T.dim);
+    r.setProperty('--glow-rgb', T.glowRGB);
+    subLine.textContent = T.sub;
+    document.querySelectorAll('.theme-chip').forEach(c=> c.classList.toggle('selected', c.dataset.theme === id));
+    ambient = [];
+    if (T.ambient === 'star') initStars(); else stars = [];
+    try { localStorage.setItem('heli_lastTheme', id); } catch(e){}
+  }
 
   // ---- Game state ----
   const STATE = { START:0, PLAY:1, OVER:2 };
@@ -379,7 +471,75 @@
   let dist = 0, frames = 0;
   let particles = [], smoke = [], shake = 0;
 
-  function rand(a,b){ return a + Math.random()*(b-a); }
+  // ---- ambient atmosphere ----
+  let ambient = [], stars = [], flow = 0;
+
+  function initStars(){
+    stars = [];
+    for (let i=0;i<70;i++){
+      stars.push({ x:rand(0,W), y:rand(0,H), sz:rand(1,2.2), sp:rand(0.15,0.6),
+                   ph:rand(0,6.28), tw:rand(0.02,0.06), big:Math.random()<0.2 });
+    }
+  }
+  function spawnAmbient(type, anywhere){
+    if (type==='snow')  return { x:rand(0,W), y: anywhere?rand(-H,H):rand(-20,-2), vy:rand(0.5,1.6), sz:rand(1,2.6) };
+    if (type==='ember') return { x:rand(0,W), y: anywhere?rand(0,H):rand(H+2,H+20), vy:rand(0.5,1.5), sz:rand(1,2.4), fl:rand(0,6) };
+    if (type==='bubble')return { x:rand(0,W), y: anywhere?rand(0,H):rand(H+2,H+20), vy:rand(0.4,1.1), sz:rand(2,5), seed:rand(0,6) };
+    return { x:0, y:0 };
+  }
+  function stepAmbient(){
+    const type = T.ambient;
+    if (type === 'star'){
+      for (const s of stars){ s.x -= s.sp; if (s.x < -2){ s.x = W+2; s.y = rand(0,H); } s.ph += s.tw; }
+      return;
+    }
+    if (!type){ if (ambient.length) ambient.length = 0; return; }
+    const target = 46;
+    while (ambient.length < target) ambient.push(spawnAmbient(type, true));
+    for (const p of ambient){
+      if (type==='snow'){
+        p.y += p.vy; p.x -= flow*0.3 + Math.sin(p.y*0.02)*0.3;
+        if (p.y > H+4) Object.assign(p, spawnAmbient('snow'));
+      } else if (type==='ember'){
+        p.y -= p.vy; p.x -= flow*0.4; p.fl += 0.2;
+        if (p.y < -4) Object.assign(p, spawnAmbient('ember'));
+      } else if (type==='bubble'){
+        p.y -= p.vy; p.x += Math.sin(p.y*0.03 + p.seed)*0.5 - flow*0.3;
+        if (p.y < -6) Object.assign(p, spawnAmbient('bubble'));
+      }
+      if (p.x < -6) p.x = W+6;
+      else if (p.x > W+6) p.x = -6;
+    }
+  }
+  function drawStars(){
+    for (const s of stars){
+      const a = 0.35 + 0.5*Math.max(0, Math.sin(s.ph));
+      ctx.globalAlpha = a;
+      ctx.fillStyle = s.big ? T.rotor : T.ui;
+      ctx.fillRect(s.x, s.y, s.sz, s.sz);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function drawAmbient(){
+    const type = T.ambient;
+    if (type==='snow'){
+      ctx.fillStyle = '#ffffff';
+      for (const p of ambient){ ctx.globalAlpha = 0.55; ctx.beginPath(); ctx.arc(p.x,p.y,p.sz,0,Math.PI*2); ctx.fill(); }
+    } else if (type==='ember'){
+      for (const p of ambient){
+        ctx.globalAlpha = Math.max(0.15, 0.45 + 0.35*Math.sin(p.fl));
+        ctx.fillStyle = Math.sin(p.fl) > 0 ? '#ff9a3a' : '#ff5a2a';
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.sz,0,Math.PI*2); ctx.fill();
+      }
+    } else if (type==='bubble'){
+      ctx.strokeStyle = T.line; ctx.lineWidth = 1.4;
+      for (const p of ambient){
+        ctx.globalAlpha = 0.3; ctx.beginPath(); ctx.arc(p.x,p.y,p.sz,0,Math.PI*2); ctx.stroke();
+        ctx.globalAlpha = 0.5; ctx.beginPath(); ctx.arc(p.x-p.sz*0.3, p.y-p.sz*0.3, p.sz*0.25, 0, Math.PI*2); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
 
   function initTerrain(){
     terrain = []; centerY = H/2; targetCenter = H/2; gap = cfg.baseGap;
@@ -465,6 +625,7 @@
     state = STATE.START;
     overScreen.classList.add('hidden');
     startScreen.classList.remove('hidden');
+    cfg = IDLE; reset();
     updateGreeting();
   });
   helpBtn.addEventListener('click', ()=>{
@@ -548,13 +709,13 @@
     ctx.beginPath(); ctx.moveTo(0,0);
     for (let i=0;i<terrain.length;i++) ctx.lineTo(i*SLICE-scrollX, terrain[i].top);
     ctx.lineTo(W,0); ctx.closePath();
-    ctx.fillStyle = '#16261a'; ctx.fill();
+    ctx.fillStyle = T.terrainFill; ctx.fill();
 
     ctx.beginPath(); ctx.moveTo(0,H);
     for (let i=0;i<terrain.length;i++) ctx.lineTo(i*SLICE-scrollX, terrain[i].bottom);
     ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
 
-    ctx.lineWidth=2.5; ctx.strokeStyle='#39ff7a'; ctx.shadowColor='#39ff7a'; ctx.shadowBlur=8;
+    ctx.lineWidth=2.5; ctx.strokeStyle=T.line; ctx.shadowColor=T.glow; ctx.shadowBlur=8;
     ctx.beginPath();
     for (let i=0;i<terrain.length;i++){ const x=i*SLICE-scrollX; i===0?ctx.moveTo(x,terrain[i].top):ctx.lineTo(x,terrain[i].top); }
     ctx.stroke();
@@ -563,7 +724,7 @@
     ctx.stroke();
     ctx.shadowBlur=0;
 
-    ctx.strokeStyle='rgba(57,255,122,0.06)'; ctx.lineWidth=1;
+    ctx.strokeStyle=`rgba(${T.glowRGB},0.06)`; ctx.lineWidth=1;
     for (let i=0;i<terrain.length;i+=2){
       const x=i*SLICE-scrollX;
       ctx.beginPath();
@@ -574,8 +735,8 @@
   }
   function drawBlocks(){
     for (const b of blocks){
-      ctx.fillStyle='#0e1a0e'; ctx.fillRect(b.x,b.y,b.w,b.h);
-      ctx.strokeStyle='#ffb000'; ctx.lineWidth=2; ctx.shadowColor='#ffb000'; ctx.shadowBlur=6;
+      ctx.fillStyle=T.terrainFill; ctx.fillRect(b.x,b.y,b.w,b.h);
+      ctx.strokeStyle=T.block; ctx.lineWidth=2; ctx.shadowColor=T.block; ctx.shadowBlur=6;
       ctx.strokeRect(b.x,b.y,b.w,b.h); ctx.shadowBlur=0;
     }
   }
@@ -590,21 +751,21 @@
     const x=heli.x, y=heli.y;
     const tilt=Math.max(-0.4,Math.min(0.4,heli.vy*0.05));
     ctx.save(); ctx.translate(x,y); ctx.rotate(tilt);
-    ctx.shadowColor='#39ff7a'; ctx.shadowBlur=12;
-    ctx.fillStyle='#39ff7a';
+    ctx.shadowColor=T.glow; ctx.shadowBlur=12;
+    ctx.fillStyle=T.heli;
     ctx.beginPath(); ctx.ellipse(0,0,13,7,0,0,Math.PI*2); ctx.fill();
     ctx.fillRect(-22,-2,14,4);
     ctx.beginPath(); ctx.moveTo(-22,-2); ctx.lineTo(-26,-9); ctx.lineTo(-20,-2); ctx.closePath(); ctx.fill();
     ctx.shadowBlur=0;
-    ctx.fillStyle='#0a0e0a'; ctx.beginPath(); ctx.ellipse(5,-1,4,3,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=T.bg; ctx.beginPath(); ctx.ellipse(5,-1,4,3,0,0,Math.PI*2); ctx.fill();
     const rphase=(frames*1.2)%(Math.PI*2);
-    ctx.strokeStyle='#cfe9cf'; ctx.lineWidth=2;
+    ctx.strokeStyle=T.rotor; ctx.lineWidth=2;
     const rw=Math.cos(rphase)>0?22:8;
     ctx.beginPath(); ctx.moveTo(-rw,-10); ctx.lineTo(rw,-10); ctx.stroke();
-    ctx.fillStyle='#cfe9cf'; ctx.fillRect(-1.5,-11,3,5);
+    ctx.fillStyle=T.rotor; ctx.fillRect(-1.5,-11,3,5);
     const tw=Math.sin(rphase)>0?5:2;
     ctx.beginPath(); ctx.moveTo(-25,-2-tw); ctx.lineTo(-25,-2+tw); ctx.stroke();
-    ctx.strokeStyle='#1f8f44'; ctx.lineWidth=1.5;
+    ctx.strokeStyle=T.dim; ctx.lineWidth=1.5;
     ctx.beginPath(); ctx.moveTo(-8,8); ctx.lineTo(8,8);
     ctx.moveTo(-5,7); ctx.lineTo(-5,8); ctx.moveTo(5,7); ctx.lineTo(5,8); ctx.stroke();
     ctx.restore();
@@ -619,8 +780,10 @@
   function render(){
     ctx.save();
     if (shake>0.5) ctx.translate(rand(-shake,shake), rand(-shake,shake));
-    ctx.fillStyle='#0a0e0a'; ctx.fillRect(-20,-20,W+40,H+40);
+    ctx.fillStyle=T.bg; ctx.fillRect(-20,-20,W+40,H+40);
+    if (T.ambient==='star') drawStars();
     drawTerrain(); drawBlocks();
+    if (T.ambient && T.ambient!=='star') drawAmbient();
     if (state===STATE.PLAY){ drawSmoke(); drawHeli(); }
     else if (state===STATE.OVER){ drawParticles(); }
     else { drawHeli(); }
@@ -628,13 +791,26 @@
   }
 
   function loop(){
+    flow = (state===STATE.PLAY) ? speed : (state===STATE.START ? 1.2 : 0);
+    stepAmbient();
     if (state===STATE.PLAY) update();
     else if (state===STATE.OVER) updateDead();
-    else { heli.y = H/2 + Math.sin(frames*0.05)*14; frames++; }
+    else {
+      frames++;
+      scrollX += 1.2;
+      while (scrollX >= SLICE){ scrollX -= SLICE; pushSlice(); }
+      heli.y = H/2 + Math.sin(frames*0.05)*14;
+    }
     render();
     requestAnimationFrame(loop);
   }
 
+  // ---- boot ----
+  let lastTheme = 'cave';
+  try { lastTheme = localStorage.getItem('heli_lastTheme') || 'cave'; } catch(e){}
+  applyTheme(lastTheme);
+  updateGreeting();
+  cfg = IDLE;
   reset();
   loop();
 })();
