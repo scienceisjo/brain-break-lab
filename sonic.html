@@ -634,6 +634,9 @@
 <div class="overlay" id="hofOv" style="position:fixed;z-index:120">
   <div class="panel" style="max-width:560px;max-height:88vh;overflow:auto">
     <div class="winner-tag">🏆 명예의 전당</div>
+    <div style="font-family:'Do Hyeon';color:#ffe08a;background:rgba(247,201,72,.12);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:clamp(13px,2vh,16px);line-height:1.5;box-shadow:0 0 0 2px var(--outline)">
+      🛠️ <b>전국 랭킹 데이터베이스는 잠시 가동 중지 상태예요.</b><br>지금은 <b>💻 우리 교실</b>(이 기기) 기록만 표시됩니다. 곧 다시 열릴게요!
+    </div>
     <div class="biome-tabs" style="margin:0 0 12px">
       <button class="btab on" id="hofTabNat" onclick="hofTab('nat')">🌍 전국 통합</button>
       <button class="btab" id="hofTabLocal" onclick="hofTab('local')">💻 우리 교실(이 기기에 저장)</button>
@@ -839,15 +842,20 @@
         <span class="eg" data-desc="누르면 상승·떼면 하강! 좁아지는 동굴을 부딪히지 않고 멀리. 1~2인 대결.">🚁 헬리콥터 🏆</span>
         <span class="eg" data-desc="벽에 튕기는 공을 나무 막대로 받아내기! 점수가 오를수록 공이 빨라지고 점점 늘어나요. (1인)">🏀 공 튕기기 🏆</span>
         <span class="eg" data-desc="위에서 본 진짜 드럼킷! 터치·키보드 연주, 4가지 킷·5가지 그루브 백킹·메트로놈·녹음/루프.">🥁 드럼 연습실</span>
+        <span class="eg" data-desc="🤝 단합대회 · 한 명만 다른 제시어! 대화로 거짓말쟁이를 찾아라. (새 탭)">🕵️ 라이어 게임</span>
+        <span class="eg" data-desc="🤝 단합대회 · 제시된 주제에 맞는 답 3가지를 5초 안에! 개인전·모둠전 + 찬스 카드. (새 탭)">⏱️ 5초 준다</span>
+        <span class="eg" data-desc="🤝 단합대회 · '훈민정~음!' 외치고 나타난 초성으로 낱말 대기! 끝내 못 외친 팀이 벌칙. (새 탭)">📜 훈민정음</span>
+        <span class="eg" data-desc="🤝 단합대회 · 기기를 돌려가며 한 명씩 이어 그리기! 내가 그린 게 딴 그림이 되어 돌아온다. (새 탭)">🖍️ 그림 이어그리기</span>
+        <span class="eg" data-desc="🤝 단합대회 · 다 같이 '오~/에이~'로 대표를 목표 행동까지 유도! 마이크 소리 크기 시각화. (새 탭)">🐮 소몰이 게임</span>
       </div>
       <div class="eg-desc" id="egDesc">게임에 마우스를 올리거나 탭하면 설명이 나와요 👆</div>
-      <div class="entry-legend">🏆 표시는 <b>전국 랭킹</b>에 기록되는 게임이에요 (총 9종)</div>
+      <div class="entry-legend">🏆 표시는 <b>최고기록</b>에 도전하는 게임 · 🤝 단합대회 게임은 새 탭에서 열려요</div>
     </div>
 
     <div class="entry-box">
-      <h3 class="entry-h">🏆 명예의 전당에 이름 올리기</h3>
-      <p class="entry-note"><b style="color:var(--gold)">닉네임은 필수</b>예요. 적고 입장하면 좋은 기록이 <b>자동으로 전국 랭킹</b>에 등록돼요. (학교는 선택)</p>
-      <input id="entryNick" class="rec-input" maxlength="8" placeholder="닉네임 (최대 8자) *필수">
+      <h3 class="entry-h">🏆 명예의 전당</h3>
+      <p class="entry-note">🛠️ <b style="color:var(--gold)">전국 랭킹(명예의 전당) 데이터베이스는 잠시 점검 중</b>이에요. 지금은 <b>이 기기</b>에만 기록이 저장돼요.<br>닉네임은 <b style="color:var(--emerald)">선택</b>이에요. 적으면 기록에 이름이 표시돼요. (안 적어도 바로 입장!)</p>
+      <input id="entryNick" class="rec-input" maxlength="8" placeholder="닉네임 (선택 · 최대 8자)">
       <input id="entrySchool" class="rec-input" maxlength="20" placeholder="학교 (선택 · 예: OO중, OO초)">
     </div>
 
@@ -881,8 +889,7 @@
     <button class="btab ctab" data-cat="react" onclick="setCat('react')">⚡ 반응·순발력</button>
     <button class="btab ctab" data-cat="brain" onclick="setCat('brain')">🧠 두뇌·집중</button>
     <button class="btab ctab" data-cat="arcade" onclick="setCat('arcade')">🕹️ 아케이드</button>
-    <button class="btab ctab" data-cat="play" onclick="setCat('play')">🎪 협동·자유</button>
-    <button class="btab ctab" data-cat="party" onclick="setCat('party')">🎉 파티·레크</button>
+    <button class="btab ctab" data-cat="teamup" onclick="setCat('teamup')">🤝 단합대회</button>
   </div>
   <div class="hero">
     <div class="splash" id="splash">100% 무첨가 도파민!</div>
@@ -1490,7 +1497,6 @@ function confirmRecord(){if(!recPending)return;const nm=(($('recName').value||''
   beep(740,.12,'triangle');setTimeout(()=>beep(990,.18,'triangle'),110);openHOF()}
 function closeRec(){$('recOv').classList.remove('show');recPending=null}
 function enterApp(){const nick=(($('entryNick').value||'').trim().slice(0,8));const sch=(($('entrySchool').value||'').trim().slice(0,20));
-  if(!nick){const i=$('entryNick');i.style.boxShadow='0 0 0 3px var(--redstone)';try{i.focus()}catch(e){}setTimeout(()=>{i.style.boxShadow=''},1300);return}
   MY_NICK=nick;MY_SCHOOL=sch;try{localStorage.setItem('cgw_nick',nick);localStorage.setItem('cgw_school',sch)}catch(e){}
   beep(720,.12,'triangle');setTimeout(()=>beep(960,.16,'triangle'),100);sortCards();warpToMenu()}
 function enterGuest(){MY_NICK='';MY_SCHOOL='';beep(620,.12,'triangle');setTimeout(()=>beep(820,.16,'triangle'),100);sortCards();warpToMenu()}
@@ -2098,8 +2104,8 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  drum:'play',
-  liar:'party','5sec':'party',hunmin:'party',telestration:'party',somoli:'party'};
+  drum:'teamup',
+  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
