@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>소몰이 게임 · CLASS GAME WORLD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Black+Han+Sans&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1a1030; --bg-2:#271a45; --bg-3:#32245a; --line:#4a3a72;
+    --ink:#f5f0ff; --muted:#b9a9d6;
+    --amber:#ffd23f; --pink:#ff6ba3; --violet:#8a7dff; --mint:#4ce0a6; --red:#ff5e6c; --sky:#49b6ff;
+    --font:'Jua',sans-serif; --font-head:'Black Han Sans',sans-serif; --font-pixel:'Press Start 2P',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);overflow-x:hidden;
+    user-select:none;-webkit-user-select:none;touch-action:manipulation;
+    background-image:radial-gradient(1000px 600px at 50% -10%,rgba(138,125,255,.22),transparent 60%),
+      radial-gradient(700px 500px at 90% 110%,rgba(255,107,163,.16),transparent 60%);}
+  #app{max-width:640px;margin:0 auto;min-height:100%;padding:clamp(14px,3vw,26px);display:flex;flex-direction:column}
+  .screen{flex:1;display:flex;flex-direction:column;gap:14px;animation:fade .28s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+
+  .eyebrow{font-family:var(--font);color:var(--amber);font-size:clamp(13px,3vw,16px);letter-spacing:1px}
+  .title{font-family:var(--font-head);font-size:clamp(40px,12vw,74px);line-height:.98;
+    background:linear-gradient(135deg,var(--amber),var(--pink) 60%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 4px 0 rgba(0,0,0,.25))}
+  .sect-h{font-family:var(--font-head);font-size:clamp(24px,6vw,38px)}
+  .lead{font-family:var(--font);color:var(--muted);font-size:clamp(14px,3.4vw,18px);line-height:1.6}
+  .cow{font-size:clamp(56px,16vw,110px);line-height:1;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4))}
+
+  .panel{background:linear-gradient(180deg,rgba(46,34,87,.85),rgba(39,26,71,.9));border:1.5px solid var(--line);
+    border-radius:20px;padding:clamp(14px,4vw,22px);box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+  .panel h2{font-family:var(--font-head);font-size:clamp(19px,4.6vw,26px);margin-bottom:12px;display:flex;align-items:center;gap:9px}
+
+  .btn{font-family:var(--font);font-size:clamp(16px,4vw,20px);border:none;border-radius:14px;padding:15px 20px;cursor:pointer;
+    background:var(--bg-3);color:var(--ink);border:1.5px solid var(--line);transition:transform .1s,filter .15s;width:100%}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:linear-gradient(135deg,var(--amber),#ff8a3d);color:#2a1500;border-color:transparent;font-weight:700}
+  .btn-mint{background:linear-gradient(135deg,var(--mint),#1fc77a);color:#052a1c;border-color:transparent;font-weight:700}
+  .btn-ghost{background:transparent}
+  .btn-sm{font-size:clamp(13px,3.2vw,15px);padding:10px 14px;width:auto}
+  .row{display:flex;gap:10px}
+  .stack{display:flex;flex-direction:column;gap:10px}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .topbar .brand{font-family:var(--font-head);font-size:clamp(17px,4.4vw,22px);display:flex;align-items:center;gap:8px}
+  .step-pill{font-family:var(--font-pixel);font-size:clamp(8px,2.2vw,11px);color:var(--amber);background:var(--bg-2);
+    border:1px solid var(--line);border-radius:999px;padding:7px 11px}
+
+  /* 팀 · 행동 설정 */
+  .team-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+  .team-dot{width:34px;height:34px;flex:none;border-radius:50%;border:none;cursor:pointer;
+    box-shadow:0 0 0 2px rgba(255,255,255,.15) inset,0 3px 8px rgba(0,0,0,.4)}
+  .team-in{flex:1;min-width:0;font-family:var(--font);font-size:clamp(15px,3.8vw,18px);padding:11px 13px;border-radius:12px;
+    background:var(--bg);color:var(--ink);border:1.5px solid var(--line);outline:none}
+  .team-in:focus{border-color:var(--violet)}
+  .team-in.act{border-style:dashed}
+  .team-del{flex:none;border:none;background:var(--bg-3);color:var(--pink);font-size:18px;border-radius:10px;width:40px;height:40px;cursor:pointer}
+  .grp-label{font-family:var(--font);color:var(--amber);font-size:clamp(13px,3.2vw,16px);margin:4px 0 8px}
+
+  /* 배정(뽑기) */
+  .assign-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  .assign-card{border-radius:16px;border:1.5px solid var(--line);background:var(--bg-2);padding:14px 16px;cursor:pointer;
+    display:flex;align-items:center;gap:12px;transition:transform .1s,border-color .15s;position:relative;overflow:hidden}
+  .assign-card:active{transform:scale(.98)}
+  .assign-card .who{font-family:var(--font-head);font-size:clamp(16px,4vw,20px);flex:none;min-width:88px}
+  .assign-card .arrow{color:var(--muted);font-size:18px}
+  .assign-card .val{font-family:var(--font);font-size:clamp(15px,3.8vw,19px);color:var(--amber);flex:1}
+  .assign-card.hidden .val{color:var(--muted);letter-spacing:3px}
+  .assign-card .peek{font-family:var(--font);font-size:12px;color:var(--muted)}
+
+  /* 플레이 */
+  .turn-head{text-align:center}
+  .turn-head .tt{font-family:var(--font-head);font-size:clamp(26px,7vw,42px)}
+  .action-box{border-radius:16px;border:1.5px dashed var(--line);background:var(--bg-2);padding:14px;text-align:center;cursor:pointer}
+  .action-box .albl{font-family:var(--font);color:var(--muted);font-size:13px;margin-bottom:4px}
+  .action-box .aval{font-family:var(--font-head);font-size:clamp(22px,6vw,34px);color:var(--amber)}
+  .action-box.masked .aval{filter:blur(11px)}
+  .meter-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+  #meter{width:min(74vw,300px);height:min(74vw,300px);display:block}
+  .meter-lab{font-family:var(--font-head);font-size:clamp(24px,7vw,40px);min-height:1.2em;text-align:center;transition:color .1s}
+  .meter-bar-wrap{width:min(84vw,360px);height:16px;border-radius:999px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+  .meter-bar{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--mint) 45%,var(--amber) 72%,var(--red));transition:width .06s linear}
+  .guide-hint{font-family:var(--font);color:var(--muted);text-align:center;font-size:clamp(14px,3.4vw,17px);line-height:1.5}
+  .guide-hint b.hot{color:var(--mint)}.guide-hint b.cold{color:var(--sky)}
+  .mic-note{font-family:var(--font);color:var(--red);font-size:13px;text-align:center;line-height:1.5}
+
+  /* 설명서 규칙 */
+  .rules p{font-family:var(--font);font-size:clamp(14px,3.5vw,17px);line-height:1.7;margin-bottom:11px;color:var(--ink)}
+  .rules b{color:var(--amber)}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
+    background:var(--violet);color:#fff;font-size:13px;margin-right:7px;flex:none}
+
+  .foot{font-family:var(--font);color:var(--muted);font-size:12px;text-align:center;margin-top:8px}
+  .spacer{flex:1}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--bg-3);border:1.5px solid var(--line);
+    color:var(--ink);font-family:var(--font);font-size:15px;padding:11px 18px;border-radius:14px;z-index:50;box-shadow:0 12px 30px -10px rgba(0,0,0,.6);
+    animation:toastIn .2s ease}
+  @keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+  "use strict";
+  var TCOLORS=["#ff6ba3","#8a7dff","#4ce0a6","#ffd23f","#ff8a3d","#49b6ff","#c084fc","#f472b6"];
+  var app=document.getElementById("app");
+
+  var S={
+    screen:"home",
+    teams:[],       // [{name, action}]
+    assign:[],      // assign[i] = 팀 i 가 받은 '행동 카드'의 원주인 팀 index (자기 자신 아님)
+    revealed:[],    // 배정 확인 여부
+    done:[],        // 플레이 완료(성공/패스) 여부
+    turn:0,
+    masked:true,    // 플레이 화면에서 행동 가림 여부
+    mic:{stream:null,ctx:null,analyser:null,data:null,raf:null,level:0,failed:false}
+  };
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m];});}
+  function go(scr){ if(S.screen==="play"&&scr!=="play") micStop(); S.screen=scr; render(); }
+  function toast(msg){ var t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(function(){t.remove();},1400); }
+
+  /* ---------- 마이크 음량 시각화 ---------- */
+  function micStart(){
+    if(S.mic.stream) return Promise.resolve(true);
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ S.mic.failed=true; return Promise.resolve(false); }
+    return navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+      var Ctx=window.AudioContext||window.webkitAudioContext;
+      var ctx=new Ctx();
+      var src=ctx.createMediaStreamSource(stream);
+      var an=ctx.createAnalyser(); an.fftSize=512;
+      src.connect(an);
+      S.mic.stream=stream; S.mic.ctx=ctx; S.mic.analyser=an; S.mic.data=new Uint8Array(an.frequencyBinCount); S.mic.failed=false;
+      micLoop();
+      return true;
+    }).catch(function(){ S.mic.failed=true; return false; });
+  }
+  function micStop(){
+    var m=S.mic;
+    if(m.raf) cancelAnimationFrame(m.raf);
+    if(m.stream){ try{m.stream.getTracks().forEach(function(t){t.stop();});}catch(e){} }
+    if(m.ctx){ try{m.ctx.close();}catch(e){} }
+    S.mic={stream:null,ctx:null,analyser:null,data:null,raf:null,level:0,failed:m.failed};
+  }
+  function micLoop(){
+    var m=S.mic; if(!m.analyser) return;
+    m.analyser.getByteTimeDomainData(m.data);
+    var sum=0; for(var i=0;i<m.data.length;i++){ var v=(m.data[i]-128)/128; sum+=v*v; }
+    var rms=Math.sqrt(sum/m.data.length);
+    m.level=m.level*0.78 + rms*0.22;
+    drawMeter(Math.min(1, m.level*5));
+    m.raf=requestAnimationFrame(micLoop);
+  }
+  function meterText(lv){
+    if(lv<0.10) return "🤫 조용…";
+    if(lv<0.30) return "🗣️ 오~";
+    if(lv<0.55) return "📣 오오~!";
+    if(lv<0.80) return "🔥 뜨겁다!";
+    return "🌋 바로 그거야!";
+  }
+  function drawMeter(lv){
+    var cv=document.getElementById("meter"); if(!cv) return;
+    var ctx=cv.getContext("2d"); var W=cv.width,H=cv.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);
+    var maxR=Math.min(W,H)/2-10;
+    var hue=205-lv*205; // 파랑(조용) → 빨강(뜨거움)
+    for(var k=3;k>=1;k--){
+      var r=(0.28+lv*0.72)*maxR*(k/3);
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.fillStyle="hsla("+hue+",88%,58%,"+(0.12*k)+")"; ctx.fill();
+    }
+    var cr=(0.20+lv*0.55)*maxR;
+    ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
+    ctx.fillStyle="hsl("+hue+",88%,58%)"; ctx.fill();
+    ctx.font=(cr*0.9)+"px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillText(lv<0.55?"🐮":"🔥", cx, cy+cr*0.05);
+    var lab=document.getElementById("meterLab"); if(lab){ lab.textContent=meterText(lv); lab.style.color="hsl("+hue+",85%,66%)"; }
+    var bar=document.getElementById("meterBar"); if(bar) bar.style.width=Math.round(lv*100)+"%";
+  }
+
+  /* ---------- 배정(뽑기): 자기 팀 카드 제외 ---------- */
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function derange(n){
+    // perm[i] != i 인 순열. 소규모라 rejection sampling.
+    if(n<2) return null;
+    for(var tries=0;tries<200;tries++){
+      var p=[]; for(var i=0;i<n;i++) p.push(i); shuffle(p);
+      var ok=true; for(var k=0;k<n;k++){ if(p[k]===k){ ok=false; break; } }
+      if(ok) return p;
+    }
+    // 백업: 한 칸씩 회전
+    var q=[]; for(var m=0;m<n;m++) q.push((m+1)%n); return q;
+  }
+  function doAssign(){
+    var n=S.teams.length;
+    S.assign=derange(n);
+    S.revealed=[]; S.done=[];
+    for(var i=0;i<n;i++){ S.revealed.push(false); S.done.push(false); }
+  }
+
+  /* =========================================================
+     SCREENS
+  ========================================================= */
+  var SCREENS={
+    home:function(){
+      return '<div class="screen"><div class="center">'+
+        '<div class="cow">🐮</div>'+
+        '<div class="eyebrow">CLASS GAME WORLD</div>'+
+        '<div class="title">소몰이<br>게임</div>'+
+        '<div class="lead">🔊 다 같이 <b style="color:var(--mint)">"오~"</b> · <b style="color:var(--sky)">"에이~"</b> 로<br>대표를 목표 행동까지 유도하라!</div>'+
+        '<div class="stack" style="width:100%;max-width:320px;margin-top:8px">'+
+          '<button class="btn btn-primary" data-action="go-setup">시작하기 🎬</button>'+
+          '<button class="btn btn-ghost" data-action="go-rules">📖 설명서</button>'+
+        '</div>'+
+        '<div class="foot">과학이조선생 · CLASS GAME WORLD</div>'+
+      '</div></div>';
+    },
+
+    rules:function(){
+      return '<div class="screen">'+
+        '<div class="topbar"><div class="brand">📖 설명서</div><button class="btn btn-ghost btn-sm" data-action="go-home">닫기</button></div>'+
+        '<div class="panel rules">'+
+          '<h2>🐮 어떤 게임이오?</h2>'+
+          '<p>모둠 대표가 <b>정해진 행동</b>을 하도록, 나머지 친구들이 <b style="color:var(--mint)">"오~~"</b>(가까움) · <b style="color:var(--sky)">"에이~~"</b>(멀어짐) 소리로 유도하는 놀이예요. 대표는 정답 행동을 모른 채 소리만 듣고 움직여요!</p>'+
+          '<p><span class="num">1</span> 모둠마다 <b>행동 카드</b>를 하나씩 적어요. <span style="color:var(--muted)">(예: "교실 불 끄기", "칠판 지우기")</span></p>'+
+          '<p><span class="num">2</span> <b>뽑기</b>로 각 모둠에 다른 모둠의 행동을 배정해요. <b>자기 모둠 카드는 안 받아요.</b></p>'+
+          '<p><span class="num">3</span> 한 모둠씩 차례로 — 대표는 앞으로 나오고(정답 안 보기!), 나머지는 화면 속 행동을 보고 <b>소리로 유도</b>해요.</p>'+
+          '<p><span class="num">4</span> 대표가 가까워질수록 <b style="color:var(--mint)">"오~~"</b>를 크게! 화면의 <b>음량 원</b>이 커지고 뜨거워져요 🔥. 멀어지면 <b style="color:var(--sky)">"에이~"</b>.</p>'+
+          '<p><span class="num">5</span> 행동에 성공하면 <b>성공!</b>, 못 맞히면 <b>패스</b>. 다음 모둠으로 넘어가요.</p>'+
+          '<p style="color:var(--muted);font-size:14px">🎤 소리 시각화를 쓰려면 <b>마이크 권한</b>이 필요해요. (https 주소에서 열고, 처음에 "허용"을 눌러주세요.)</p>'+
+        '</div>'+
+        '<button class="btn btn-primary" data-action="go-setup">바로 시작 🎬</button>'+
+      '</div>';
+    },
+
+    setup:function(){
+      var rows=S.teams.map(function(t,i){
+        return '<div class="grp-label" style="margin-top:'+(i?'14px':'0')+'">'+
+            '<span style="display:inline-flex;align-items:center;gap:7px">'+
+            '<span class="team-dot" style="background:'+TCOLORS[i%TCOLORS.length]+';cursor:default"></span>'+
+            '<input class="team-in" style="max-width:180px" data-action="team-name" data-i="'+i+'" maxlength="8" placeholder="'+(i+1)+'모둠" value="'+esc(t.name)+'">'+
+            (S.teams.length>2?'<button class="team-del" data-action="team-del" data-i="'+i+'">✕</button>':'')+
+            '</span>'+
+          '</div>'+
+          '<input class="team-in act" data-action="team-act" data-i="'+i+'" maxlength="24" placeholder="이 모둠의 행동 카드 (예: 교실 불 끄기)" value="'+esc(t.action)+'">';
+      }).join("");
+      return '<div class="screen">'+
+        '<div class="topbar"><div class="brand">🎬 팀·행동 정하기</div><span class="step-pill">STEP 1</span></div>'+
+        '<div class="lead">모둠 이름과 <b style="color:var(--amber)">행동 카드</b>를 적으시오. 색 동그라미로 색을 바꿔요. (2~8모둠)</div>'+
+        '<div class="panel">'+rows+
+          (S.teams.length<8?'<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:14px" data-action="team-add">➕ 모둠 추가</button>':'')+
+        '</div>'+
+        '<div class="spacer"></div>'+
+        '<div class="row">'+
+          '<button class="btn btn-ghost" style="flex:.5" data-action="go-home">뒤로</button>'+
+          '<button class="btn btn-primary" style="flex:1.6" data-action="to-assign">🎲 뽑기 하러 가기</button>'+
+        '</div>'+
+      '</div>';
+    },
+
+    assign:function(){
+      var cards=S.teams.map(function(t,i){
+        var ownerIdx=S.assign[i];
+        var owner=S.teams[ownerIdx];
+        var rev=S.revealed[i];
+        return '<div class="assign-card '+(rev?'':'hidden')+'" style="border-color:'+TCOLORS[i%TCOLORS.length]+'" data-action="assign-reveal" data-i="'+i+'">'+
+          '<span class="who" style="color:'+TCOLORS[i%TCOLORS.length]+'">'+esc(t.name||((i+1)+"모둠"))+'</span>'+
+          '<span class="arrow">▶</span>'+
+          '<span class="val">'+(rev? esc(owner.action||"(빈 카드)") : "❓ 눌러서 확인")+'</span>'+
+          (rev?'':'<span class="peek">tap</span>')+
+        '</div>';
+      }).join("");
+      var allRev=S.revealed.every(Boolean);
+      return '<div class="screen">'+
+        '<div class="topbar"><div class="brand">🎲 행동 배정</div><span class="step-pill">STEP 2</span></div>'+
+        '<div class="lead">각 모둠이 받은 행동이에요. <b style="color:var(--amber)">자기 모둠 카드는 안 나와요.</b><br>카드를 눌러 <b>그 모둠끼리만</b> 확인하세요. (대표는 보지 않기!)</div>'+
+        '<div class="assign-grid">'+cards+'</div>'+
+        '<div class="spacer"></div>'+
+        '<div class="row">'+
+          '<button class="btn btn-ghost btn-sm" style="flex:.6" data-action="reshuffle">🔀 다시 뽑기</button>'+
+          '<button class="btn '+(allRev?'btn-mint':'btn-ghost')+'" style="flex:1.6" data-action="to-play">▶ 유도 시작!</button>'+
+        '</div>'+
+        '<button class="btn btn-ghost btn-sm" style="width:auto;align-self:center;margin-top:4px" data-action="go-setup">← 행동 다시 적기</button>'+
+      '</div>';
+    },
+
+    play:function(){
+      // 아직 안 끝난 모둠 중 현재 turn
+      var i=S.turn;
+      var owner=S.teams[S.assign[i]];
+      var col=TCOLORS[i%TCOLORS.length];
+      var micFail=S.mic.failed;
+      return '<div class="screen">'+
+        '<div class="topbar"><div class="brand" style="color:'+col+'">🎤 '+esc(S.teams[i].name||((i+1)+"모둠"))+' 차례</div>'+
+          '<span class="step-pill">'+(i+1)+' / '+S.teams.length+'</span></div>'+
+        '<div class="action-box '+(S.masked?'masked':'')+'" data-action="toggle-mask">'+
+          '<div class="albl">'+(S.masked?'👁 눌러서 확인 (대표는 등 돌리기!)':'유도할 행동 · 다시 누르면 가려요')+'</div>'+
+          '<div class="aval">'+esc(owner.action||"(빈 카드)")+'</div>'+
+        '</div>'+
+        '<div class="meter-wrap">'+
+          '<canvas id="meter" width="300" height="300"></canvas>'+
+          '<div class="meter-lab" id="meterLab">🎤 마이크를 켜주세요</div>'+
+          '<div class="meter-bar-wrap"><div class="meter-bar" id="meterBar"></div></div>'+
+        '</div>'+
+        '<div class="guide-hint">가까워지면 <b class="hot">오~~</b> 크게! · 멀어지면 <b class="cold">에이~~</b></div>'+
+        (micFail?'<div class="mic-note">⚠️ 마이크를 쓸 수 없어요. 권한을 허용하거나, 소리 없이 "오~/에이~"로만 진행해도 좋아요!</div>':'')+
+        (S.mic.stream?'':'<button class="btn btn-primary" data-action="mic-on">🎤 마이크 켜기 (소리 시각화)</button>')+
+        '<div class="spacer"></div>'+
+        '<div class="row">'+
+          '<button class="btn btn-ghost" style="flex:.7" data-action="turn-pass">⏭ 패스</button>'+
+          '<button class="btn btn-mint" style="flex:1.6" data-action="turn-done">✅ 성공! 다음</button>'+
+        '</div>'+
+        '<button class="btn btn-ghost btn-sm" style="width:auto;align-self:center;margin-top:2px" data-action="stop-confirm">⏹ 그만하기</button>'+
+      '</div>';
+    },
+
+    result:function(){
+      var list=S.teams.map(function(t,i){
+        return '<div class="assign-card" style="border-color:'+TCOLORS[i%TCOLORS.length]+';cursor:default">'+
+          '<span class="who" style="color:'+TCOLORS[i%TCOLORS.length]+'">'+esc(t.name||((i+1)+"모둠"))+'</span>'+
+          '<span class="arrow">▶</span>'+
+          '<span class="val">'+esc(S.teams[S.assign[i]].action||"(빈 카드)")+' · '+(S.done[i]==="pass"?'⏭ 패스':'✅ 성공')+'</span>'+
+        '</div>';
+      }).join("");
+      return '<div class="screen"><div class="center" style="gap:10px">'+
+        '<div class="cow">🎉</div>'+
+        '<div class="sect-h">모두 수고했어요!</div>'+
+        '<div class="lead">모둠별 유도 결과예요.</div>'+
+        '</div>'+
+        '<div class="assign-grid">'+list+'</div>'+
+        '<div class="spacer"></div>'+
+        '<div class="stack">'+
+          '<button class="btn btn-primary" data-action="replay">🔄 같은 팀으로 다시</button>'+
+          '<button class="btn btn-ghost" data-action="go-home">처음으로</button>'+
+        '</div>'+
+      '</div>';
+    }
+  };
+
+  function render(){
+    app.innerHTML = SCREENS[S.screen] ? SCREENS[S.screen]() : "<div>오류</div>";
+    window.scrollTo(0,0);
+    if(S.screen==="play"){
+      // 캔버스 초기 표시 + (권한 있으면) 자동 재개
+      drawMeter(0);
+      if(S.mic.stream && !S.mic.raf) micLoop();
+    }
+  }
+
+  /* =========================================================
+     ACTIONS
+  ========================================================= */
+  function ensureTeams(){ if(S.teams.length<2){ S.teams=[{name:"",action:""},{name:"",action:""},{name:"",action:""}]; } }
+  function nextTurn(kind){
+    S.done[S.turn]=kind;
+    var n=S.teams.length;
+    if(S.turn>=n-1){ go("result"); return; }
+    S.turn++; S.masked=true; render();
+  }
+
+  function handle(action, el){
+    var i = el ? parseInt(el.dataset.i,10) : -1;
+    switch(action){
+      case "go-home": go("home"); break;
+      case "go-rules": go("rules"); break;
+      case "go-setup": ensureTeams(); go("setup"); break;
+
+      case "team-add": if(S.teams.length<8){ S.teams.push({name:"",action:""}); render(); } break;
+      case "team-del": if(S.teams.length>2){ S.teams.splice(i,1); render(); } break;
+      case "team-name": S.teams[i].name=el.value; break;   // 입력 유지(리렌더 X)
+      case "team-act": S.teams[i].action=el.value; break;
+
+      case "to-assign": {
+        // 최소 유효성: 이름/행동 비면 자동 채움
+        var empty=S.teams.some(function(t){ return !t.action || !t.action.trim(); });
+        if(empty){ toast("모든 모둠의 행동 카드를 적어주세요!"); return; }
+        doAssign(); go("assign");
+      } break;
+      case "assign-reveal": S.revealed[i]=!S.revealed[i]; render(); break;
+      case "reshuffle": doAssign(); toast("다시 섞었어요 🔀"); render(); break;
+      case "to-play": S.turn=0; S.masked=true; go("play"); break;
+
+      case "mic-on": micStart().then(function(ok){ render(); if(!ok) toast("마이크 권한이 필요해요"); }); break;
+      case "toggle-mask": S.masked=!S.masked; render(); break;
+      case "turn-done": nextTurn("done"); break;
+      case "turn-pass": nextTurn("pass"); break;
+      case "stop-confirm": if(confirm("게임을 그만할까요?")){ go("result"); } break;
+
+      case "replay": S.turn=0; S.masked=true; S.done=S.teams.map(function(){return false;}); doAssign(); go("assign"); break;
+    }
+  }
+
+  app.addEventListener("click", function(e){ var el=e.target.closest("[data-action]"); if(!el) return;
+    var a=el.dataset.action;
+    // 입력창 클릭은 무시(포커스만)
+    if(a==="team-name"||a==="team-act") return;
+    handle(a, el);
+  });
+  app.addEventListener("input", function(e){ var el=e.target.closest("[data-action]"); if(!el) return;
+    var a=el.dataset.action; if(a==="team-name"||a==="team-act") handle(a, el);
+  });
+
+  ensureTeams();
+  render();
+})();
+</script>
+</body>
+</html>
