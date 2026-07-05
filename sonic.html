@@ -803,9 +803,9 @@
       <div class="top"><div class="num">15</div><div class="ico">🏀</div></div>
       <div><h3>공 튕기기</h3><p>벽에 튕기는 공을 나무 막대로 받아내세요! 점수가 올라갈수록 공이 빨라지고 더 늘어나요. 1인.</p><div class="go">▶ PLAY</div></div>
     </div>
-    <div class="card" style="--accent:#ff5d8f" data-link="https://scienceisjo.github.io/brain-break-lab/yangsechan" onclick="openLink(this)">
+    <div class="card" style="--accent:#ff5d8f" data-link="yangsechan.html" onclick="openLink(this)">
       <div class="top"><div class="num">17</div><div class="ico">🎤</div><span class="ext-tag">🔗 외부</span></div>
-      <div><h3>양세찬 게임</h3><p>질문에 무조건 반대로 대답! 무한 도전 예능st 빵 터지는 순발력 토크 게임.</p><div class="go">▶ 열기 ↗</div></div>
+      <div><h3>양세찬 게임</h3><p>나만 모르는 내 단어 맞추기!</p><div class="go">▶ 열기 ↗</div></div>
     </div>
     <div class="card" style="--accent:#8a7dff" data-link="liar.html" onclick="openLink(this)">
       <div class="top"><div class="num">18</div><div class="ico">🕵️</div><span class="ext-tag">🔗 외부</span></div>
@@ -814,6 +814,10 @@
     <div class="card" style="--accent:#ffd23f" data-link="https://scienceisjo.github.io/brain-break-lab/5sec" onclick="openLink(this)">
       <div class="top"><div class="num">19</div><div class="ico">⏱️</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>5초 준다</h3><p>제시된 주제에 맞는 답 3개를 단 5초 안에! 똑딱똑딱 압박 속 빵 터지는 순발력 게임.</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:#4ec9b0" data-link="hunmin.html" onclick="openLink(this)">
+      <div class="top"><div class="num">20</div><div class="ico">📜</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>훈민정음</h3><p>"훈민정~음!" 북소리에 맞춰 다 같이 외치고, 나타난 초성으로 낱말을 대는 초성 대결!</p><div class="go">▶ 열기 ↗</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
@@ -2159,7 +2163,7 @@ const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',gng:'react',arro
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
   letterg:'play',drum:'play',
-  yangsechan:'party',liar:'party','5sec':'party'};
+  yangsechan:'party',liar:'party','5sec':'party',hunmin:'party'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
