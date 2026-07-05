@@ -421,6 +421,14 @@
   .tour-del{flex:0 0 auto;font-family:'Do Hyeon';font-size:clamp(16px,2.4vh,22px);cursor:pointer;border:none;color:#fff;background:var(--stoned);
     padding:8px 13px;box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
   .tour-mode{display:flex;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+  .tour-ptscfg{display:flex;flex-wrap:wrap;gap:9px 16px;justify-content:center;align-items:center;margin:0 auto 12px;max-width:560px;
+    padding:9px 12px;background:rgba(255,255,255,.05);border-radius:8px}
+  .tpc-lab{font-family:'Do Hyeon';color:var(--muted);font-size:clamp(13px,2vh,17px)}
+  .tpc-item{display:inline-flex;align-items:center;gap:6px;font-family:'Do Hyeon';color:#fff;font-size:clamp(14px,2.2vh,19px)}
+  .tpc-item b{font-family:'Press Start 2P';color:var(--gold);font-size:clamp(13px,2.2vh,20px);min-width:1.5em;text-align:center}
+  .tpc-btn{cursor:pointer;border:none;color:#fff;background:var(--stoned);font-family:'Do Hyeon';font-size:clamp(15px,2.2vh,20px);
+    width:clamp(30px,4vh,38px);height:clamp(30px,4vh,38px);box-shadow:0 0 0 2px var(--outline),var(--bevelL),var(--bevelD)}
+  .tpc-btn:active{transform:translate(1px,1px)}
   .tour-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
   .tour-pbtn{position:relative;cursor:pointer;border:none;padding:16px 10px;font-family:'Do Hyeon';color:#fff;
     background:rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .06s;
@@ -716,6 +724,12 @@
       <button class="chip" id="tourModeRank" onclick="tourSetMode('rank')">🥇 등수 매기기</button>
     </div>
     <p class="sub" id="tourResultHint" style="margin-bottom:8px">이번 판에서 이긴 팀을 누르세요 (+1점)</p>
+    <div class="tour-ptscfg" id="tourPtsCfg" style="display:none">
+      <span class="tpc-lab">등수 점수 설정</span>
+      <span class="tpc-item">1등<button class="tpc-btn" onclick="tourAdjPts(0,-1)">−</button><b id="tourP0">3</b><button class="tpc-btn" onclick="tourAdjPts(0,1)">＋</button></span>
+      <span class="tpc-item">2등<button class="tpc-btn" onclick="tourAdjPts(1,-1)">−</button><b id="tourP1">2</b><button class="tpc-btn" onclick="tourAdjPts(1,1)">＋</button></span>
+      <span class="tpc-item">3등<button class="tpc-btn" onclick="tourAdjPts(2,-1)">−</button><b id="tourP2">1</b><button class="tpc-btn" onclick="tourAdjPts(2,1)">＋</button></span>
+    </div>
     <div class="tour-pick" id="tourPick"></div>
     <button class="bigbtn" id="tourApplyBtn" onclick="tourApply()" style="display:none;margin-top:4px">✔ 등수 확정</button>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
@@ -888,6 +902,10 @@
     <div class="card" style="--accent:#4ec9b0" data-link="hunmin.html" onclick="openLink(this)">
       <div class="top"><div class="num">16</div><div class="ico">📜</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>훈민정음</h3><p>"훈민정~음!" 북소리에 맞춰 다 같이 외치고, 나타난 초성으로 낱말을 대는 초성 대결!</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:#ff9770" data-link="telestration.html" onclick="openLink(this)">
+      <div class="top"><div class="num">17</div><div class="ico">🖍️</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>그림 이어그리기</h3><p>3~10명이 기기를 돌려가며 한 명씩 이어 그리기! 내가 그린 게 딴 그림이 되어 돌아온다 😆</p><div class="go">▶ 열기 ↗</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
@@ -2025,7 +2043,7 @@ const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
   drum:'play',
-  liar:'party','5sec':'party',hunmin:'party'};
+  liar:'party','5sec':'party',hunmin:'party',telestration:'party'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
@@ -2363,10 +2381,10 @@ function drumStop(){
 /* ============ 🏆 모둠 대전 (Tournament) ============ */
 const TKEY='cgw_tourney';
 const TCOLORS=['#e23b3b','#3a8bff','#46c24a','#f5c518','#f0843c','#a878ec','#34d6d6','#f06db0'];
-let TOUR={active:false,teams:[],log:[]};   // teams:[{name,color,score,wins}]  log:[{kind,text,deltas:[{i,score,wins}]}]
+let TOUR={active:false,teams:[],log:[],pts:[3,2,1]};   // teams:[{name,color,score,wins}]  log:[...]  pts:[1등,2등,3등 커스텀 점수]
 let tourEdit=[];      // setup 편집용 [{name,color}]
 let tourMode='win', tourRankPick=[];
-function tourLoad(){try{const v=JSON.parse(localStorage.getItem(TKEY));if(v&&Array.isArray(v.teams))TOUR=v}catch(e){}}
+function tourLoad(){try{const v=JSON.parse(localStorage.getItem(TKEY));if(v&&Array.isArray(v.teams))TOUR=v}catch(e){}if(!Array.isArray(TOUR.pts)||TOUR.pts.length!==3)TOUR.pts=[3,2,1]}
 function tourSave(){try{localStorage.setItem(TKEY,JSON.stringify(TOUR))}catch(e){}}
 function tourSorted(){return TOUR.teams.map((t,i)=>Object.assign({i},t)).sort((a,b)=>b.score-a.score||b.wins-a.wins)}
 /* --- 진입 --- */
@@ -2388,7 +2406,8 @@ function tourCloseSetup(){$('tourSetupOv').classList.remove('show')}
 /* --- 시작 --- */
 function tourStart(){const teams=tourEdit.map((t,i)=>({name:(t.name||'').trim()||((i+1)+'모둠'),color:t.color,score:0,wins:0}));
   if(teams.length<2)return;
-  TOUR={active:true,teams,log:[]};tourSave();tourCloseSetup();tourRenderBar();
+  const prevPts=(Array.isArray(TOUR.pts)&&TOUR.pts.length===3)?TOUR.pts:[3,2,1];
+  TOUR={active:true,teams,log:[],pts:prevPts};tourSave();tourCloseSetup();tourRenderBar();
   beep(660,.1);setTimeout(()=>beep(880,.14),110);setTimeout(()=>beep(1046,.18),240);tourConfetti(50)}
 /* --- 스코어 바 --- */
 function tourRenderBar(){const bar=$('tourBar');if(!bar)return;
@@ -2403,8 +2422,14 @@ function tourRenderBar(){const bar=$('tourBar');if(!bar)return;
 function tourResult(){if(!TOUR.active){tourOpen();return}tourRankPick=[];$('tourResultOv').classList.add('show');tourSetMode('win')}
 function tourSetMode(m){tourMode=m;tourRankPick=[];
   $('tourModeWin').classList.toggle('on',m==='win');$('tourModeRank').classList.toggle('on',m==='rank');
-  $('tourResultHint').textContent=m==='win'?'이번 판에서 이긴 팀을 누르세요 (바로 +1점)':'1등부터 순서대로 팀을 누르세요 · 1등 +3 · 2등 +2 · 3등 +1';
+  const cfg=$('tourPtsCfg');if(cfg)cfg.style.display=m==='rank'?'':'none';
+  tourRenderPtsCfg();tourHintRank(m);
   $('tourApplyBtn').style.display=m==='rank'?'':'none';tourRenderPick()}
+function tourHintRank(m){const p=TOUR.pts||[3,2,1];
+  $('tourResultHint').textContent=m==='win'?'이번 판에서 이긴 팀을 누르세요 (바로 +1점)':('1등부터 순서대로 팀을 누르세요 · 1등 +'+p[0]+' · 2등 +'+p[1]+' · 3등 +'+p[2]);}
+function tourRenderPtsCfg(){const p=TOUR.pts||[3,2,1];for(let k=0;k<3;k++){const el=$('tourP'+k);if(el)el.textContent=p[k]}}
+function tourAdjPts(i,d){if(!Array.isArray(TOUR.pts)||TOUR.pts.length!==3)TOUR.pts=[3,2,1];
+  TOUR.pts[i]=Math.max(0,Math.min(20,TOUR.pts[i]+d));tourSave();tourRenderPtsCfg();tourHintRank('rank');beep(560,.05)}
 function tourRenderPick(){const wrap=$('tourPick');if(!wrap)return;wrap.innerHTML='';
   TOUR.teams.forEach((t,i)=>{const btn=document.createElement('button');btn.className='tour-pbtn';btn.style.setProperty('--tc',t.color);
     const pos=tourRankPick.indexOf(i);let badge='';
@@ -2417,7 +2442,7 @@ function tourApplyWin(i){const t=TOUR.teams[i];t.score+=1;t.wins+=1;
   TOUR.log.push({kind:'win',text:t.name+' 승리 (+1)',deltas:[{i,score:1,wins:1}]});tourSave();
   tourCloseResult();tourRenderBar();tourCelebrate('🏅 '+t.name+' 승리! +1',t.color)}
 function tourApply(){if(!tourRankPick.length){beep(200,.15);return}
-  const pts=[3,2,1];const deltas=[];
+  const pts=(Array.isArray(TOUR.pts)&&TOUR.pts.length===3)?TOUR.pts:[3,2,1];const deltas=[];
   tourRankPick.forEach((ti,pos)=>{const add=pts[pos]||0;const w=pos===0?1:0;if(add<=0&&w<=0)return;
     TOUR.teams[ti].score+=add;TOUR.teams[ti].wins+=w;deltas.push({i:ti,score:add,wins:w})});
   const first=TOUR.teams[tourRankPick[0]];
@@ -2457,7 +2482,7 @@ function tourRenderPodium(sorted){const champ=sorted[0];if(!champ)return;
 function tourCloseEnd(){$('tourEndOv').classList.remove('show')}
 /* --- 초기화 --- */
 function tourReset(fromEnd){if(!fromEnd&&!confirm('대전 점수를 모두 지우고 초기화할까요?'))return;
-  TOUR={active:false,teams:[],log:[]};tourEdit=[];try{localStorage.removeItem(TKEY)}catch(e){}
+  const pp=(Array.isArray(TOUR.pts)&&TOUR.pts.length===3)?TOUR.pts:[3,2,1];TOUR={active:false,teams:[],log:[],pts:pp};tourEdit=[];try{localStorage.removeItem(TKEY)}catch(e){}
   tourRenderBar();tourCloseRank();tourCloseEnd();
   if(fromEnd){tourEditInit();$('tourSetupOv').classList.add('show')}beep(400,.1)}
 /* --- 연출 --- */

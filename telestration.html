@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>그림 이어그리기 · CLASS GAME WORLD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --paper:#faf6ea; --card:#fffdf5; --card2:#fbf5e2;
+    --ink:#3a3550; --ink-soft:#837c96; --rule:rgba(120,145,190,.24);
+    --coral:#ef5d60; --teal:#1fa79a; --mustard:#e9a63c; --purple:#7a6ad4;
+    --line:#3a3550;
+    --text:#3a3550; --muted:#837c96;
+    --f-hand:'Gaegu',cursive;
+    --f-body:'Pretendard','Pretendard Variable',system-ui,sans-serif;
+    --f-jua:'Jua',sans-serif;
+    /* 손그림 테두리 반경 */
+    --sk1:16px 22px 18px 20px/20px 16px 22px 18px;
+    --sk2:22px 16px 20px 18px/16px 22px 18px 20px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{color-scheme:light}
+  html,body{margin:0;padding:0;min-height:100%}
+  button,input,textarea,select{font-family:inherit; color:var(--ink)}
+  body{
+    background-color:var(--paper);
+    background-image:repeating-linear-gradient(180deg, transparent 0 32px, var(--rule) 32px 33px);
+    color:var(--text); font-family:var(--f-body); overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:560px; margin:0 auto; padding:20px 18px 40px; min-height:100vh; display:flex; flex-direction:column; position:relative}
+
+  .bar{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+  .brand{display:flex; align-items:center; gap:9px}
+  .dot{width:11px; height:11px; border-radius:50%; background:var(--coral); border:1.5px solid var(--ink)}
+  .brand b{font-family:var(--f-hand); font-weight:700; font-size:14px; letter-spacing:.5px; color:var(--ink-soft)}
+  .sound-btn{border:2px solid var(--ink); background:var(--card); color:var(--ink); width:40px; height:34px; border-radius:12px 9px 11px 8px/8px 11px 9px 12px; font-size:15px; cursor:pointer}
+  .sound-btn:active{transform:translateY(1px)}
+
+  .screen{flex:1; display:flex; flex-direction:column; animation:rise .4s cubic-bezier(.16,1,.3,1)}
+  @keyframes rise{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:translateY(0)}}
+  .center{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:12px}
+  .spacer{flex:1}
+
+  .eyebrow{font-family:var(--f-hand); font-weight:700; font-size:15px; letter-spacing:1px; color:var(--coral)}
+  h1.title{font-family:var(--f-hand); font-weight:700; font-size:clamp(38px,12.5vw,62px); line-height:1.06; margin:2px 0 0; letter-spacing:1px; color:var(--ink)}
+  .title-wrap{position:relative; display:inline-block; padding-bottom:14px}
+  .title-underline{position:absolute; left:-2%; bottom:2px; width:104%; height:14px}
+  .doodles{position:relative; height:0}
+  .dood{position:absolute; font-size:20px; opacity:.9}
+  .tag{font-family:var(--f-hand); font-weight:700; color:var(--ink-soft); font-size:19px; margin:8px 0 0}
+  .sect-h{font-family:var(--f-hand); font-weight:700; font-size:34px; margin:2px 0 6px; color:var(--ink)}
+  .hl{background:linear-gradient(180deg, transparent 55%, rgba(233,166,60,.5) 55% 92%, transparent 92%); padding:0 .12em; border-radius:2px}
+  .lead{color:var(--ink-soft); font-family:var(--f-hand); font-weight:400; font-size:17px; line-height:1.5}
+  .grp-label{font-family:var(--f-hand); font-weight:700; font-size:16px; color:var(--teal); margin:14px 0 6px}
+
+  .btn{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; border:2.5px solid var(--ink); border-radius:var(--sk1); padding:14px 18px; font-family:var(--f-hand); font-weight:700; font-size:23px; letter-spacing:.5px; cursor:pointer; color:var(--ink); background:var(--card); transition:transform .1s, box-shadow .12s; text-align:center; box-shadow:2px 3px 0 rgba(58,53,80,.18)}
+  .btn:active{transform:translate(1px,2px); box-shadow:1px 1px 0 rgba(58,53,80,.18)}
+  .btn-primary{background:var(--coral); color:#fff8f3; border-radius:var(--sk2)}
+  .btn-teal{background:var(--teal); color:#f2fffb}
+  .btn-ghost{background:var(--card); color:var(--ink)}
+  .btn-sm{padding:10px 14px; font-size:19px}
+  .stack{display:flex; flex-direction:column; gap:11px}
+  .row{display:flex; gap:11px}
+  .row>*{flex:1}
+
+  .panel{background:var(--card); border:2.5px solid var(--ink); border-radius:var(--sk1); padding:17px; box-shadow:3px 4px 0 rgba(58,53,80,.14); margin:10px 0}
+  .chip-num{display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px; padding:0 7px; border-radius:9px 6px 8px 7px/7px 8px 6px 9px; background:var(--coral); border:2px solid var(--ink); color:#fff; font-family:var(--f-hand); font-weight:700; font-size:15px; margin-right:4px}
+
+  .seg{display:flex; gap:6px; background:var(--card2); border:2px solid var(--ink); border-radius:14px 10px 12px 11px/11px 12px 10px 14px; padding:5px}
+  .seg button{flex:1; border:none; background:transparent; color:var(--ink-soft); padding:9px 6px; border-radius:9px; font-family:var(--f-hand); font-weight:700; font-size:17px; cursor:pointer}
+  .seg button.on{background:var(--teal); color:#fff}
+  .cats{display:flex; flex-wrap:wrap; gap:8px}
+  .cat{border:2px solid var(--ink); background:var(--card); color:var(--ink); border-radius:12px 8px 11px 9px/9px 11px 8px 12px; padding:6px 13px; font-family:var(--f-hand); font-weight:700; font-size:17px; cursor:pointer}
+  .cat.on{background:var(--coral); color:#fff}
+  .cat:active{transform:translateY(1px)}
+  .opt-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0 2px}
+  .opt-row .nm{font-family:var(--f-hand); font-weight:700; font-size:19px; color:var(--ink)}
+  .opt-row .nm small{display:block; color:var(--ink-soft); font-size:13px; font-family:var(--f-hand); font-weight:400}
+  .stepper{display:flex; align-items:center; gap:12px}
+  .stepper button{width:40px; height:40px; border-radius:12px 8px 11px 9px/9px 11px 8px 12px; border:2.5px solid var(--ink); background:var(--card); color:var(--ink); font-size:24px; font-family:var(--f-hand); font-weight:700; cursor:pointer; line-height:1}
+  .stepper button:active{transform:translateY(1px)}
+  .stepper .val{font-family:var(--f-hand); font-weight:700; font-size:30px; min-width:38px; text-align:center; color:var(--coral)}
+
+  .big-emoji{font-size:56px}
+  .fore-t{font-family:var(--f-hand); font-weight:700; font-size:clamp(30px,9vw,44px); color:var(--ink); line-height:1.08}
+  .word-input{width:100%; border-radius:14px 10px 12px 11px/11px 12px 10px 14px; border:2.5px solid var(--ink); background:#fff; color:var(--ink); font-family:var(--f-hand); font-weight:700; font-size:26px; padding:12px; text-align:center}
+  .word-input:focus{outline:none; box-shadow:0 0 0 3px rgba(31,167,154,.3)}
+  .word-input::placeholder{color:var(--ink-soft); font-weight:400}
+
+  .step-badge{display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:8px}
+  .step-badge .pill{font-family:var(--f-hand); font-weight:700; font-size:16px; color:#fff; background:var(--teal); border:2px solid var(--ink); border-radius:16px 12px 14px 13px/13px 14px 12px 16px; padding:4px 13px}
+  .step-badge .pill.alt{background:var(--coral)}
+  .draw-prompt{background:#fff6cf; border:2.5px solid var(--ink); border-radius:var(--sk2); padding:13px; text-align:center; font-family:var(--f-hand); font-weight:400; font-size:17px; color:var(--ink); margin-bottom:10px; box-shadow:3px 4px 0 rgba(58,53,80,.14); transform:rotate(-.6deg)}
+  .draw-prompt b{font-family:var(--f-hand); font-weight:700; font-size:clamp(28px,7.5vw,38px); color:var(--ink); display:block; margin-top:2px; letter-spacing:.5px; word-break:keep-all; line-height:1.15}
+  .guess-q{text-align:center; font-family:var(--f-hand); font-weight:700; font-size:28px; color:var(--ink); margin-bottom:10px}
+  .pad-wrap{display:flex; justify-content:center; margin:0 auto}
+  .pad{width:100%; max-width:360px; aspect-ratio:1/1; border-radius:16px 12px 18px 14px/14px 18px 12px 16px; border:3px solid var(--ink); background:#fff; display:block; touch-action:none; box-shadow:4px 5px 0 rgba(58,53,80,.16)}
+  img.pad{object-fit:contain}
+
+  .tools{margin-top:12px; background:var(--card2); border:2px solid var(--ink); border-radius:16px 12px 14px 13px/13px 14px 12px 16px; padding:12px 10px}
+  .swatches{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center}
+  .swatch{width:31px; height:31px; border-radius:50%; border:2.5px solid var(--ink); cursor:pointer; padding:0}
+  .swatch.on{box-shadow:0 0 0 3px var(--mustard); transform:scale(1.12)}
+  .tool-row{display:flex; gap:8px; justify-content:center; align-items:center; margin-top:10px; flex-wrap:wrap}
+  .sizes{display:flex; gap:6px; align-items:center; background:var(--card); border:2px solid var(--ink); border-radius:11px; padding:5px 8px}
+  .size-btn{width:32px; height:28px; border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:7px}
+  .size-btn span{display:block; background:var(--ink); border-radius:50%; opacity:.5}
+  .size-btn.on{background:rgba(233,166,60,.35)} .size-btn.on span{opacity:1}
+  .tool-btn{border:2px solid var(--ink); background:var(--card); color:var(--ink); border-radius:11px 8px 10px 9px/9px 10px 8px 11px; padding:8px 11px; font-size:16px; font-family:var(--f-hand); font-weight:700; cursor:pointer}
+  .tool-btn.on{background:var(--purple); color:#fff}
+  .tool-btn:active{transform:translateY(1px)}
+
+  .reveal-item{display:flex; flex-direction:column; align-items:center; gap:5px; padding:12px 0; position:relative}
+  .reveal-item:not(:last-child)::after{content:"↓"; color:var(--coral); font-size:24px; font-weight:bold; margin-top:6px; font-family:var(--f-hand)}
+  .ri-tag{font-family:var(--f-hand); font-weight:700; font-size:16px; color:var(--teal)}
+  .ri-word{font-family:var(--f-hand); font-weight:700; font-size:clamp(28px,8vw,40px); color:var(--ink); word-break:keep-all; text-align:center; line-height:1.1}
+  .ri-guess{font-family:var(--f-hand); font-weight:700; font-size:clamp(24px,7vw,34px); color:var(--ink); word-break:keep-all; text-align:center; line-height:1.15}
+  .ri-img{width:220px; max-width:70vw; aspect-ratio:1/1; object-fit:contain; background:#fff; border-radius:14px 10px 16px 12px/12px 16px 10px 14px; border:2.5px solid var(--ink)}
+  .drift{background:#fff6cf; border:2.5px solid var(--ink); border-radius:var(--sk1); padding:14px; text-align:center; margin:12px 0; box-shadow:3px 4px 0 rgba(58,53,80,.14)}
+  .drift .dl{font-family:var(--f-hand); font-weight:700; font-size:15px; color:var(--ink-soft)}
+  .drift .dd{font-family:var(--f-hand); font-weight:700; font-size:24px; margin-top:4px; color:var(--ink); word-break:keep-all; line-height:1.25}
+  .drift .dd .ar{color:var(--coral); margin:0 6px}
+
+  .hub-a{text-decoration:none}
+  .footer-note{font-family:var(--f-hand); font-weight:400; font-size:15px; color:var(--ink-soft); text-align:center; margin-top:14px; line-height:1.6}
+
+  @media (max-width:360px){ .wrap{padding:16px 13px 34px} .swatch{width:28px;height:28px} }
+  @media (prefers-reduced-motion:reduce){ *{animation-duration:.001s !important; transition-duration:.05s !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <div class="brand"><span class="dot"></span><b>CLASS GAME WORLD</b></div>
+    <button class="sound-btn" data-action="sound-toggle" id="soundBtn" title="소리">🔊</button>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     제시어 사전 (그리기 좋은 단어 · 속담 · 사자성어)
+  ========================================================= */
+  var WORDS={
+    "동물":["코끼리","펭귄","사자","문어","기린","악어","고양이","공룡","나비","상어","부엉이","달팽이"],
+    "사물":["우산","안경","자전거","시계","로켓","풍선","사다리","등대","텐트","신호등","열쇠","트로피"],
+    "음식":["피자","아이스크림","햄버거","수박","라면","도넛","바나나","김밥","팝콘","케이크","달걀프라이","붕어빵"],
+    "행동":["낚시","잠자기","축구하기","요리하기","춤추기","등산","수영","눈싸움","캠핑","그네타기","줄넘기","목욕"],
+    "속담":["우물 안 개구리","소 잃고 외양간 고친다","그림의 떡","원숭이도 나무에서 떨어진다","티끌 모아 태산","고래 싸움에 새우 등 터진다","바늘 도둑이 소 도둑 된다","등잔 밑이 어둡다","낮말은 새가 듣고 밤말은 쥐가 듣는다","백지장도 맞들면 낫다","개구리 올챙이 적 생각 못 한다","꿩 먹고 알 먹고"],
+    "사자성어":["일석이조","우이독경","어부지리","죽마고우","화룡점정","오리무중","금상첨화","다다익선","새옹지마","유유상종","일거양득","십시일반"],
+    "엉뚱":["방귀 뀌는 로봇","우주에서 피자 먹기","춤추는 문어","하늘 나는 고양이","스케이트 타는 펭귄","트로피 든 공룡","우산 쓴 상어","노래하는 붕어빵"]
+  };
+  var CATS=["전체","동물","사물","음식","행동","속담","사자성어","엉뚱"];
+  function pickWord(cat){
+    var pool=[];
+    if(cat==="전체"){ for(var k in WORDS){ pool=pool.concat(WORDS[k]); } } else { pool=WORDS[cat]||[]; }
+    if(!pool.length) pool=["고양이"];
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+
+  /* =========================================================
+     STORAGE (설정만)
+  ========================================================= */
+  var LS_CFG="tele_cfg_v3";
+  function loadCfg(){ try{ return JSON.parse(localStorage.getItem(LS_CFG))||{}; }catch(e){ return {}; } }
+  function saveCfg(){ try{ localStorage.setItem(LS_CFG, JSON.stringify({ players:S.players, wordMode:S.wordMode, cat:S.cat, sound:S.sound })); }catch(e){} }
+
+  /* =========================================================
+     SOUND (연필 사각사각 느낌의 담백한 효과음)
+  ========================================================= */
+  var actx=null;
+  function ac(){ if(actx) return actx; try{ var C=window.AudioContext||window.webkitAudioContext; actx=C?new C():null; }catch(e){ actx=null; } return actx; }
+  function tone(freq,dur,type,vol,when){
+    if(!S.sound) return; var c=ac(); if(!c) return;
+    try{ var t=c.currentTime+(when||0); var o=c.createOscillator(), g=c.createGain();
+      o.type=type||"sine"; o.frequency.setValueAtTime(freq,t);
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol||0.15,t+0.012); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur+0.02);
+    }catch(e){}
+  }
+  var SFX={
+    tap:function(){ tone(440,.05,"triangle",.08); },
+    next:function(){ tone(470,.08,"triangle",.1); tone(660,.09,"triangle",.09,.05); },
+    pass:function(){ tone(392,.08,"sine",.1); tone(523,.1,"sine",.09,.06); },
+    reveal:function(){ [523,587,698,880].forEach(function(f,i){ tone(f,.14,"triangle",.12,i*0.09); }); }
+  };
+
+  /* =========================================================
+     STATE
+  ========================================================= */
+  var saved=loadCfg();
+  var S={
+    screen:"home",
+    players: saved.players||5,
+    wordMode: saved.wordMode||"random",
+    cat: saved.cat||"전체",
+    sound: (saved.sound!=null)? saved.sound : true,
+    tel:null
+  };
+
+  /* =========================================================
+     DRAWING PAD
+  ========================================================= */
+  var COLORS=["#3a3550","#ef5d60","#e9a63c","#f4d03f","#2aa79b","#3b82f6","#7a6ad4","#e879b0"];
+  var SIZES=[4,9,18];
+  var curColor="#3a3550", curSize=9, curEraser=false;
+  var padCtx=null, padSize=0, padStack=[];
+
+  function wireDraw(){
+    var cv=document.getElementById("padCanvas"); if(!cv) return;
+    var ctx=null; try{ ctx=cv.getContext("2d"); }catch(e){}
+    if(!ctx){ padCtx=null; return; }
+    var box=cv.parentElement; var size=Math.min((box&&box.clientWidth)||320, 360); if(size<60) size=320;
+    var DPR=Math.min(window.devicePixelRatio||1,2);
+    cv.style.width=size+"px"; cv.style.height=size+"px";
+    cv.width=Math.round(size*DPR); cv.height=Math.round(size*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0); ctx.lineCap="round"; ctx.lineJoin="round";
+    ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,size,size);
+    padCtx=ctx; padSize=size; padStack=[];
+    var drawing=false;
+    function pos(e){ var r=cv.getBoundingClientRect(); return { x:(e.clientX-r.left)*(size/r.width), y:(e.clientY-r.top)*(size/r.height) }; }
+    cv.onpointerdown=function(e){ e.preventDefault(); drawing=true; try{ cv.setPointerCapture(e.pointerId); }catch(_){}
+      try{ padStack.push(cv.toDataURL()); if(padStack.length>24) padStack.shift(); }catch(_){}
+      var p=pos(e); ctx.strokeStyle=curEraser?"#ffffff":curColor; ctx.lineWidth=curEraser?curSize*2.4:curSize;
+      ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+0.01,p.y+0.01); ctx.stroke();
+    };
+    cv.onpointermove=function(e){ if(!drawing) return; e.preventDefault(); var p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); };
+    var end=function(){ drawing=false; };
+    cv.onpointerup=end; cv.onpointerleave=end; cv.onpointercancel=end;
+    highlightTools();
+  }
+  function highlightTools(){
+    var sw=document.querySelectorAll("[data-swatch]");
+    sw.forEach&&sw.forEach(function(el){ el.classList.toggle("on", !curEraser && el.dataset.swatch===curColor); });
+    var er=document.getElementById("eraserBtn"); if(er) er.classList.toggle("on", curEraser);
+    var sz=document.querySelectorAll("[data-size]");
+    sz.forEach&&sz.forEach(function(el){ el.classList.toggle("on", parseInt(el.dataset.size,10)===curSize); });
+  }
+  function padUndo(){ if(!padCtx||!padStack.length) return; var d=padStack.pop(); var img=new Image(); img.onload=function(){ padCtx.clearRect(0,0,padSize,padSize); padCtx.fillStyle="#fff"; padCtx.fillRect(0,0,padSize,padSize); padCtx.drawImage(img,0,0,padSize,padSize); }; img.src=d; SFX.tap(); }
+  function padClear(){ if(!padCtx) return; padStack=[]; padCtx.fillStyle="#fff"; padCtx.fillRect(0,0,padSize,padSize); SFX.tap(); }
+
+  /* =========================================================
+     RENDER
+  ========================================================= */
+  var app=document.getElementById("app");
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(m){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]; }); }
+  function go(scr){ S.screen=scr; render(); }
+  function render(){
+    app.innerHTML = SCREENS[S.screen]? SCREENS[S.screen]() : "<div>오류</div>";
+    var sb=document.getElementById("soundBtn"); if(sb) sb.textContent = S.sound?"🔊":"🔇";
+    window.scrollTo(0,0);
+    if(S.screen==="wordentry") wireInput("startWordInput");
+    if(S.screen==="play" && S.tel){
+      if(S.tel.stage==="draw"){ wireDraw(); }
+      else if(S.tel.stage==="guess"){ wireInput("guessInput"); }
+    }
+  }
+  function wireInput(id){
+    var inp=document.getElementById(id); if(!inp) return;
+    try{ inp.focus(); }catch(e){}
+    inp.addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); if(id==="startWordInput") doStartWord(); else doGuess(); } });
+  }
+
+  var SQUIGGLE='<svg class="title-underline" viewBox="0 0 300 14" preserveAspectRatio="none" fill="none"><path d="M3 8 Q 22 2 40 8 T 78 8 T 116 8 T 154 8 T 192 8 T 230 8 T 268 8 T 297 8" stroke="#ef5d60" stroke-width="4" stroke-linecap="round"/></svg>';
+
+  /* =========================================================
+     SCREENS
+  ========================================================= */
+  var SCREENS={
+    home:function(){
+      return '<div class="screen center" style="gap:6px">'+
+        '<div class="doodles"><span class="dood" style="left:6%; top:-4px; color:var(--mustard); transform:rotate(-12deg)">✦</span><span class="dood" style="right:8%; top:-8px; color:var(--teal); transform:rotate(10deg)">✎</span><span class="dood" style="right:20%; top:20px; color:var(--purple); font-size:15px">✧</span></div>'+
+        '<div class="eyebrow">한 명씩 이어 그리는 그림 릴레이</div>'+
+        '<div class="title-wrap"><h1 class="title">그림<br>이어그리기</h1>'+SQUIGGLE+'</div>'+
+        '<p class="tag">🖍️ 내가 그린 게 딴 그림이 되어 돌아온다!</p>'+
+        '<div class="stack" style="width:100%; max-width:320px; margin-top:22px">'+
+          '<button class="btn btn-primary" data-action="start">게임 시작</button>'+
+          '<div class="row">'+
+            '<button class="btn btn-ghost btn-sm" data-action="rules">게임 방법</button>'+
+            '<a href="https://scienceisjo.github.io/brain-break-lab/sonic" class="btn btn-ghost btn-sm hub-a">🕹️ GAME WORLD</a>'+
+          '</div>'+
+        '</div>'+
+        '<div class="footer-note">기기 1대를 돌려가며 · 서버 없이 작동<br>제작 · 해누리중학교 조승재</div>'+
+      '</div>';
+    },
+
+    rules:function(){
+      return '<div class="screen">'+
+        '<div class="eyebrow">놀이 방법</div>'+
+        '<h2 class="sect-h">이렇게 <span class="hl">놀아요</span></h2>'+
+        '<div class="panel"><div style="font-size:18px; color:var(--ink); line-height:1.7; font-family:var(--f-hand)">'+
+          '<p style="margin:0 0 10px"><span class="chip-num">1</span> 첫 번째 사람이 <b style="color:var(--coral)">제시어를 그림</b>으로 그려요.</p>'+
+          '<p style="margin:0 0 10px"><span class="chip-num">2</span> 폰을 넘기면, 다음 사람은 <b style="color:var(--coral)">그림만 보고</b> 뭔지 <b style="color:var(--coral)">글로 추측</b>해요.</p>'+
+          '<p style="margin:0 0 10px"><span class="chip-num">3</span> 또 넘기면, 다음 사람은 <b style="color:var(--coral)">그 추측만 보고</b> 다시 그림을 그려요.</p>'+
+          '<p style="margin:0 0 10px"><span class="chip-num">4</span> 그리기 → 맞히기 → 그리기 → 맞히기 … 마지막 사람까지!</p>'+
+          '<p style="margin:0"><span class="chip-num">5</span> 끝나면 <b style="color:var(--teal)">전체 과정을 공개!</b> 처음 단어가 얼마나 변했는지 함께 봐요 😆</p>'+
+        '</div></div>'+
+        '<div class="lead" style="text-align:center">폰 1대를 순서대로 돌리며 하세요.<br>넘길 땐 앞사람 것을 몰래 보지 않기!</div>'+
+        '<div class="spacer"></div>'+
+        '<button class="btn btn-primary" data-action="rules-back">알겠어요</button>'+
+      '</div>';
+    },
+
+    setup:function(){
+      var seg=function(action, opts){ return '<div class="seg">'+opts.map(function(o){ return '<button class="'+(o.on?'on':'')+'" data-action="'+action+'" data-v="'+o.v+'">'+o.t+'</button>'; }).join("")+'</div>'; };
+      var catChips = S.wordMode==="random"
+        ? '<div class="grp-label">제시어 주제</div><div class="cats">'+CATS.map(function(c){ return '<button class="cat '+(S.cat===c?'on':'')+'" data-action="set-cat" data-v="'+c+'">'+c+'</button>'; }).join("")+'</div>'
+        : '<div class="lead" style="margin-top:10px; text-align:center">첫 사람이 시작 단어를 직접 입력해요.<br>(개념·과학 용어·속담 등 자유롭게!)</div>';
+      return '<div class="screen">'+
+        '<div class="eyebrow">준비</div>'+
+        '<h2 class="sect-h">게임 <span class="hl">설정</span></h2>'+
+        '<div class="panel">'+
+          '<div class="opt-row" style="padding-top:0"><div class="nm">인원 (이어 그릴 사람 수)<small>3~10명 · 순서대로 폰을 돌려요</small></div><div class="stepper"><button data-action="players-dn">–</button><span class="val">'+S.players+'</span><button data-action="players-up">+</button></div></div>'+
+          '<div class="grp-label">시작 단어</div>'+
+          seg("set-wordmode",[{v:"random",t:"🎲 랜덤 제시어",on:S.wordMode==="random"},{v:"input",t:"✍️ 직접 입력",on:S.wordMode==="input"}])+
+          catChips+
+        '</div>'+
+        '<div class="spacer" style="min-height:12px"></div>'+
+        '<div class="row">'+
+          '<button class="btn btn-ghost" data-action="to-home" style="flex:.5">홈</button>'+
+          '<button class="btn btn-primary" data-action="begin" style="flex:1.6">시작하기</button>'+
+        '</div>'+
+      '</div>';
+    },
+
+    wordentry:function(){
+      return '<div class="screen">'+
+        '<div class="eyebrow">시작 단어</div>'+
+        '<h2 class="sect-h">첫 단어를 <span class="hl">정하세요</span></h2>'+
+        '<div class="panel">'+
+          '<div class="lead" style="margin-bottom:10px">다른 사람이 보지 않게 입력하세요. 이 단어가 그림 릴레이의 출발점이에요.</div>'+
+          '<input class="word-input" id="startWordInput" type="text" autocomplete="off" placeholder="예: 광합성, 우물 안 개구리…">'+
+          '<button class="btn btn-primary btn-sm" data-action="start-word" style="margin-top:12px">이 단어로 시작 🎨</button>'+
+        '</div>'+
+        '<div class="spacer"></div>'+
+        '<button class="btn btn-ghost btn-sm" data-action="to-setup">뒤로</button>'+
+      '</div>';
+    },
+
+    play:function(){
+      var t=S.tel;
+      var pill='<div class="step-badge"><span class="pill">'+t.step+' / '+t.players+' 단계</span><span class="pill alt">'+(t.step%2===1?'✏️ 그리기':'💬 맞히기')+'</span></div>';
+
+      if(t.stage==="handoff"){
+        var isDraw = (t.step%2===1);
+        return '<div class="screen">'+pill+
+          '<div class="center" style="gap:16px">'+
+            '<div class="big-emoji">🤝</div>'+
+            '<div class="fore-t">'+t.step+'번째 사람에게<br>폰을 넘겨요</div>'+
+            '<div class="lead">앞사람이 만든 걸 <b style="color:var(--coral)">몰래 보지 마세요!</b><br>준비됐으면 아래를 누르면 '+(isDraw?'그릴 것':'맞힐 그림')+'이 나와요.</div>'+
+            '<div class="stack" style="width:100%; max-width:320px">'+
+              '<button class="btn btn-primary" data-action="tel-go">나 '+t.step+'번이야, 시작</button>'+
+            '</div>'+
+          '</div>'+
+          '<button class="btn btn-ghost btn-sm" data-action="quit-confirm" style="margin-top:8px">그만하기</button>'+
+        '</div>';
+      }
+      if(t.stage==="draw"){
+        var prompt=t.chain[t.step-1].value;
+        var tools='<div class="tools">'+
+            '<div class="swatches">'+COLORS.map(function(c){ return '<button class="swatch" data-action="color" data-swatch="'+c+'" style="background:'+c+'"></button>'; }).join("")+
+              '<button class="tool-btn" id="eraserBtn" data-action="eraser">지우개</button>'+
+            '</div>'+
+            '<div class="tool-row">'+
+              '<div class="sizes">'+SIZES.map(function(s){ return '<button class="size-btn" data-action="size" data-size="'+s+'"><span style="width:'+s+'px;height:'+s+'px"></span></button>'; }).join("")+'</div>'+
+              '<button class="tool-btn" data-action="undo">↩ 되돌리기</button>'+
+              '<button class="tool-btn" data-action="clear">🗑 전체</button>'+
+            '</div>'+
+          '</div>';
+        return '<div class="screen">'+pill+
+          '<div class="draw-prompt">이걸 그리세요<b>'+esc(prompt)+'</b></div>'+
+          '<div class="pad-wrap"><canvas id="padCanvas" class="pad"></canvas></div>'+
+          tools+
+          '<button class="btn btn-primary btn-sm" data-action="submit-draw" style="margin-top:12px">✓ 다 그렸어요 → 넘기기</button>'+
+        '</div>';
+      }
+      var img=t.chain[t.step-1].value;
+      return '<div class="screen">'+pill+
+        '<div class="guess-q">이 그림은 무엇일까요?</div>'+
+        '<div class="pad-wrap"><img class="pad" src="'+img+'" alt="앞사람 그림"></div>'+
+        '<input class="word-input" id="guessInput" type="text" autocomplete="off" placeholder="뭔지 추측해서 적어요!" style="margin-top:12px">'+
+        '<button class="btn btn-primary btn-sm" data-action="submit-guess" style="margin-top:10px">✓ 이걸로 제출 → 넘기기</button>'+
+      '</div>';
+    },
+
+    reveal:function(){
+      var t=S.tel, c=t.chain;
+      var items=c.map(function(it,i){
+        if(it.type==="word") return '<div class="reveal-item"><div class="ri-tag">🏁 시작 단어</div><div class="ri-word">'+esc(it.value)+'</div></div>';
+        if(it.type==="drawing") return '<div class="reveal-item"><div class="ri-tag">'+i+'번의 그림</div><img class="ri-img" src="'+it.value+'"></div>';
+        return '<div class="reveal-item"><div class="ri-tag">'+i+'번의 추측</div><div class="ri-guess">"'+esc(it.value)+'"</div></div>';
+      }).join("");
+      var first=c[0].value;
+      var lastText=null;
+      for(var i=c.length-1;i>=0;i--){ if(c[i].type!=="drawing"){ lastText=c[i].value; break; } }
+      var drift = lastText!=null && c.length>1
+        ? '<div class="drift"><div class="dl">단어의 여정</div><div class="dd">'+esc(first)+'<span class="ar">→</span>'+esc(lastText)+'</div></div>'
+        : '';
+      return '<div class="screen">'+
+        '<div class="eyebrow">결과</div>'+
+        '<h2 class="sect-h">🎉 <span class="hl">대공개!</span></h2>'+
+        drift+
+        '<div class="panel">'+items+'</div>'+
+        '<div class="spacer" style="min-height:8px"></div>'+
+        '<div class="stack">'+
+          '<button class="btn btn-primary" data-action="again">한 번 더! (새 게임)</button>'+
+          '<div class="row">'+
+            '<button class="btn btn-ghost btn-sm" data-action="to-setup">설정 바꾸기</button>'+
+            '<button class="btn btn-ghost btn-sm" data-action="to-home">홈</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }
+  };
+
+  /* =========================================================
+     GAME FLOW (한 줄 릴레이 · 서버/DB 없음)
+  ========================================================= */
+  function begin(){
+    saveCfg();
+    if(S.wordMode==="input"){ go("wordentry"); return; }
+    startChain(pickWord(S.cat));
+  }
+  function doStartWord(){
+    var inp=document.getElementById("startWordInput");
+    var w=inp? inp.value.trim() : "";
+    if(!w){ if(inp){ inp.focus(); } return; }
+    startChain(w);
+  }
+  function startChain(word){
+    S.tel={ players:S.players, chain:[{type:"word", value:word}], step:1, stage:"handoff" };
+    SFX.next(); go("play");
+  }
+  function telGo(){
+    var t=S.tel; t.stage = (t.step%2===1)? "draw" : "guess";
+    SFX.tap(); render();
+  }
+  function storeStep(value){
+    var t=S.tel;
+    var isDraw = (t.step%2===1);
+    t.chain.push({ type: isDraw?"drawing":"guess", value:value });
+    t.step++;
+    if(t.step > t.players){ SFX.reveal(); go("reveal"); return; }
+    t.stage="handoff"; SFX.pass(); render();
+  }
+  function submitDrawing(){
+    var cv=document.getElementById("padCanvas"); var data="[그림]";
+    if(cv){ try{ data=cv.toDataURL("image/png"); }catch(e){ data="[그림]"; } }
+    storeStep(data);
+  }
+  function doGuess(){
+    var inp=document.getElementById("guessInput");
+    var g=inp? inp.value.trim() : "";
+    if(!g){ if(inp){ inp.focus(); } return; }
+    storeStep(g);
+  }
+
+  /* =========================================================
+     ACTIONS
+  ========================================================= */
+  function handle(action, el){
+    switch(action){
+      case "sound-toggle": S.sound=!S.sound; saveCfg(); { var sb=document.getElementById("soundBtn"); if(sb) sb.textContent=S.sound?"🔊":"🔇"; } if(S.sound) SFX.tap(); break;
+      case "start": SFX.tap(); go("setup"); break;
+      case "rules": SFX.tap(); go("rules"); break;
+      case "rules-back": SFX.tap(); go("home"); break;
+      case "to-home": SFX.tap(); go("home"); break;
+      case "to-setup": SFX.tap(); go("setup"); break;
+
+      case "players-up": if(S.players<10){ S.players++; SFX.tap(); saveCfg(); render(); } break;
+      case "players-dn": if(S.players>3){ S.players--; SFX.tap(); saveCfg(); render(); } break;
+      case "set-wordmode": S.wordMode=el.dataset.v; SFX.tap(); saveCfg(); render(); break;
+      case "set-cat": S.cat=el.dataset.v; SFX.tap(); saveCfg(); render(); break;
+      case "begin": begin(); break;
+      case "start-word": doStartWord(); break;
+
+      case "tel-go": telGo(); break;
+      case "submit-draw": submitDrawing(); break;
+      case "submit-guess": doGuess(); break;
+
+      case "color": curColor=el.dataset.swatch; curEraser=false; highlightTools(); SFX.tap(); break;
+      case "eraser": curEraser=true; highlightTools(); SFX.tap(); break;
+      case "size": curSize=parseInt(el.dataset.size,10); highlightTools(); SFX.tap(); break;
+      case "undo": padUndo(); break;
+      case "clear": padClear(); break;
+
+      case "quit-confirm": if(confirm("지금 그만하면 지금까지 그린 게 사라져요. 그만할까요?")){ SFX.tap(); go("home"); } break;
+      case "again": SFX.tap(); go("setup"); break;
+    }
+  }
+  app.addEventListener("click", function(e){ var el=e.target.closest("[data-action]"); if(!el) return; handle(el.dataset.action, el); });
+
+  /* =========================================================
+     EXPOSE FOR TESTS
+  ========================================================= */
+  window.App={
+    S:S, go:go, handle:handle, render:render, begin:begin,
+    startChain:startChain, telGo:telGo, storeStep:storeStep, doGuess:doGuess, doStartWord:doStartWord,
+    pickWord:pickWord, WORDS:WORDS, CATS:CATS
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>
