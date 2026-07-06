@@ -672,6 +672,14 @@ body{
             <button data-t="7">7초</button>
           </div>
         </div>
+        <div class="opt" id="totalTimeOpt" hidden>
+          <h2>⏱ 무제한 · 전체 시간</h2>
+          <div class="seg" id="totalTimeSeg">
+            <button data-tt="120">2분</button>
+            <button data-tt="180" class="on">3분</button>
+            <button data-tt="300">5분</button>
+          </div>
+        </div>
       </div>
 
       <label class="toggle" id="cardToggle"><span>🎴 찬스 카드 사용 <small style="color:var(--muted)">· 문제 전에 카드 뽑기</small></span><span class="switch"></span></label>
@@ -683,6 +691,14 @@ body{
             <button id="teamMinus" aria-label="줄이기">−</button>
             <b id="teamCountNum">2</b>
             <button id="teamPlus" aria-label="늘리기">＋</button>
+          </div>
+        </div>
+        <div class="team-setup-top" id="memberSetup" hidden>
+          <h2>🔁 모둠원 수 <small style="font-weight:400;color:var(--muted);font-size:14px">· 릴레이</small></h2>
+          <div class="stepper">
+            <button id="memberMinus" aria-label="줄이기">−</button>
+            <b id="memberCountNum">6</b>
+            <button id="memberPlus" aria-label="늘리기">＋</button>
           </div>
         </div>
         <div class="team-names" id="teamNames"></div>
@@ -803,7 +819,8 @@ body{
       <section class="qsec">
         <h4>대전 방식</h4>
         <p><b>개인전</b> — 학생 이름을 넣으면 한 명씩 번갈아 도전해요. 성공하면 그 선수 +점.<br>
-        <b>모둠전</b> — 2~6모둠이 차례로 도전해요. 한 문제는 <b>한 모둠 전체가 함께</b>! 점수로 겨뤄 우승 모둠을 가려요.<br>
+        <b>모둠전</b> — 모둠끼리 겨뤄요. <b>모둠원 수</b>를 정하면 모둠 안에서 <b>한 명씩 번갈아(릴레이)</b> — 예: 6인 1조면 1번→2번→…→6번 선수가 차례로. 점수는 <b>모둠별 맞춘 개수</b>로 순위!<br>
+        <b>라운드</b> — '정한 판'은 그 수만큼 문제 후 종료. '<b>무제한</b>'은 <b>전체 제한시간</b>(2·3·5분) 안에 최대한 많이 맞히기, 시간이 끝나면 순위가 나와요.<br>
         🎴 <b>찬스 카드</b> — 문제 전에 카드를 뽑아 점수 2배·시간+3초·공짜 1점·주제 교체권·패스권·🥷상대 점수 뺏기 등 이벤트! (설정에서 끌 수 있어요)</p>
       </section>
 
@@ -915,8 +932,11 @@ const state = {
   teamNames: ["","","","","",""],
   totalRounds: 10,                                         // 0 = 무제한
   useCards: true,                                          // 🎴 찬스 카드 사용
-  teams: [],                                               // 참가자(모둠/선수) [{name,score}]
+  memberCount: 6,                                          // 모둠원 수(릴레이)
+  totalTime: 180,                                          // 무제한 전체 제한시간(초)
+  teams: [],                                               // 참가자(모둠/선수) [{name,score,member}]
   turnIdx: 0,                                              // 이번 차례
+  gameTimer: null, gameLeft: 0,                            // 무제한 전체 타이머
   custom: [],
   deck: [],
   deckPos: 0,
@@ -1021,6 +1041,8 @@ function loadSettings(){
       }
       if(Number.isInteger(s.totalRounds) && s.totalRounds >= 0) state.totalRounds = s.totalRounds;
       if(typeof s.useCards === "boolean") state.useCards = s.useCards;
+      if(Number.isInteger(s.memberCount) && s.memberCount >= 1 && s.memberCount <= 8) state.memberCount = s.memberCount;
+      if(Number.isInteger(s.totalTime) && s.totalTime > 0) state.totalTime = s.totalTime;
     }
   }catch(e){}
 }
@@ -1028,7 +1050,8 @@ function saveSettings(){
   try{
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({
       selected:[...state.selected], duration:state.duration,
-      mode:state.mode, teamCount:state.teamCount, teamNames:state.teamNames, totalRounds:state.totalRounds, useCards:state.useCards
+      mode:state.mode, teamCount:state.teamCount, teamNames:state.teamNames, totalRounds:state.totalRounds, useCards:state.useCards,
+      memberCount:state.memberCount, totalTime:state.totalTime
     }));
   }catch(e){}
 }
@@ -1363,9 +1386,18 @@ function wireHome(){
   });
   // 라운드 수
   setSegActive("roundSeg", b=> Number(b.dataset.r) === state.totalRounds);
+  $("#totalTimeOpt").hidden = state.totalRounds !== 0;
   $("#roundSeg").querySelectorAll("button").forEach(btn=> btn.onclick = ()=>{
     snd.click(); state.totalRounds = Number(btn.dataset.r);
-    setSegActive("roundSeg", b=> b === btn); saveSettings();
+    setSegActive("roundSeg", b=> b === btn);
+    $("#totalTimeOpt").hidden = state.totalRounds !== 0;
+    saveSettings();
+  });
+  // 전체 시간(무제한)
+  setSegActive("totalTimeSeg", b=> Number(b.dataset.tt) === state.totalTime);
+  $("#totalTimeSeg").querySelectorAll("button").forEach(btn=> btn.onclick = ()=>{
+    snd.click(); state.totalTime = Number(btn.dataset.tt);
+    setSegActive("totalTimeSeg", b=> b === btn); saveSettings();
   });
   // 대전 방식
   setSegActive("modeSeg", b=> b.dataset.mode === state.mode);
@@ -1377,6 +1409,8 @@ function wireHome(){
   // 모둠 수 스테퍼
   $("#teamMinus").onclick = ()=>{ if(state.teamCount > MIN_TEAMS){ snd.click(); state.teamCount--; updateTeamCount(); } };
   $("#teamPlus").onclick  = ()=>{ if(state.teamCount < MAX_TEAMS){ snd.click(); state.teamCount++; updateTeamCount(); } };
+  $("#memberMinus").onclick = ()=>{ if(state.memberCount > 1){ snd.click(); state.memberCount--; updateMemberCount(); } };
+  $("#memberPlus").onclick  = ()=>{ if(state.memberCount < 8){ snd.click(); state.memberCount++; updateMemberCount(); } };
   // 찬스 카드 토글
   $("#cardToggle").classList.toggle("on", state.useCards);
   $("#cardToggle").onclick = ()=>{ snd.click(); state.useCards = !state.useCards; $("#cardToggle").classList.toggle("on", state.useCards); saveSettings(); };
@@ -1384,12 +1418,15 @@ function wireHome(){
   // 시작
   $("#startBtn").onclick = startGame;
 }
+function updateMemberCount(){ $("#memberCountNum").textContent = state.memberCount; saveSettings(); }
 function applyModeUI(){
   const isTeam = state.mode === "team";
   $("#teamSetup").hidden = false;                       // 두 모드 모두 참가자 설정
+  $("#memberSetup").hidden = !isTeam;                   // 모둠원 릴레이는 모둠전만
+  $("#memberCountNum").textContent = state.memberCount;
   $("#teamSetupTitle").textContent = isTeam ? "모둠 설정" : "선수(학생) 설정";
   $("#teamHint").textContent = isTeam
-    ? "한 문제는 한 모둠이 차례로 도전해요. 모둠 전체가 함께! (2~6모둠)"
+    ? "모둠끼리 겨뤄요. '모둠원 수'를 정하면 모둠 안에서 한 명씩 번갈아(릴레이) 도전! 점수는 모둠별 맞춘 개수."
     : "학생 이름을 넣으면 한 명씩 번갈아 도전해요. (2~6명)";
   updateTeamCount();
 }
@@ -1439,7 +1476,7 @@ function buildTeams(){
   const unit = state.mode === "team" ? "모둠" : "번";
   state.teams = Array.from({ length:state.teamCount }, (_, i)=>({
     name: (state.teamNames[i] || "").trim() || (i+1)+unit,
-    score: 0
+    score: 0, member: 0
   }));
 }
 function resetMatch(){
@@ -1455,6 +1492,7 @@ function startGame(){
   resetMatch();
   $("#screenHome").classList.remove("active");
   $("#screenPlay").classList.add("active");
+  startGameTimer();
   drawTopic();
   beginRound();
 }
@@ -1462,11 +1500,13 @@ function restartMatch(){
   snd.go();
   buildDeck();
   resetMatch();
+  startGameTimer();
   drawTopic();
   beginRound();
 }
 function backHome(){
   cancelAnimationFrame(state.raf);
+  stopGameTimer();
   state.phase = "ready";
   resetEffects();
   $("#screenPlay").classList.remove("active");
@@ -1477,7 +1517,9 @@ function roundLabel(){
   return "ROUND " + String(state.round).padStart(2,"0") + (state.totalRounds ? " / " + state.totalRounds : " / ∞");
 }
 function updateTopbar(){
-  $("#roundPill").textContent = roundLabel();
+  $("#roundPill").textContent = (state.totalRounds === 0 && state.gameTimer)
+    ? `⏱ ${fmtTime(state.gameLeft)} · R${String(state.round).padStart(2,"0")}`
+    : roundLabel();
   $("#catPill").innerHTML = `${state.topicEmoji} ${escHtml(state.topicCat || "")}`;
   const sb = $("#scoreBoard");
   const max = Math.max(0, ...state.teams.map(t=>t.score));
@@ -1506,7 +1548,21 @@ function applySteal(){
 }
 function drawCard(){ return CARD_DECK[Math.floor(Math.random() * CARD_DECK.length)]; }
 function curPlayer(){ return state.teams[state.turnIdx] || null; }
-function turnTag(){ const p = curPlayer(); return p ? `🎯 ${escHtml(p.name)} 차례` : ""; }
+function turnTag(){ const p = curPlayer(); if(!p) return "";
+  if(state.mode === "team" && state.memberCount > 1) return `🎯 ${escHtml(p.name)} · ${p.member+1}번 선수 차례`;
+  return `🎯 ${escHtml(p.name)} 차례`; }
+function fmtTime(s){ s = Math.max(0, s|0); const m = (s/60)|0, x = s%60; return m + ":" + (x<10?"0":"") + x; }
+function startGameTimer(){
+  clearInterval(state.gameTimer); state.gameTimer = null;
+  if(state.totalRounds !== 0) return;                 // 무제한일 때만 전체 타이머
+  state.gameLeft = state.totalTime;
+  state.gameTimer = setInterval(()=>{
+    state.gameLeft--;
+    updateTopbar();
+    if(state.gameLeft <= 0){ clearInterval(state.gameTimer); state.gameTimer = null; showResults(); }
+  }, 1000);
+}
+function stopGameTimer(){ clearInterval(state.gameTimer); state.gameTimer = null; }
 
 function beginRound(){
   state.mult = 1; state.bonusTime = 0; state.canSwap = false; state.canPass = false; state.steal = false; state.card = null;
@@ -1673,6 +1729,10 @@ function endRound(){
   });
 }
 function advanceRound(){
+  if(state.mode === "team" && state.teams[state.turnIdx]){   // 릴레이: 다음 모둠원으로
+    const t = state.teams[state.turnIdx];
+    t.member = (t.member + 1) % Math.max(1, state.memberCount);
+  }
   if(state.totalRounds > 0 && state.round >= state.totalRounds) showResults();
   else nextRound();
 }
@@ -1682,6 +1742,7 @@ function nextRound(){
 }
 function showResults(){
   cancelAnimationFrame(state.raf);
+  stopGameTimer();
   state.phase = "done";
   resetEffects();
   snd.fanfare();
