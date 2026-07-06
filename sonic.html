@@ -496,88 +496,6 @@
     background:linear-gradient(180deg,#1a2733 0%,#0a1318 100%);
     box-shadow:0 0 0 4px var(--outline),inset 0 0 60px rgba(0,0,0,.55);touch-action:none;cursor:crosshair}
   .bnc-hint{font-family:'Do Hyeon';color:#cfe9cf;font-size:clamp(12px,1.9vh,16px);text-align:center}
-  /* ===== 드럼 연습실 ===== */
-  #drum{--dr-amber:#ffb02e;--dr-cyan:#28e0d0;--dr-pink:#ff3d81;--dr-text:#f4eede;--dr-dim:#8a809f;--dr-line:#2f2746;--dr-bg:#0c0a14;
-    --dr-brass1:#ffe79a;--dr-brass2:#d9a93a;--dr-brass3:#9c6f26;
-    --dr-shell1:#e7384b;--dr-shell2:#9c0f24;--dr-shell3:#5a0512;
-    --dr-head1:#fdfaf0;--dr-head2:#e6ddc9;--dr-head3:#cabfa4;--dr-chrome:#e9eaf2;
-    background:radial-gradient(1200px 800px at 50% -10%,#241a3a 0%,transparent 60%),radial-gradient(900px 600px at 90% 120%,#2a1230 0%,transparent 55%),var(--dr-bg)}
-  #drum .dr-toolbar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center;padding:6px 12px;background:rgba(0,0,0,.3);border:1px solid var(--dr-line);border-radius:10px;font-family:'Space Mono',monospace;color:var(--dr-text)}
-  #drum .dr-tb-group{display:flex;gap:6px;align-items:center}
-  #drum .dr-lbl{font-family:'Bebas Neue';letter-spacing:2px;color:var(--dr-cyan);font-size:13px}
-  #drum .dr-btn{font-family:'Bebas Neue';letter-spacing:1.5px;font-size:13px;background:linear-gradient(180deg,#241d3a,#181226);color:var(--dr-text);border:1px solid var(--dr-line);padding:5px 10px;border-radius:7px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:5px}
-  #drum .dr-btn:hover{transform:translateY(-2px);border-color:var(--dr-amber)}
-  #drum .dr-btn .dr-dot{width:7px;height:7px;border-radius:50%;background:var(--dr-dim)}
-  #drum .dr-btn.on{border-color:var(--dr-cyan);color:var(--dr-cyan);box-shadow:0 0 10px rgba(40,224,208,.25)}
-  #drum .dr-btn.on .dr-dot{background:var(--dr-cyan);box-shadow:0 0 6px var(--dr-cyan)}
-  #drum .dr-btn.dr-rec.on{border-color:var(--dr-pink);color:var(--dr-pink)}
-  #drum .dr-btn.dr-rec.on .dr-dot{background:var(--dr-pink);animation:dr-blink 1s infinite}
-  #drum .dr-btn.dr-loop.on{border-color:#a878ec;color:#a878ec}
-  @keyframes dr-blink{50%{opacity:.25}}
-  #drum .dr-kit-btn.on{background:linear-gradient(180deg,#4a3a1a,#2a1f10);border-color:var(--dr-amber);color:var(--dr-amber)}
-  #drum .dr-select{font-family:'Space Mono',monospace;font-size:12px;background:linear-gradient(180deg,#241d3a,#181226);color:var(--dr-text);border:1px solid var(--dr-line);padding:5px 9px;border-radius:7px}
-  #drum .dr-stage-frame{background:radial-gradient(120% 90% at 50% 30%,#1b1530 0%,#0e0b1a 75%);border:1px solid var(--dr-line);border-radius:18px;padding:10px;width:min(94vw,calc(62vh * 5 / 4));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 30px 70px -30px #000}
-  #drum .dr-stage{position:relative;width:100%;aspect-ratio:5/4;container-type:size;border-radius:14px;overflow:hidden;background:radial-gradient(60% 50% at 50% 88%,rgba(255,176,46,.07),transparent 70%),repeating-conic-gradient(from 0deg at 50% 95%,rgba(255,255,255,.015) 0 6deg,transparent 6deg 12deg)}
-  #drum .dr-rug{position:absolute;left:50%;top:60%;transform:translate(-50%,-50%);width:92cqw;height:62cqw;border-radius:14cqw;background:radial-gradient(ellipse at 50% 40%,#241b1f 0%,#18121a 70%,#120d16 100%);box-shadow:inset 0 0 30px rgba(0,0,0,.6),0 20px 40px -20px #000}
-  #drum .dr-rug::after{content:"";position:absolute;inset:6cqw;border-radius:9cqw;border:1px dashed rgba(255,255,255,.06)}
-  #drum .dr-piece{position:absolute;transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:none}
-  #drum .dr-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue';letter-spacing:1px;text-align:center;pointer-events:none;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.7);line-height:1}
-  #drum .dr-cymbal{border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,250,210,.95) 0 4%,transparent 5%),repeating-radial-gradient(circle,rgba(120,80,10,.16) 0 1.5px,transparent 1.5px 5px),radial-gradient(circle at 42% 38%,var(--dr-brass1) 0%,var(--dr-brass2) 52%,var(--dr-brass3) 100%);box-shadow:0 10px 22px -8px rgba(0,0,0,.7),inset 0 0 16px rgba(255,255,255,.25),inset 0 0 0 1px rgba(120,80,10,.4)}
-  #drum .dr-cymbal .dr-label{font-size:3.2cqw;color:#5a3d08;text-shadow:0 1px 0 rgba(255,255,255,.3)}
-  #drum .dr-piece.hit .dr-cymbal{animation:dr-wobble .4s ease-out}
-  @keyframes dr-wobble{0%{transform:scale(.97) rotate(-1deg);filter:brightness(1.6)}40%{transform:scale(1.01) rotate(1deg)}100%{transform:scale(1);filter:brightness(1)}}
-  #drum .dr-drum{border-radius:50%;position:relative;background:radial-gradient(circle at 50% 50%,var(--dr-shell1) 0 47%,var(--dr-shell2) 60%,var(--dr-shell3) 100%);box-shadow:0 14px 26px -10px rgba(0,0,0,.8)}
-  #drum .dr-drum .dr-head{position:absolute;inset:11%;border-radius:50%;background:radial-gradient(circle at 40% 34%,var(--dr-head1),var(--dr-head2) 62%,var(--dr-head3) 100%);box-shadow:inset 0 2px 6px rgba(255,255,255,.6),inset 0 -6px 14px rgba(0,0,0,.18),0 0 0 2px rgba(0,0,0,.15)}
-  #drum .dr-drum .dr-lugs{position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(var(--dr-chrome) 0 2.4deg,transparent 2.4deg 30deg);-webkit-mask:radial-gradient(circle,transparent 56%,#000 58% 70%,transparent 73%);mask:radial-gradient(circle,transparent 56%,#000 58% 70%,transparent 73%);opacity:.85}
-  #drum .dr-drum .dr-label{color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.85)}
-  #drum .dr-piece.hit .dr-head{animation:dr-thump .18s ease-out}
-  @keyframes dr-thump{0%{transform:scale(.93);filter:brightness(1.5)}100%{transform:scale(1);filter:brightness(1)}}
-  #drum .dr-rim-ring{border-radius:50%;background:radial-gradient(circle,transparent 60%,var(--dr-chrome) 62% 78%,transparent 82%);box-shadow:0 10px 22px -10px rgba(0,0,0,.7)}
-  #drum .dr-piece.hit .dr-rim-ring{animation:dr-ringflash .25s ease-out}
-  @keyframes dr-ringflash{0%{filter:brightness(2) drop-shadow(0 0 8px #fff)}100%{filter:brightness(1)}}
-  #drum .dr-auxpad{border-radius:14%;background:linear-gradient(180deg,#241d3a,#15101f);border:1px solid var(--dr-line);box-shadow:inset 0 0 18px rgba(0,0,0,.5)}
-  #drum .dr-auxpad .dr-label{font-size:3cqw;color:var(--c);text-shadow:0 0 8px var(--c)}
-  #drum .dr-piece.hit .dr-auxpad{animation:dr-padpulse .25s;box-shadow:0 0 0 2px var(--c),0 0 26px var(--c)}
-  @keyframes dr-padpulse{0%{transform:scale(.92)}100%{transform:scale(1)}}
-  #drum .dr-ripple{position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;border:2px solid rgba(255,255,255,.8);transform:translate(-50%,-50%) scale(.2);width:100%;height:100%;opacity:.9;animation:dr-rip .45s ease-out forwards}
-  @keyframes dr-rip{to{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
-  #drum .dr-gear{position:absolute;top:2%;left:2%;width:22px;height:22px;border-radius:7px;background:rgba(0,0,0,.55);border:1px solid var(--dr-line);color:var(--dr-text);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;opacity:.55;transition:.15s;z-index:30}
-  #drum .dr-piece:hover .dr-gear,#drum .dr-gear:hover{opacity:1;color:var(--dr-amber);border-color:var(--dr-amber)}
-  #drum .dr-keytag{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);font-size:2.4cqw;color:rgba(255,255,255,.6);letter-spacing:1px;pointer-events:none;background:rgba(0,0,0,.35);border-radius:5px;padding:0 4px}
-  #drum .dr-throne{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);width:16cqw;height:9cqw;border-radius:50% 50% 18% 18%;background:radial-gradient(circle at 50% 35%,#2b2238,#16101f);border:1px solid var(--dr-line)}
-  #drum .dr-throne::after{content:"YOU";position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-family:'Bebas Neue';letter-spacing:2px;font-size:3cqw;color:var(--dr-dim)}
-  #drum .dr-metro{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 14px;border:1px solid var(--dr-line);border-radius:12px;background:rgba(0,0,0,.25);color:var(--dr-text);font-family:'Space Mono',monospace;max-width:94vw}
-  #drum .dr-bpm{font-family:'Bebas Neue';font-size:24px;color:var(--dr-amber);min-width:54px;text-align:center;text-shadow:0 0 12px rgba(255,122,24,.5)}
-  #drum .dr-metro input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--dr-amber),var(--dr-pink));outline:none;flex:1;min-width:100px;max-width:220px}
-  #drum .dr-metro input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 0 10px var(--dr-amber)}
-  #drum .dr-metro input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:none}
-  #drum .dr-beats{display:flex;gap:4px}
-  #drum .dr-beat{width:10px;height:10px;border-radius:50%;background:var(--dr-line);transition:.08s}
-  #drum .dr-beat.active{background:var(--dr-cyan);box-shadow:0 0 8px var(--dr-cyan);transform:scale(1.3)}
-  #drum .dr-beat.downbeat.active{background:var(--dr-amber);box-shadow:0 0 8px var(--dr-amber)}
-  #drum .dr-hint{font-size:12px;color:var(--dr-dim);text-align:center;line-height:1.7;max-width:780px;font-family:'Space Mono',monospace}
-  #drum .dr-hint b{color:var(--dr-amber)}
-  #drum .dr-scrim{position:fixed;inset:0;background:rgba(5,3,12,.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
-  #drum .dr-scrim.show{display:flex}
-  #drum .dr-modal{width:min(420px,100%);background:linear-gradient(180deg,#1d1733,#15101f);border:1px solid var(--dr-line);border-radius:16px;padding:20px;box-shadow:0 40px 80px -30px #000;font-family:'Space Mono',monospace;color:var(--dr-text)}
-  #drum .dr-modal h3{font-family:'Bebas Neue';letter-spacing:2px;font-size:22px;color:var(--dr-amber)}
-  #drum .dr-modal .dr-mko{font-size:12px;color:var(--dr-dim);margin-bottom:14px}
-  #drum .dr-field{margin-bottom:12px}
-  #drum .dr-field label{display:flex;justify-content:space-between;font-size:11px;color:var(--dr-dim);letter-spacing:1px;margin-bottom:5px;text-transform:uppercase}
-  #drum .dr-field label span{color:var(--dr-cyan);font-weight:700}
-  #drum .dr-field input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--dr-amber),var(--dr-pink));outline:none}
-  #drum .dr-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff}
-  #drum .dr-modal .dr-row{display:flex;gap:8px;margin-top:6px}
-  #drum .dr-modal .dr-preview{width:100%;font-family:'Bebas Neue';letter-spacing:2px;font-size:16px;background:linear-gradient(180deg,#2a2142,#1a1428);border:1px solid var(--dr-line);color:var(--dr-text);padding:9px;border-radius:9px;cursor:pointer;margin-bottom:6px}
-  #drum .dr-modal .dr-preview:hover{border-color:var(--dr-amber);color:var(--dr-amber)}
-  #drum .dr-modal .dr-mclose{flex:1;justify-content:center}
-  #drum .dr-stage.settings-mode{box-shadow:inset 0 0 0 4px var(--dr-cyan),inset 0 0 50px rgba(40,224,208,.15)}
-  #drum .dr-stage.settings-mode::before{content:"🎛️ 음색 설정 모드 — 드럼을 눌러 음색 조절";position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(40,224,208,.92);color:#001;font-family:'Bebas Neue';letter-spacing:1px;font-size:13px;padding:6px 14px;border-radius:20px;z-index:40;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-  #drum .dr-stage.settings-mode .dr-gear{opacity:1!important;transform:scale(1.15);color:var(--dr-cyan)!important;border-color:var(--dr-cyan)!important}
-  #drum .dr-stage.settings-mode .dr-piece{cursor:help}
-  #drum .dr-stage.settings-mode .dr-cymbal,#drum .dr-stage.settings-mode .dr-drum,#drum .dr-stage.settings-mode .dr-rim-ring,#drum .dr-stage.settings-mode .dr-auxpad{filter:hue-rotate(35deg) saturate(.7) brightness(.85)}
-  #drum .dr-btn.dr-sm-btn.on{border-color:var(--dr-cyan);color:var(--dr-cyan);background:linear-gradient(180deg,#1a3a3a,#0f2424);box-shadow:0 0 14px rgba(40,224,208,.4)}
-  @media (hover:none){#drum .dr-gear{opacity:0;pointer-events:none}#drum .dr-stage.settings-mode .dr-gear{opacity:1!important;pointer-events:auto}}
   .upd-badge{display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:var(--stonedd);color:#e9f1e4;font-family:'Do Hyeon';font-size:clamp(11px,1.6vh,14px);padding:6px 12px;
     box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD);transition:transform .08s;white-space:nowrap}
   .upd-badge:hover{transform:translateY(-2px)}
@@ -841,7 +759,6 @@
         <span class="eg" data-desc="지나간 사과 숫자 합이 10이면 제거! ㄱ·ㄴ·ㄷ·대각선 어떤 모양이든 OK. (1인)">🍎 사과게임 🏆</span>
         <span class="eg" data-desc="누르면 상승·떼면 하강! 좁아지는 동굴을 부딪히지 않고 멀리. 1~2인 대결.">🚁 헬리콥터 🏆</span>
         <span class="eg" data-desc="벽에 튕기는 공을 나무 막대로 받아내기! 점수가 오를수록 공이 빨라지고 점점 늘어나요. (1인)">🏀 공 튕기기 🏆</span>
-        <span class="eg" data-desc="위에서 본 진짜 드럼킷! 터치·키보드 연주, 4가지 킷·5가지 그루브 백킹·메트로놈·녹음/루프.">🥁 드럼 연습실</span>
         <span class="eg" data-desc="🤝 단합대회 · 한 명만 다른 제시어! 대화로 거짓말쟁이를 찾아라. (새 탭)">🕵️ 라이어 게임</span>
         <span class="eg" data-desc="🤝 단합대회 · 제시된 주제에 맞는 답 3가지를 5초 안에! 개인전·모둠전 + 찬스 카드. (새 탭)">⏱️ 5초 준다</span>
         <span class="eg" data-desc="🤝 단합대회 · '훈민정~음!' 외치고 나타난 초성으로 낱말 대기! 끝내 못 외친 팀이 벌칙. (새 탭)">📜 훈민정음</span>
@@ -1327,90 +1244,6 @@
   </div>
 </section>
 
-<!-- ===================== 게임16: 드럼 연습실 (악기/도구) ===================== -->
-<section class="screen" id="drum">
-  <div class="topbar">
-    <div class="brand"><span class="tag" style="background:#ffb02e;color:#3a2200">GAME 14</span><h1>드럼 연습실</h1></div>
-    <div style="display:flex;gap:10px;align-items:center">
-      <button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button>
-    </div>
-  </div>
-  <div class="arena" id="drumArena" style="flex-direction:column;gap:10px;justify-content:flex-start;align-items:center;padding-top:6px;overflow-y:auto">
-    <div class="dr-toolbar">
-      <div class="dr-tb-group">
-        <span class="dr-lbl">KIT</span>
-        <button class="dr-btn dr-kit-btn on" data-kit="acoustic">어쿠스틱</button>
-        <button class="dr-btn dr-kit-btn" data-kit="electronic">전자</button>
-        <button class="dr-btn dr-kit-btn" data-kit="rb808">808</button>
-        <button class="dr-btn dr-kit-btn" data-kit="lofi">로파이</button>
-      </div>
-      <div class="dr-tb-group">
-        <button class="dr-btn dr-sm-btn" id="drSoundModeBtn">⚙ 음색 모드</button>
-      </div>
-      <div class="dr-tb-group">
-        <span class="dr-lbl">GROOVE</span>
-        <select class="dr-select" id="drGrooveSel">
-          <option value="">— 직접 연주 —</option>
-          <option value="rock">🥁 락</option>
-          <option value="funk">🪩 펑크</option>
-          <option value="hiphop">🎤 힙합</option>
-          <option value="disco">💃 디스코</option>
-          <option value="ballad">🎶 발라드</option>
-        </select>
-        <button class="dr-btn" id="drGroovePlay">▶</button>
-      </div>
-    </div>
-    <div class="dr-stage-frame">
-      <div class="dr-stage" id="drStage">
-        <div class="dr-rug"></div>
-        <div class="dr-throne"></div>
-      </div>
-    </div>
-    <div class="dr-metro">
-      <button class="dr-btn dr-metro-btn" id="drMetroBtn"><span class="dr-dot"></span><span>메트로놈</span></button>
-      <span class="dr-bpm" id="drBpmVal">100</span>
-      <input type="range" id="drBpm" min="40" max="220" value="100">
-      <div class="dr-beats" id="drBeats"></div>
-      <button class="dr-btn" id="drTapBtn">탭 BPM</button>
-      <button class="dr-btn dr-rec" id="drRecBtn"><span class="dr-dot"></span><span>녹음</span></button>
-      <button class="dr-btn" id="drPlayBtn">▶ 재생</button>
-      <button class="dr-btn dr-loop" id="drLoopBtn">🔁 루프</button>
-      <button class="dr-btn" id="drClearBtn">초기화</button>
-    </div>
-    <div class="dr-hint">
-      터치·클릭으로 연주 · 키보드: <b>Q W E R / A S D F / Z X C V</b><br>
-      <b>스네어</b> 가운데=본음, 바깥 테=림샷 · <b>하이햇</b> 가운데=닫힘, 가장자리=열림 · 음색은 <b>⚙ 톱니</b> 또는 <b>길게 누르기</b>
-    </div>
-    <div class="dr-scrim" id="drScrim">
-      <div class="dr-modal">
-        <h3 id="drMTitle">KICK</h3>
-        <div class="dr-mko" id="drMKo">베이스 드럼</div>
-        <div class="dr-field"><label>볼륨 <span id="drVVol">100%</span></label><input type="range" id="drSVol" min="0" max="100" value="100"></div>
-        <div class="dr-field"><label>피치/튜닝 <span id="drVPitch">0</span></label><input type="range" id="drSPitch" min="-12" max="12" value="0"></div>
-        <div class="dr-field"><label>울림/디케이 <span id="drVDecay">100%</span></label><input type="range" id="drSDecay" min="20" max="200" value="100"></div>
-        <div class="dr-field"><label>톤/밝기 <span id="drVTone">50%</span></label><input type="range" id="drSTone" min="0" max="100" value="50"></div>
-        <button class="dr-preview" id="drPreviewBtn">▶ 미리 듣기</button>
-        <div class="dr-row">
-          <button class="dr-btn dr-mclose" id="drResetOne">기본값</button>
-          <button class="dr-btn dr-mclose" id="drCloseModal">닫기</button>
-        </div>
-      </div>
-    </div>
-    <div class="overlay" id="drumSetupOv"><div class="panel" style="max-width:560px">
-      <h3>🥁 드럼 연습실</h3>
-      <p class="sub" style="text-align:left;line-height:1.55">
-        🥁 <b style="color:var(--gold)">연주</b> — 위에서 내려다본 드럼킷을 터치·키보드로 연주! Q W E R · A S D F · Z X C V 키도 가능해요.<br>
-        🎚️ <b style="color:var(--gold)">킷 4종</b> — 어쿠스틱 / 전자 / 808 / 로파이 — 한 번에 사운드 전체 변경.<br>
-        🎵 <b style="color:var(--gold)">그루브 백킹</b> — 락·펑크·힙합·디스코·발라드 자동 반주 위에 즉흥 연주!<br>
-        🔴 <b style="color:var(--gold)">녹음·루프</b> — 자기 연주를 녹음해 재생 또는 무한 루프. 메트로놈 켜고 녹음하면 자동 박자 맞춤!<br>
-        👆 <b style="color:var(--gold)">탭 BPM</b> — 박자에 맞춰 톡톡 누르면 템포 자동 설정.<br>
-        ⚙ <b style="color:var(--gold)">음색 변경</b> — 상단 <b>"⚙ 음색 모드"</b> 버튼을 켜고 드럼을 누르면 그 드럼의 볼륨·피치·울림·톤 슬라이더가 나와요. 끄면 다시 연주 모드.<br>
-        ✋ <b style="color:var(--gold)">두 손가락·여러 명 동시 연주</b> OK — 연주 중에는 절대 설정창이 안 떠요!
-      </p>
-      <button class="bigbtn" onclick="drumStart()">시작!</button>
-    </div></div>
-  </div>
-</section>
 
 <script>
 /* ============ 공통 ============ */
@@ -1428,7 +1261,7 @@ const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)','var(--p5)','var(
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수','5번 선수','6번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');try{if(id==='entry')spaceSet(3);else if(id==='menu')spaceSet(.8);else spaceStop()}catch(e){}}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();drumStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
 /* ===== 인기 게임 정렬 (플레이 횟수) ===== */
 function playKey(g){return 'cgw_play_'+g}
 function getPlay(g){return +(lsGet(playKey(g))||0)}
@@ -1570,7 +1403,7 @@ function renderPodium(podId,winId,scores,names){
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})
   const _rk=podId.replace('Podium','');if(REC[_rk])tryRecord(_rk,rank[0].s,false)}
-const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,drum:drumSetup};
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup};
 let pendingGame=null,pledgeOK=false;
 function openGame(g){pendingGame=g;pledgeOK=false;
   $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
@@ -2104,7 +1937,6 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  drum:'teamup',
   liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
@@ -2316,129 +2148,6 @@ function bncOver(){bnc.running=false;
     $('bncResultMsg').innerHTML='<b style="color:var(--gold);font-size:1.5em">'+bnc.score+'</b> 번 받았어요!';
     $('bncResultOv').classList.add('show');tryRecord('bnc',bnc.score,false)},700)}
 chipToggle('bncSetupOv','emoji');chipToggle('bncSetupOv','diff');
-
-/* ===== 게임16: 드럼 연습실 (악기/도구) ===== */
-const DRUM_DEF={vol:1,pitch:0,decay:1,tone:.5};
-const DRUM_KIT_PIECES=[
-  {id:'ride',name:'RIDE',ko:'라이드',key:'R',shape:'cymbal',voice:'ride',x:73,y:21,d:30,z:5},
-  {id:'crash',name:'CRASH',ko:'크래시',key:'Q',shape:'cymbal',voice:'crash',x:26,y:16,d:24,z:6},
-  {id:'hatO',name:'HI-HAT',ko:'하이햇(열림)',key:'E',shape:'cymbal',voice:'hatOpen',x:13,y:48,d:22,z:7},
-  {id:'hatC',name:'',ko:'하이햇(닫힘)',key:'W',shape:'cymbal',voice:'hatClosed',x:13,y:48,d:11,z:8,sub:true},
-  {id:'floor',name:'FLOOR',ko:'플로어 탐',key:'Z',shape:'drum',voice:'tom',base:110,x:82,y:60,d:24,z:4},
-  {id:'tom1',name:'TOM 1',ko:'하이 탐',key:'A',shape:'drum',voice:'tom',base:240,x:42,y:37,d:17,z:5},
-  {id:'tom2',name:'TOM 2',ko:'미드 탐',key:'S',shape:'drum',voice:'tom',base:170,x:59,y:37,d:18,z:5},
-  {id:'kick',name:'KICK',ko:'베이스 드럼',key:'X',shape:'drum',voice:'kick',x:51,y:67,d:31,z:3},
-  {id:'rim',name:'',ko:'림샷',key:'V',shape:'rim',voice:'snare',pitch:7,x:30,y:64,d:22,z:6,sub:true},
-  {id:'snare',name:'SNARE',ko:'스네어',key:'D',shape:'drum',voice:'snare',x:30,y:64,d:15,z:7},
-  {id:'kick2',name:'808',ko:'베이스 드럼 2',key:'C',shape:'aux',voice:'kick',pitch:-4,c:'#ff7a4a',x:11,y:88,w:14,h:9,z:9},
-  {id:'clap',name:'CLAP',ko:'박수',key:'F',shape:'aux',voice:'clap',c:'#ff6ad5',x:90,y:88,w:14,h:9,z:9}
-];
-const DRUM_KIT_PRESETS={
-  acoustic:{},
-  electronic:{kick:{pitch:-2,decay:1.2,tone:.7},snare:{tone:.85,decay:1.4,pitch:2},hatC:{tone:.9},hatO:{tone:.9,decay:1.2},crash:{tone:.85,decay:1.3},ride:{tone:.85},tom1:{pitch:3,decay:1.2},tom2:{pitch:1,decay:1.2},floor:{pitch:-2,decay:1.3},clap:{vol:1.1,tone:.7}},
-  rb808:{kick:{pitch:-7,decay:1.9,tone:.15,vol:1.1},kick2:{pitch:-9,decay:2.1,tone:.1,vol:1.1},snare:{tone:.55,decay:.85,pitch:-2},hatC:{decay:.6,tone:.7},hatO:{decay:.9,tone:.7},crash:{decay:.7},ride:{decay:.75},tom1:{pitch:-4,decay:1.2},tom2:{pitch:-6,decay:1.4},floor:{pitch:-9,decay:1.6},clap:{tone:.85,decay:1.0}},
-  lofi:{_all:{vol:.78,tone:.28,decay:.7}}
-};
-const DRUM_GROOVES={
-  rock:{name:'락',steps:[['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare','hatC'],['hatC'],['kick','hatC'],['hatC'],['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare','hatC'],['hatC'],['hatC'],['hatC']]},
-  funk:{name:'펑크',steps:[['kick','hatC'],['hatC'],['hatC'],['kick','hatC'],['snare','hatC'],['hatC'],['hatC'],['kick','hatC'],['hatC'],['hatC'],['kick','hatC'],['hatC'],['snare','hatC'],['hatC'],['kick','hatC'],['hatC']]},
-  hiphop:{name:'힙합',steps:[['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare'],['hatC'],['kick','hatC'],['hatC'],['kick','hatC'],['hatC'],['hatC'],['hatC'],['snare'],['hatC'],['hatC'],['hatC']]},
-  disco:{name:'디스코',steps:[['kick','hatC'],[],['hatO'],[],['kick','snare','hatC'],[],['hatO'],[],['kick','hatC'],[],['hatO'],[],['kick','snare','hatC'],[],['hatO'],[]]},
-  ballad:{name:'발라드',steps:[['kick','hatC'],[],[],['hatC'],[],[],['hatC'],[],['snare','hatC'],[],[],['hatC'],[],[],['hatC'],[]]}
-};
-let drum={ctx:null,master:null,noiseBuf:null,kit:'acoustic',settings:{},
-  metro:{on:false,bpm:100,timer:null,beatIdx:0,beats:4},
-  rec:{on:false,start:0,data:[],looping:false,loopT:null,loopDur:0},
-  groove:{playing:null,timer:null,step:0},
-  pieceEls:{},curM:null,bound:false,built:false,settingsMode:false,
-  pendingTimers:new Map(),activePresses:0,
-  tap:{times:[],resetT:null}};
-function drumAC(){if(!drum.ctx){const AC=window.AudioContext||window.webkitAudioContext;drum.ctx=new AC();drumUnlockAudio()}if(drum.ctx.state==='suspended')drum.ctx.resume().catch(()=>{});return drum.ctx}
-function drumUnlockAudio(){try{if(!drum.ctx){const AC=window.AudioContext||window.webkitAudioContext;drum.ctx=new AC()}if(drum.ctx.state==='suspended')drum.ctx.resume().catch(()=>{});const buf=drum.ctx.createBuffer(1,1,22050);const src=drum.ctx.createBufferSource();src.buffer=buf;src.connect(drum.ctx.destination);src.start?src.start(0):src.noteOn(0)}catch(e){}}
-function drumMaster(){if(!drum.master){const c=drumAC();drum.master=c.createGain();drum.master.gain.value=.9;drum.master.connect(c.destination)}return drum.master}
-function drumNoise(){const c=drumAC();if(!drum.noiseBuf){drum.noiseBuf=c.createBuffer(1,c.sampleRate,c.sampleRate);const d=drum.noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}const s=c.createBufferSource();s.buffer=drum.noiseBuf;s.loop=true;return s}
-const DRUM_VOICES={
-  kick(s,t){const c=drumAC(),o=c.createOscillator(),g=c.createGain();const f0=130*Math.pow(2,s.pitch/12);o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(Math.max(30,40*Math.pow(2,s.pitch/12)),t+.12*s.decay);g.gain.setValueAtTime(s.vol,t);g.gain.exponentialRampToValueAtTime(.001,t+.45*s.decay);o.connect(g).connect(drumMaster());o.start(t);o.stop(t+.5*s.decay);const cl=drumNoise(),cg=c.createGain(),hp=c.createBiquadFilter();hp.type='bandpass';hp.frequency.value=1500+s.tone*4000;cg.gain.setValueAtTime(s.vol*.5,t);cg.gain.exponentialRampToValueAtTime(.001,t+.03);cl.connect(hp).connect(cg).connect(drumMaster());cl.start(t);cl.stop(t+.04)},
-  snare(s,t){const c=drumAC(),n=drumNoise(),ng=c.createGain(),bp=c.createBiquadFilter();bp.type='highpass';bp.frequency.value=900+s.tone*2500;ng.gain.setValueAtTime(s.vol,t);ng.gain.exponentialRampToValueAtTime(.001,t+.2*s.decay);n.connect(bp).connect(ng).connect(drumMaster());n.start(t);n.stop(t+.25*s.decay);const o=c.createOscillator(),og=c.createGain();o.type='triangle';o.frequency.value=180*Math.pow(2,s.pitch/12);og.gain.setValueAtTime(s.vol*.7,t);og.gain.exponentialRampToValueAtTime(.001,t+.1*s.decay);o.connect(og).connect(drumMaster());o.start(t);o.stop(t+.12*s.decay)},
-  hat(s,t,open){const c=drumAC(),n=drumNoise(),g=c.createGain(),hp=c.createBiquadFilter();hp.type='highpass';hp.frequency.value=6000+s.tone*4000;const dur=(open?.4:.06)*s.decay;g.gain.setValueAtTime(s.vol*.6,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);n.connect(hp).connect(g).connect(drumMaster());n.start(t);n.stop(t+dur+.02)},
-  hatClosed(s,t){DRUM_VOICES.hat(s,t,false)},
-  hatOpen(s,t){DRUM_VOICES.hat(s,t,true)},
-  tom(s,t){const c=drumAC(),o=c.createOscillator(),g=c.createGain();const f=s.base*Math.pow(2,s.pitch/12);o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*.55,t+.3*s.decay);g.gain.setValueAtTime(s.vol,t);g.gain.exponentialRampToValueAtTime(.001,t+.4*s.decay);o.connect(g).connect(drumMaster());o.start(t);o.stop(t+.45*s.decay)},
-  cymbal(s,t,ride){const c=drumAC(),n=drumNoise(),g=c.createGain(),bp=c.createBiquadFilter();bp.type=ride?'bandpass':'highpass';bp.frequency.value=ride?(5000+s.tone*3000):(3500+s.tone*3000);bp.Q.value=ride?2:.7;const dur=(ride?.9:1.6)*s.decay;g.gain.setValueAtTime(s.vol*.5,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);n.connect(bp).connect(g).connect(drumMaster());n.start(t);n.stop(t+dur+.05)},
-  crash(s,t){DRUM_VOICES.cymbal(s,t,false)},
-  ride(s,t){DRUM_VOICES.cymbal(s,t,true)},
-  clap(s,t){const c=drumAC();[0,.01,.02].forEach(d=>{const n=drumNoise(),g=c.createGain(),bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1200+s.tone*1500;bp.Q.value=1;g.gain.setValueAtTime(s.vol*.7,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.12*s.decay);n.connect(bp).connect(g).connect(drumMaster());n.start(t+d);n.stop(t+d+.14*s.decay)})}
-};
-function drumPlay(k,when){const s=drum.settings[k.id]||{...DRUM_DEF,base:k.base||150,pitch:k.pitch||0};const v=DRUM_VOICES[k.voice];if(v)v({vol:s.vol,pitch:s.pitch,decay:s.decay,tone:s.tone,base:s.base},when??drumAC().currentTime)}
-function drumHit(id){const el=drum.pieceEls[id];if(!el)return;el.classList.add('hit');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('hit'),260);const tgt=el.querySelector('.dr-drum,.dr-cymbal,.dr-rim-ring,.dr-auxpad')||el;const r=document.createElement('span');r.className='dr-ripple';tgt.appendChild(r);setTimeout(()=>r.remove(),460)}
-function drumRecord(id){if(!drum.rec.on)return;let t=performance.now()-drum.rec.start;if(drum.metro.on&&drum.metro.bpm){const ms=15000/drum.metro.bpm;t=Math.round(t/ms)*ms}drum.rec.data.push({id,t})}
-function drumApplyKit(kit){drum.kit=kit;DRUM_KIT_PIECES.forEach(k=>drum.settings[k.id]={...DRUM_DEF,base:k.base||150,pitch:k.pitch||0});const p=DRUM_KIT_PRESETS[kit]||{};if(p._all)Object.keys(drum.settings).forEach(id=>Object.assign(drum.settings[id],p._all));Object.keys(p).forEach(pid=>{if(pid!=='_all'&&drum.settings[pid])Object.assign(drum.settings[pid],p[pid])});document.querySelectorAll('#drum .dr-kit-btn').forEach(b=>b.classList.toggle('on',b.dataset.kit===kit))}
-function drumBuildKit(){if(drum.built)return;drum.built=true;const stage=$('drStage');
-  DRUM_KIT_PIECES.forEach(k=>{const el=document.createElement('div');el.className='dr-piece';el.dataset.id=k.id;el.style.left=k.x+'%';el.style.top=k.y+'%';el.style.zIndex=k.z;if(k.c)el.style.setProperty('--c',k.c);let inner='';
-    if(k.shape==='cymbal'){el.style.width=k.d+'cqw';el.style.height=k.d+'cqw';inner='<div class="dr-cymbal" style="width:100%;height:100%">'+(k.name?'<div class="dr-label">'+k.name+'</div>':'')+'</div>'}
-    else if(k.shape==='drum'){el.style.width=k.d+'cqw';el.style.height=k.d+'cqw';inner='<div class="dr-drum" style="width:100%;height:100%"><div class="dr-lugs"></div><div class="dr-head"></div><div class="dr-label" style="font-size:'+Math.max(2.4,k.d*.18)+'cqw">'+k.name+'</div></div>'}
-    else if(k.shape==='rim'){el.style.width=k.d+'cqw';el.style.height=k.d+'cqw';inner='<div class="dr-rim-ring" style="width:100%;height:100%"></div>'}
-    else if(k.shape==='aux'){el.style.width=k.w+'cqw';el.style.height=k.h+'cqw';inner='<div class="dr-auxpad" style="width:100%;height:100%"><div class="dr-label">'+k.name+'</div></div>'}
-    el.innerHTML=inner+'<div class="dr-gear">⚙</div>';
-    if(!k.sub)el.insertAdjacentHTML('beforeend','<div class="dr-keytag">'+k.key+'</div>');
-    stage.appendChild(el);drum.pieceEls[k.id]=el;
-    el.addEventListener('pointerdown',e=>{if(e.target.classList.contains('dr-gear'))return;e.preventDefault();drumAC();
-      if(drum.settingsMode){drumOpenSettings(k);return}
-      drumPlay(k);drumHit(k.id);drumRecord(k.id);
-      if(e.pointerType!=='mouse')return;
-      drum.activePresses++;
-      if(drum.activePresses>1){drum.pendingTimers.forEach(t=>clearTimeout(t));drum.pendingTimers.clear()}
-      else{const t=setTimeout(()=>{drum.pendingTimers.delete(k.id);drumOpenSettings(k)},700);drum.pendingTimers.set(k.id,t)}});
-    const up=e=>{if(e&&e.pointerType&&e.pointerType!=='mouse')return;drum.activePresses=Math.max(0,drum.activePresses-1);const t=drum.pendingTimers.get(k.id);if(t){clearTimeout(t);drum.pendingTimers.delete(k.id)}};
-    el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('pointerleave',up);
-    el.querySelector('.dr-gear').addEventListener('pointerdown',e=>{e.stopPropagation();drumAC();drumOpenSettings(k)});
-    el.addEventListener('contextmenu',e=>{e.preventDefault();drumOpenSettings(k)})})}
-function drumOpenSettings(k){drum.curM=k;drumAC();$('drMTitle').textContent=k.name||k.ko;$('drMKo').textContent=k.ko;const s=drum.settings[k.id];$('drSVol').value=Math.round(s.vol*100);$('drVVol').textContent=Math.round(s.vol*100)+'%';$('drSPitch').value=s.pitch;$('drVPitch').textContent=(s.pitch>0?'+':'')+s.pitch;$('drSDecay').value=Math.round(s.decay*100);$('drVDecay').textContent=Math.round(s.decay*100)+'%';$('drSTone').value=Math.round(s.tone*100);$('drVTone').textContent=Math.round(s.tone*100)+'%';$('drScrim').classList.add('show')}
-function drumCloseSettings(){$('drScrim').classList.remove('show')}
-function drumStartMetro(){clearInterval(drum.metro.timer);drum.metro.beatIdx=0;const tick=()=>{const bd=document.querySelectorAll('#drum .dr-beat');bd.forEach(d=>d.classList.remove('active'));if(bd[drum.metro.beatIdx])bd[drum.metro.beatIdx].classList.add('active');const c=drumAC(),o=c.createOscillator(),g=c.createGain();o.frequency.value=drum.metro.beatIdx===0?1500:900;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.05);o.connect(g).connect(drumMaster());o.start();o.stop(c.currentTime+.06);drum.metro.beatIdx=(drum.metro.beatIdx+1)%drum.metro.beats};tick();drum.metro.timer=setInterval(tick,60000/drum.metro.bpm)}
-function drumStopMetro(){clearInterval(drum.metro.timer);drum.metro.timer=null;drum.metro.on=false;document.querySelectorAll('#drum .dr-beat').forEach(d=>d.classList.remove('active'));const b=$('drMetroBtn');if(b)b.classList.remove('on')}
-function drumStartGroove(name){drumStopGroove();const g=DRUM_GROOVES[name];if(!g)return;drum.groove.playing=name;drum.groove.step=0;const stepMs=15000/drum.metro.bpm;const tick=()=>{const hits=g.steps[drum.groove.step]||[];hits.forEach(pid=>{const k=DRUM_KIT_PIECES.find(x=>x.id===pid);if(k){drumPlay(k);drumHit(pid)}});drum.groove.step=(drum.groove.step+1)%g.steps.length};tick();drum.groove.timer=setInterval(tick,stepMs);$('drGroovePlay').textContent='■'}
-function drumStopGroove(){if(drum.groove.timer){clearInterval(drum.groove.timer);drum.groove.timer=null}drum.groove.playing=null;drum.groove.step=0;const b=$('drGroovePlay');if(b)b.textContent='▶'}
-function drumPlayRec(){if(!drum.rec.data.length)return;drumAC();drum.rec.data.forEach(ev=>{const k=DRUM_KIT_PIECES.find(x=>x.id===ev.id);if(k)setTimeout(()=>{drumPlay(k);drumHit(k.id)},ev.t)})}
-function drumStartLoop(){if(drum.rec.loopT)clearTimeout(drum.rec.loopT);const playOnce=()=>{drumPlayRec();drum.rec.loopT=setTimeout(playOnce,drum.rec.loopDur)};playOnce()}
-function drumStopLoop(){if(drum.rec.loopT){clearTimeout(drum.rec.loopT);drum.rec.loopT=null}}
-function drumTapBpm(){const now=performance.now();drum.tap.times.push(now);if(drum.tap.times.length>4)drum.tap.times=drum.tap.times.slice(-4);if(drum.tap.times.length>=2){const d=[];for(let i=1;i<drum.tap.times.length;i++)d.push(drum.tap.times[i]-drum.tap.times[i-1]);const avg=d.reduce((a,b)=>a+b)/d.length;const bpm=Math.round(60000/avg);if(bpm>=40&&bpm<=220){drum.metro.bpm=bpm;$('drBpm').value=bpm;$('drBpmVal').textContent=bpm;if(drum.metro.on)drumStartMetro();if(drum.groove.playing){const cur=drum.groove.playing;drumStopGroove();drumStartGroove(cur)}}}clearTimeout(drum.tap.resetT);drum.tap.resetT=setTimeout(()=>{drum.tap.times=[]},2000)}
-function drumBindControls(){if(drum.boundCtl)return;drum.boundCtl=true;
-  // aggressive audio unlock on first interaction anywhere (iOS Safari)
-  ['touchstart','touchend','pointerdown','click'].forEach(ev=>document.addEventListener(ev,drumUnlockAudio,{capture:true,passive:true}));
-  document.addEventListener('visibilitychange',()=>{if(drum.ctx&&drum.ctx.state==='suspended'&&document.visibilityState==='visible')drum.ctx.resume().catch(()=>{})});
-  $('drSoundModeBtn').onclick=()=>{drumAC();drum.settingsMode=!drum.settingsMode;$('drSoundModeBtn').classList.toggle('on',drum.settingsMode);$('drStage').classList.toggle('settings-mode',drum.settingsMode)};
-  $('drMetroBtn').onclick=()=>{drumAC();drum.metro.on=!drum.metro.on;$('drMetroBtn').classList.toggle('on',drum.metro.on);if(drum.metro.on)drumStartMetro();else drumStopMetro()};
-  $('drBpm').oninput=e=>{drum.metro.bpm=+e.target.value;$('drBpmVal').textContent=drum.metro.bpm;if(drum.metro.on)drumStartMetro();if(drum.groove.playing){const cur=drum.groove.playing;drumStopGroove();drumStartGroove(cur)}};
-  $('drTapBtn').onclick=drumTapBpm;
-  $('drRecBtn').onclick=()=>{drumAC();drum.rec.on=!drum.rec.on;const b=$('drRecBtn');b.classList.toggle('on',drum.rec.on);b.lastChild.textContent=drum.rec.on?'녹음 중지':'녹음';if(drum.rec.on){drum.rec.data=[];drum.rec.start=performance.now();drumStopLoop()}else{drum.rec.loopDur=Math.max(800,performance.now()-drum.rec.start);if(drum.rec.looping&&drum.rec.data.length)drumStartLoop()}};
-  $('drPlayBtn').onclick=()=>{drumAC();drumPlayRec()};
-  $('drLoopBtn').onclick=()=>{drum.rec.looping=!drum.rec.looping;$('drLoopBtn').classList.toggle('on',drum.rec.looping);if(drum.rec.looping&&drum.rec.data.length&&!drum.rec.loopT){if(!drum.rec.loopDur)drum.rec.loopDur=4000;drumStartLoop()}else if(!drum.rec.looping)drumStopLoop()};
-  $('drClearBtn').onclick=()=>{drum.rec.data=[];drumStopLoop();drum.rec.loopDur=0};
-  document.querySelectorAll('#drum .dr-kit-btn').forEach(b=>{b.onclick=()=>{drumAC();drumApplyKit(b.dataset.kit)}});
-  $('drGroovePlay').onclick=()=>{drumAC();const sel=$('drGrooveSel').value;if(drum.groove.playing)drumStopGroove();else if(sel)drumStartGroove(sel)};
-  $('drGrooveSel').onchange=()=>{const v=$('drGrooveSel').value;if(drum.groove.playing){drumStopGroove();if(v)drumStartGroove(v)}};
-  $('drCloseModal').onclick=drumCloseSettings;
-  $('drScrim').addEventListener('pointerdown',e=>{if(e.target===$('drScrim'))drumCloseSettings()});
-  $('drSVol').oninput=e=>{drum.settings[drum.curM.id].vol=e.target.value/100;$('drVVol').textContent=e.target.value+'%'};
-  $('drSPitch').oninput=e=>{drum.settings[drum.curM.id].pitch=+e.target.value;$('drVPitch').textContent=(e.target.value>0?'+':'')+e.target.value};
-  $('drSDecay').oninput=e=>{drum.settings[drum.curM.id].decay=e.target.value/100;$('drVDecay').textContent=e.target.value+'%'};
-  $('drSTone').oninput=e=>{drum.settings[drum.curM.id].tone=e.target.value/100;$('drVTone').textContent=e.target.value+'%'};
-  $('drPreviewBtn').onclick=()=>{drumPlay(drum.curM);drumHit(drum.curM.id)};
-  $('drResetOne').onclick=()=>{const k=drum.curM;drum.settings[k.id]={...DRUM_DEF,base:k.base||150,pitch:k.pitch||0};drumOpenSettings(k)};
-  // beats display
-  const bel=$('drBeats');for(let i=0;i<drum.metro.beats;i++){const d=document.createElement('div');d.className='dr-beat'+(i===0?' downbeat':'');bel.appendChild(d)}
-  // keyboard
-  const keyMap={};DRUM_KIT_PIECES.forEach(k=>keyMap[k.key.toLowerCase()]=k);
-  window.addEventListener('keydown',e=>{if(e.repeat)return;if((e.target.tagName||'').toLowerCase()==='input')return;const cur=document.querySelector('.screen.active');if(!cur||cur.id!=='drum')return;const k=keyMap[e.key.toLowerCase()];if(k){drumAC();drumPlay(k);drumHit(k.id);drumRecord(k.id)}})}
-function drumSetup(){drumStop();$('drumSetupOv').classList.add('show')}
-function drumStart(){drumAC();$('drumSetupOv').classList.remove('show');drumBuildKit();drumApplyKit(drum.kit);drumBindControls()}
-function drumStop(){
-  if(drum.ctx&&drum.ctx.state==='running'){try{drum.ctx.suspend()}catch(_){}}
-  drumStopMetro();drumStopGroove();drumStopLoop();
-  if(drum.rec.on){drum.rec.on=false;const b=$('drRecBtn');if(b){b.classList.remove('on');b.lastChild.textContent='녹음'}}
-  drum.pendingTimers.forEach(t=>clearTimeout(t));drum.pendingTimers.clear();drum.activePresses=0
-}
 
 /* ============ 🏆 모둠 대전 (Tournament) ============ */
 const TKEY='cgw_tourney';
