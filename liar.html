@@ -1058,5 +1058,61 @@
   render();
 })();
 </script>
+<!-- ⏱ CGW 선생님 타이머 위젯 (자유 카운트다운) -->
+<div id="cgwt" data-open="0">
+  <button id="cgwt-fab" title="타이머">⏱<span id="cgwt-mini"></span></button>
+  <div id="cgwt-panel">
+    <div id="cgwt-time">01:00</div>
+    <div class="cgwt-row cgwt-presets">
+      <button data-s="30">30초</button><button data-s="60">1분</button><button data-s="120">2분</button><button data-s="180">3분</button><button data-s="300">5분</button>
+    </div>
+    <div class="cgwt-row">
+      <button data-a="-10">−10초</button><button data-a="10">+10초</button><button data-a="60">+1분</button>
+    </div>
+    <div class="cgwt-row cgwt-ctrl">
+      <button id="cgwt-go">▶ 시작</button><button id="cgwt-reset" title="리셋">↺</button><button id="cgwt-x" title="닫기">✕</button>
+    </div>
+  </div>
+</div>
+<style>
+#cgwt{position:fixed;right:14px;bottom:14px;z-index:2147483000;font-family:system-ui,'Do Hyeon','Jua',sans-serif}
+#cgwt-fab{width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;font-size:24px;color:#fff;
+  background:linear-gradient(135deg,#7c5cff,#ff5ea8);box-shadow:0 6px 20px rgba(0,0,0,.45);position:relative;line-height:1}
+#cgwt-mini{position:absolute;left:0;right:0;bottom:6px;font-size:10px;font-weight:700;letter-spacing:.5px}
+#cgwt-panel{position:absolute;right:0;bottom:66px;width:236px;background:#1c1630;color:#fff;border:1px solid #443a6e;
+  border-radius:16px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.55);display:none}
+#cgwt[data-open="1"] #cgwt-panel{display:block}
+#cgwt-time{font-family:ui-monospace,'Courier New',monospace;font-size:46px;text-align:center;font-weight:700;letter-spacing:2px;margin-bottom:12px}
+#cgwt.alarm #cgwt-time{color:#ff5e6c;animation:cgwtBlink .5s steps(1) infinite}
+@keyframes cgwtBlink{50%{opacity:.2}}
+.cgwt-row{display:flex;gap:6px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.cgwt-row button{flex:1;min-width:0;padding:9px 4px;border-radius:10px;border:1px solid #443a6e;background:#2a2145;color:#dcd4ff;font-size:13px;cursor:pointer}
+.cgwt-row button:active{transform:scale(.95)}
+.cgwt-ctrl #cgwt-go{flex:2.4;background:linear-gradient(135deg,#3ddc84,#1fb866);color:#052a1c;font-weight:700;border:none}
+.cgwt-ctrl #cgwt-go.pause{background:linear-gradient(135deg,#ffb23f,#ff8a3d);color:#2a1500}
+</style>
+<script>
+(function(){
+  var root=document.getElementById('cgwt'), timeEl=document.getElementById('cgwt-time'),
+      mini=document.getElementById('cgwt-mini'), go=document.getElementById('cgwt-go');
+  var total=60, left=60, running=false, tid=null, ac=null;
+  function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x;}
+  function paint(){timeEl.textContent=fmt(left);mini.textContent=running?fmt(left):'';}
+  function beep(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=880;g.gain.value=.16;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.4);}catch(e){}}
+  function alarm(){root.classList.add('alarm');var n=0,iv=setInterval(function(){beep();if(++n>=5)clearInterval(iv);},560);setTimeout(function(){root.classList.remove('alarm');},4200);}
+  function tick(){left--;paint();if(left<=0){stopTimer();alarm();}}
+  function start(){if(running){pause();return;}if(left<=0)left=total;running=true;go.textContent='⏸ 정지';go.classList.add('pause');try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();}catch(e){}tid=setInterval(tick,1000);paint();}
+  function pause(){running=false;go.textContent='▶ 시작';go.classList.remove('pause');clearInterval(tid);paint();}
+  function stopTimer(){running=false;go.textContent='▶ 시작';go.classList.remove('pause');clearInterval(tid);mini.textContent='';}
+  function setT(s){total=left=s;pause();root.classList.remove('alarm');paint();}
+  document.getElementById('cgwt-fab').onclick=function(){root.dataset.open=root.dataset.open==='1'?'0':'1';};
+  document.getElementById('cgwt-x').onclick=function(){root.dataset.open='0';};
+  document.getElementById('cgwt-reset').onclick=function(){setT(total);};
+  go.onclick=start;
+  root.querySelectorAll('[data-s]').forEach(function(b){b.onclick=function(){setT(+b.dataset.s);};});
+  root.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){setT(Math.max(0,left+(+b.dataset.a)));};});
+  setT(60);
+})();
+</script>
 </body>
 </html>
