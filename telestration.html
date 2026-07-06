@@ -149,18 +149,13 @@
      제시어 사전 (그리기 좋은 단어 · 속담 · 사자성어)
   ========================================================= */
   var WORDS={
-    "동물":["코끼리","펭귄","사자","문어","기린","악어","고양이","공룡","나비","상어","부엉이","달팽이"],
-    "사물":["우산","안경","자전거","시계","로켓","풍선","사다리","등대","텐트","신호등","열쇠","트로피"],
-    "음식":["피자","아이스크림","햄버거","수박","라면","도넛","바나나","김밥","팝콘","케이크","달걀프라이","붕어빵"],
-    "행동":["낚시","잠자기","축구하기","요리하기","춤추기","등산","수영","눈싸움","캠핑","그네타기","줄넘기","목욕"],
-    "속담":["우물 안 개구리","소 잃고 외양간 고친다","그림의 떡","원숭이도 나무에서 떨어진다","티끌 모아 태산","고래 싸움에 새우 등 터진다","바늘 도둑이 소 도둑 된다","등잔 밑이 어둡다","낮말은 새가 듣고 밤말은 쥐가 듣는다","백지장도 맞들면 낫다","개구리 올챙이 적 생각 못 한다","꿩 먹고 알 먹고"],
-    "사자성어":["일석이조","우이독경","어부지리","죽마고우","화룡점정","오리무중","금상첨화","다다익선","새옹지마","유유상종","일거양득","십시일반"],
-    "엉뚱":["방귀 뀌는 로봇","우주에서 피자 먹기","춤추는 문어","하늘 나는 고양이","스케이트 타는 펭귄","트로피 든 공룡","우산 쓴 상어","노래하는 붕어빵"]
+    "하":["코끼리","펭귄","사자","고양이","강아지","토끼","나비","물고기","우산","안경","시계","자전거","풍선","공","모자","사과","바나나","피자","아이스크림","케이크","수박","별","하트","집","꽃","자동차","비행기","배","해","달","눈사람","무지개"],
+    "중":["낚시하기","축구하기","춤추기","등산","수영","줄넘기","눈싸움","캠핑","요리하기","그네타기","로켓","등대","신호등","트로피","사다리","현미경","공룡","문어","악어","부엉이","달팽이","붕어빵","김밥","팝콘","방귀 뀌는 로봇","우주에서 피자 먹기","춤추는 문어","하늘 나는 고양이","스케이트 타는 펭귄","우산 쓴 상어","노래하는 붕어빵","자전거 탄 곰"],
+    "상":["우물 안 개구리","소 잃고 외양간 고친다","그림의 떡","원숭이도 나무에서 떨어진다","티끌 모아 태산","고래 싸움에 새우 등 터진다","등잔 밑이 어둡다","백지장도 맞들면 낫다","개구리 올챙이 적 생각 못 한다","꿩 먹고 알 먹고","일석이조","화룡점정","오리무중","금상첨화","새옹지마","유유상종","십시일반","죽마고우","어부지리","우이독경","작심삼일","용두사미","동상이몽","자업자득"]
   };
-  var CATS=["전체","동물","사물","음식","행동","속담","사자성어","엉뚱"];
+  var LEVELS=[{v:"하",t:"🟢 하 (쉬움)"},{v:"중",t:"🟡 중 (보통)"},{v:"상",t:"🔴 상 (어려움)"}];
   function pickWord(cat){
-    var pool=[];
-    if(cat==="전체"){ for(var k in WORDS){ pool=pool.concat(WORDS[k]); } } else { pool=WORDS[cat]||[]; }
+    var pool=WORDS[cat]||WORDS["중"];
     if(!pool.length) pool=["고양이"];
     return pool[Math.floor(Math.random()*pool.length)];
   }
@@ -200,7 +195,7 @@
     screen:"home",
     players: saved.players||5,
     wordMode: saved.wordMode||"random",
-    cat: saved.cat||"전체",
+    cat: (["하","중","상"].indexOf(saved.cat)>=0 ? saved.cat : "중"),
     sound: (saved.sound!=null)? saved.sound : true,
     tel:null
   };
@@ -311,7 +306,7 @@
     setup:function(){
       var seg=function(action, opts){ return '<div class="seg">'+opts.map(function(o){ return '<button class="'+(o.on?'on':'')+'" data-action="'+action+'" data-v="'+o.v+'">'+o.t+'</button>'; }).join("")+'</div>'; };
       var catChips = S.wordMode==="random"
-        ? '<div class="grp-label">제시어 주제</div><div class="cats">'+CATS.map(function(c){ return '<button class="cat '+(S.cat===c?'on':'')+'" data-action="set-cat" data-v="'+c+'">'+c+'</button>'; }).join("")+'</div>'
+        ? '<div class="grp-label">난이도 <small style="color:var(--muted);font-weight:400">· 그림 그리기 난이도</small></div><div class="cats">'+LEVELS.map(function(o){ return '<button class="cat '+(S.cat===o.v?'on':'')+'" data-action="set-cat" data-v="'+o.v+'">'+o.t+'</button>'; }).join("")+'</div>'
         : '<div class="lead" style="margin-top:10px; text-align:center">첫 사람이 시작 단어를 직접 입력해요.<br>(개념·과학 용어·속담 등 자유롭게!)</div>';
       return '<div class="screen">'+
         '<div class="eyebrow">준비</div>'+
@@ -503,7 +498,7 @@
   window.App={
     S:S, go:go, handle:handle, render:render, begin:begin,
     startChain:startChain, telGo:telGo, storeStep:storeStep, doGuess:doGuess, doStartWord:doStartWord,
-    pickWord:pickWord, WORDS:WORDS, CATS:CATS
+    pickWord:pickWord, WORDS:WORDS, LEVELS:LEVELS
   };
 
   render();
