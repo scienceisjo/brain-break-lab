@@ -569,6 +569,13 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v1.8 · 2026.07.07</h4>
+        <ul>
+          <li>🚂 <b>줄줄이 말해요</b> 추가! 주제(과일·동물 등)에 맞는 걸 한 명씩 줄줄이 → 제한시간에 막히면 탈락 → 마지막 한 명이 승자 🏆</li>
+          <li>⏱ 난이도(쉬움·보통·어려움)·인원(2~6명)·시간(3~10초) 선택 · 최고 줄줄이 기록 도전</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v1.7 · 2026.07.06</h4>
         <ul>
           <li>🏆 <b>모둠 대전</b> 추가! 메뉴 상단 버튼 → 팀(2~8) 등록 → 게임 자유롭게 진행 → 승리팀/등수 입력 → 실시간 순위·우승 시상식 (이 기기에 자동 저장)</li>
@@ -784,9 +791,9 @@
 
 <section class="screen" id="menu">
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.7</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.8</span></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.06</b></span>
+      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.07</b></span>
       <button class="pillbtn tour-btn" onclick="tourOpen()">🏆 모둠 대전</button>
       <button class="pillbtn" onclick="openHOF()">🏆 명예의 전당</button>
       <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
@@ -886,6 +893,10 @@
     <div class="card" style="--accent:#7ee081" data-link="somoli.html" onclick="openLink(this)">
       <div class="top"><div class="num">18</div><div class="ico">🐮</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>소몰이 게임</h3><p>다 같이 "오~/에이~"로 대표를 목표 행동까지 유도! 🎤 소리 크기가 화면에 커지는 행동 유도 게임.</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:#ff8c42" data-link="chain.html" onclick="openLink(this)">
+      <div class="top"><div class="num">19</div><div class="ico">🚂</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>줄줄이 말해요</h3><p>주제에 맞는 걸 한 명씩 줄줄이! ⏱ 시간 안에 막히면 탈락, 마지막 한 명이 승자. 최고 줄줄이 기록에 도전!</p><div class="go">▶ 열기 ↗</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
@@ -1937,7 +1948,7 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup'};
+  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
