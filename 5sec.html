@@ -46,6 +46,7 @@
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
+[hidden]{ display:none !important; }
 html,body{ height:100%; }
 body{
   font-family:var(--font-ui);
@@ -649,6 +650,13 @@ body{
 
       <div class="opt-grid">
         <div class="opt">
+          <h2>난이도</h2>
+          <div class="seg" id="diffSeg">
+            <button data-d="easy" class="on">쉬움 (저학년)</button>
+            <button data-d="hard">어려움 (고학년)</button>
+          </div>
+        </div>
+        <div class="opt">
           <h2>대전 방식</h2>
           <div class="seg" id="modeSeg">
             <button data-mode="solo" class="on">개인전</button>
@@ -861,55 +869,103 @@ const CONFIG = {
    📚 주제 데이터
 ═════════════════════════════════════════════════════════════════ */
 const CATEGORIES = {
-  general: { name:"일반", emoji:"🎲", topics:[
+  general: { name:"일반", emoji:"🎲", easy:[
+    "동그란 것","네모난 것","세모난 것","빨간색인 것","파란색인 것","노란색인 것",
+    "초록색인 것","하얀색인 것","검은색인 것","차가운 것","뜨거운 것","푹신한 것",
+    "딱딱한 것","말랑한 것","뾰족한 것","무거운 것","가벼운 것","투명한 것",
+    "반짝이는 것","길쭉한 것","부드러운 것","미끄러운 것","달콤한 것","향기로운 것",
+    "물에 뜨는 것","굴러가는 것","접히는 것","깨지기 쉬운 것"
+  ],
+  hard:[
     "빨간색 과일","노란색 과일","초록색 채소","길쭉한 채소","동그란데 먹는 것",
     "차갑고 단 것","말랑하고 단 것","딱딱한데 먹는 것","투명한데 마실 수 있는 것","자석에 붙는 것",
     "털이 있는 동물","바퀴가 달린 것","손잡이가 있는 물건","전기로 움직이는 것","소리가 나는 물건",
     "냄새가 강한 음식","가시가 있는 식물","날개가 있는 것","다리가 6개인 곤충","물에 뜨는 과일",
     "빛을 내는 것","줄무늬가 있는 것","접히는 물건","깨지기 쉬운 물건"
   ]},
-  school: { name:"학교", emoji:"🏫", topics:[
+  school: { name:"학교", emoji:"🏫", easy:[
+    "교실에 있는 물건","필통 속 물건","가방 속 물건","학교 과목","급식 메뉴","체육 시간에 쓰는 것",
+    "미술 시간에 쓰는 것","음악 시간에 쓰는 악기","쉬는 시간에 하는 일","청소 시간에 쓰는 것","학용품 종류","시험 볼 때 필요한 것",
+    "학교 행사","운동장에서 할 수 있는 것","등굣길에 보이는 것","칠판에 쓰는 것","학교에서 볼 수 있는 사람","소풍 때 챙길 것",
+    "교실을 꾸미는 것","선생님이 자주 하는 말"
+  ],
+  hard:[
     "수학 시간에 쓰는 도구","과학실 실험 도구","음악 시간에 배우는 악기","미술 준비물","체육 구기 종목",
     "교과서 과목 이름","학교 특별실 이름","방과후 활동 종류","현장체험학습 장소","분리수거 종류",
     "운동회 종목","도형 이름","길이 단위","무게 단위","조선시대 왕 이름",
     "우리나라 국경일","태극기에 들어간 것","글의 종류(일기·편지 등)","학교에서 지킬 규칙","학교 화단의 식물",
     "한글 자음","받침으로 쓰이는 글자","곱셈에 나오는 수","급식 반찬 종류"
   ]},
-  food: { name:"음식", emoji:"🍜", topics:[
+  food: { name:"음식", emoji:"🍜", easy:[
+    "매운 음식","단 음식","짠 음식","신 음식","분식 종류","김밥 재료",
+    "치킨 종류","피자 토핑","햄버거 재료","면 요리","국물 요리","밥 요리",
+    "빵 종류","떡 종류","과일 종류","채소 종류","아이스크림 맛","편의점 간식",
+    "길거리 음식","아침에 먹는 음식","명절 음식","생일에 먹는 음식","여름에 먹는 음식","겨울에 먹는 음식",
+    "계란으로 만든 음식","바다에서 나는 음식"
+  ],
+  hard:[
     "한국 전통 음식","중국 음식","일본 음식","이탈리아 음식","멕시코 음식",
     "분식집 메뉴","김치 종류","국물 없는 면 요리","전(부침개) 종류","떡 종류",
     "열대 과일","제철 겨울 과일","뿌리채소","콩으로 만든 음식","밀가루로 만든 음식",
     "발효 음식","명절 차례 음식","생선 요리","조개 종류","견과류 종류",
     "카페 음료","매운 한식","노란색 음식","계란으로 만든 요리","제철 여름 과일"
   ]},
-  fun: { name:"놀이·문화", emoji:"🎮", topics:[
+  fun: { name:"놀이·문화", emoji:"🎮", easy:[
+    "보드게임 종류","전통 놀이","실내에서 하는 놀이","밖에서 하는 놀이","물놀이 종류","술래잡기 같은 놀이",
+    "운동 종목","구기 종목","스마트폰 게임","게임 캐릭터","놀이공원 놀이기구","좋아하는 과자",
+    "취미 활동","악기 종류","캠핑에서 하는 것","생일 파티에서 하는 것","비 오는 날 할 수 있는 것","친구랑 하면 재밌는 것",
+    "명절에 하는 것","응원할 때 하는 것"
+  ],
+  hard:[
     "구기 종목","겨울 스포츠","올림픽 종목","맨몸으로 하는 운동","전통 민속놀이",
     "보드게임 이름","놀이공원 놀이기구","영화 장르","웹툰 장르","케이팝 아이돌 그룹",
     "현악기 종류","타악기 종류","관악기 종류","전통 악기","공으로 하는 놀이",
     "줄로 하는 놀이","실내에서 하는 조용한 놀이","캠핑 준비물","운동회 단체 종목","카드로 하는 놀이",
     "물놀이 종류","응원 도구"
   ]},
-  nature: { name:"자연·동물", emoji:"🐾", topics:[
+  nature: { name:"자연·동물", emoji:"🐾", easy:[
+    "네 발 달린 동물","날 수 있는 동물","물에 사는 동물","뿔 달린 동물","줄무늬 있는 동물","목이 긴 동물",
+    "빠른 동물","느린 동물","귀여운 동물","키우고 싶은 동물","동물원에서 보는 동물","바닷속 생물",
+    "곤충 종류","새 종류","공룡 종류","꽃 종류","나무 종류","날씨 종류",
+    "봄에 볼 수 있는 것","가을에 볼 수 있는 것"
+  ],
+  hard:[
     "포유류 동물","파충류 동물","양서류 동물","곤충 종류","바다에 사는 포유류",
     "극지방에 사는 동물","사막에 사는 동물","초식 동물","육식 동물","야행성 동물",
     "멸종위기 동물","날지 못하는 새","민물고기","독이 있는 동물","공룡 종류",
     "봄에 피는 꽃","단풍 드는 나무","침엽수 종류","태양계 행성","별자리 이름",
     "구름 종류","뿔이 있는 동물","알을 낳는 동물","바닷속 생물"
   ]},
-  people: { name:"사람·직업", emoji:"🧑", topics:[
+  people: { name:"사람·직업", emoji:"🧑", easy:[
+    "직업 종류","되고 싶은 직업","유니폼 입는 직업","도와주는 직업","신체 부위","얼굴에 있는 것",
+    "손으로 하는 일","가족 구성원","감정 종류","인사하는 방법","고마울 때 하는 말","표정 종류",
+    "유명한 운동선수","예의 바른 행동"
+  ],
+  hard:[
     "제복 입는 직업","병원에서 일하는 사람","공항에서 일하는 사람","방송에서 일하는 사람","예술 관련 직업",
     "과학 관련 직업","스포츠 선수 종류","조선시대 위인","독립운동가","세계 위인",
     "얼굴의 감각 기관","몸속 장기","전통 예절","존댓말 표현","손으로 하는 직업",
     "도구를 쓰는 직업","우리 몸의 뼈 부위","도와주는 직업"
   ]},
-  places: { name:"장소·세계", emoji:"🗺️", topics:[
+  places: { name:"장소·세계", emoji:"🗺️", easy:[
+    "나라 이름","우리나라 도시","가 보고 싶은 나라","놀러 가는 장소","물이 있는 곳","높은 곳",
+    "서울에 있는 것","시장에서 파는 것","마트에서 살 수 있는 것","병원에 있는 것","공항에서 볼 수 있는 것","도로에서 볼 수 있는 것",
+    "집에 있는 방","부엌에 있는 것","거실에 있는 것","바닷가에서 볼 수 있는 것","도시에서 볼 수 있는 것","시골에서 볼 수 있는 것",
+    "더운 나라","추운 나라"
+  ],
+  hard:[
     "남아메리카 나라","유럽 나라","아시아 나라","아프리카 나라","섬나라",
     "우리나라 광역시","우리나라 도(道)","세계 유명 도시","여러 나라 수도","바다 이름",
     "사막 이름","높은 산 이름","큰 강 이름","세계 유명 건축물","우리나라 세계유산",
     "공항이 있는 도시","박물관 종류","놀이공원 이름","더운 나라","추운 나라",
     "섬 이름","우주에 있는 것"
   ]},
-  imagine: { name:"상상·엉뚱", emoji:"💭", topics:[
+  imagine: { name:"상상·엉뚱", emoji:"💭", easy:[
+    "하늘을 나는 것","마법으로 하고 싶은 일","투명인간이 되면 할 일","슈퍼히어로 능력","소원 세 가지","무인도에 가져갈 것",
+    "동물이 된다면 되고 싶은 동물","어른이 되면 하고 싶은 일","백만 원이 생기면 살 것","상상 속 동물","세상에서 제일 큰 것","세상에서 제일 빠른 것",
+    "하루 동안 되어 보고 싶은 것","갖고 싶은 초능력","내가 발명하고 싶은 것","미래의 학교 모습"
+  ],
+  hard:[
     "하늘을 나는 것","바다에 사는 상상 속 동물","마법 주문 이름","갖고 싶은 초능력","로봇이 해줬으면 하는 집안일",
     "무인도에 가져갈 것","타임머신으로 가고 싶은 시대","외계인에게 자랑할 지구의 것","미래에 사라질 것","미래에 생길 물건",
     "동화 속 마법 물건","변신하고 싶은 동물","세상에서 제일 빠른 것","세상에서 제일 큰 것","투명인간이 되면 할 일",
@@ -927,6 +983,7 @@ const MIN_TEAMS = 2, MAX_TEAMS = 6;
 const state = {
   selected: new Set(["general","school","food","fun","nature","people","places","imagine"]),
   duration: 5,
+  difficulty: "easy",                                     // easy(저학년) | hard(고학년)
   mode: "solo",                                            // "solo" | "team"
   teamCount: 2,                                            // 2 ~ MAX_TEAMS
   teamNames: ["","","","","",""],
@@ -1043,6 +1100,7 @@ function loadSettings(){
       if(typeof s.useCards === "boolean") state.useCards = s.useCards;
       if(Number.isInteger(s.memberCount) && s.memberCount >= 1 && s.memberCount <= 8) state.memberCount = s.memberCount;
       if(Number.isInteger(s.totalTime) && s.totalTime > 0) state.totalTime = s.totalTime;
+      if(s.difficulty === "easy" || s.difficulty === "hard") state.difficulty = s.difficulty;
     }
   }catch(e){}
 }
@@ -1051,7 +1109,7 @@ function saveSettings(){
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({
       selected:[...state.selected], duration:state.duration,
       mode:state.mode, teamCount:state.teamCount, teamNames:state.teamNames, totalRounds:state.totalRounds, useCards:state.useCards,
-      memberCount:state.memberCount, totalTime:state.totalTime
+      memberCount:state.memberCount, totalTime:state.totalTime, difficulty:state.difficulty
     }));
   }catch(e){}
 }
@@ -1099,10 +1157,12 @@ function renderChips(){
 /* ════════════════════════════════════════════════════════════════
    카테고리 통합 / 선택 정리
 ═════════════════════════════════════════════════════════════════ */
+function catTopics(c){ return c[state.difficulty] || c.hard || c.easy || c.topics || []; }
+function allBuiltinTopics(c){ return [].concat(c.easy||[], c.hard||[], c.topics||[]); }
 function getEffectiveCategories(){
   const list = [], byName = {};
   Object.entries(CATEGORIES).forEach(([id, c])=>{
-    const e = { key:id, name:c.name, emoji:c.emoji, topics:c.topics.slice(), builtin:true };
+    const e = { key:id, name:c.name, emoji:c.emoji, topics:catTopics(c).slice(), builtin:true };
     list.push(e); byName[c.name] = e;
   });
   // 사용자 문제: 같은 이름 카테고리면 합치고, 없으면 새 칩 생성
@@ -1194,7 +1254,7 @@ function analyzeRows(rows, mode){
   const add = [], skip = [];
   // 중복 비교 대상: 기본 카테고리 주제 + (병합 모드면) 기존 사용자 문제
   const base = new Set();
-  Object.values(CATEGORIES).forEach(c=> c.topics.forEach(t=> base.add(normKey(c.name, t))));
+  Object.values(CATEGORIES).forEach(c=> allBuiltinTopics(c).forEach(t=> base.add(normKey(c.name, t))));
   if(mode === "merge") state.custom.forEach(it=> base.add(normKey(it.cat, it.text)));
   const seen = new Set();
   rows.forEach((r, idx)=>{
@@ -1307,7 +1367,7 @@ function addOne(){
   const text = ($("#qText").value || "").trim();
   if(!text){ toast("주제를 입력하세요."); return; }
   const dup = state.custom.some(it=> normKey(it.cat, it.text) === normKey(cat, text)) ||
-    Object.values(CATEGORIES).some(c=> c.name === cat && c.topics.includes(text));
+    Object.values(CATEGORIES).some(c=> c.name === cat && allBuiltinTopics(c).includes(text));
   if(dup){ toast("이미 있는 문제예요."); return; }
   state.custom.push({ cat, text });
   saveCustom();
@@ -1398,6 +1458,12 @@ function wireHome(){
   $("#totalTimeSeg").querySelectorAll("button").forEach(btn=> btn.onclick = ()=>{
     snd.click(); state.totalTime = Number(btn.dataset.tt);
     setSegActive("totalTimeSeg", b=> b === btn); saveSettings();
+  });
+  // 난이도
+  setSegActive("diffSeg", b=> b.dataset.d === state.difficulty);
+  $("#diffSeg").querySelectorAll("button").forEach(btn=> btn.onclick = ()=>{
+    snd.click(); state.difficulty = btn.dataset.d;
+    setSegActive("diffSeg", b=> b === btn); renderChips(); saveSettings();
   });
   // 대전 방식
   setSegActive("modeSeg", b=> b.dataset.mode === state.mode);
