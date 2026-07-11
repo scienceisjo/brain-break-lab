@@ -3,6 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<script>
+/* 전자칠판 보정: 대형 터치패널 내장 브라우저가 뷰포트 폭을 실제 패널보다 좁게 잡아
+   화면이 왼쪽 구석에 작게 몰려 나오는 현상을 바로잡는다. 화면 폭이 1600px 이상인
+   대형 패널에서, 물리 화면 폭이 최초 레이아웃 폭보다 뚜렷이(1.15배↑) 클 때만
+   레이아웃 폭을 물리 폭으로 넓히고 '폭 맞춤'에 맡긴다(1:1 고정을 하지 않으므로,
+   screen.width가 물리픽셀로 잡히는 패널에서도 반대쪽으로 잘리거나 쏠리지 않는다).
+   일반 PC·태블릿·폰은 조건이 성립하지 않아 아무 동작도 하지 않는다(무해). */
+(function(){
+  var vp=document.querySelector('meta[name=viewport]');
+  if(!vp) return;
+  var natW=window.innerWidth||1;                 // 보정 전 레이아웃 폭(기준값, 1회 고정)
+  function apply(){
+    var w=(window.screen&&window.screen.width)||0;
+    if(w>=1600) vp.setAttribute('content','width='+Math.round(w)+', user-scalable=no, viewport-fit=cover');
+  }
+  var sw0=(window.screen&&window.screen.width)||0;
+  if(sw0>=1600 && sw0/natW>1.15){                // 대형 패널 + 레이아웃이 물리폭보다 좁을 때만
+    apply();
+    window.addEventListener('orientationchange',apply);
+  }
+})();
+</script>
 <title>CLASS GAME WORLD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
