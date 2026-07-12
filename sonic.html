@@ -319,6 +319,62 @@
     font-family:'Press Start 2P';font-size:clamp(16px,2.8vh,30px);color:#0c160a;box-shadow:0 0 0 4px var(--outline),inset 5px 5px 0 rgba(255,255,255,.3),inset -5px -5px 0 rgba(0,0,0,.25)}
   .winner-tag{font-family:'Do Hyeon';font-size:clamp(22px,4vh,40px);color:var(--gold);margin-bottom:6px;text-shadow:2px 2px 0 var(--outline)}
 
+  /* ===== 게임14: 단어 폭탄 ===== */
+  #bomb .arena{flex-direction:column;align-items:center;justify-content:flex-start;gap:clamp(6px,1.4vh,16px);overflow:hidden}
+  /* 로블록스풍 배경: 밝은 하늘 + 블록 구름·해 / 아래는 스터드(볼록 원기둥) 잔디 베이스플레이트 */
+  #bomb::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(circle at 84% 15%, #fff6c4 0 44px, rgba(255,240,150,.45) 44px 76px, rgba(255,240,150,0) 78px),
+      linear-gradient(#f4fbff 0 0) 11% 20%/clamp(70px,10vw,124px) clamp(22px,3vh,34px) no-repeat,
+      linear-gradient(#f4fbff 0 0) 47% 11%/clamp(56px,8vw,96px) clamp(18px,2.4vh,28px) no-repeat,
+      linear-gradient(#f4fbff 0 0) 74% 24%/clamp(84px,12vw,140px) clamp(20px,2.6vh,32px) no-repeat,
+      linear-gradient(180deg,#2fb0ff 0%,#5fc6ff 45%,#93daff 60%,#c2ecff 63%);}
+  #bomb::after{content:"";position:absolute;left:0;right:0;bottom:0;height:36%;z-index:-1;pointer-events:none;
+    background-color:#5bb04a;
+    background-image:radial-gradient(circle at 50% 42%, rgba(255,255,255,.42) 0 22%, rgba(0,0,0,.16) 32% 46%, rgba(0,0,0,0) 50%);
+    background-size:clamp(30px,3.2vw,44px) clamp(30px,3.2vw,44px);
+    box-shadow:inset 0 clamp(6px,1.1vh,10px) 0 rgba(255,255,255,.25), inset 0 -70px 90px rgba(0,0,0,.13);}
+  .bomb-hearts{display:flex;gap:clamp(6px,1vw,14px);flex-wrap:wrap;justify-content:center;width:100%;flex:0 0 auto}
+  .bomb-ph{--c:var(--p1);display:flex;flex-direction:column;align-items:center;gap:2px;min-width:clamp(64px,9vw,116px);
+    padding:clamp(5px,1vh,11px) clamp(8px,1.3vw,15px);background:var(--stonedd);opacity:.55;transition:transform .1s;
+    box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .bomb-ph .nm{font-family:'Do Hyeon';font-size:clamp(12px,1.7vh,18px);color:var(--c);text-shadow:1px 1px 0 var(--outline);white-space:nowrap}
+  .bomb-ph .hp{font-size:clamp(13px,1.9vh,20px);letter-spacing:1px}
+  .bomb-ph.cur{opacity:1;transform:translateY(-4px) scale(1.07);background:var(--board);box-shadow:0 0 0 3px var(--outline),0 0 0 5px var(--c),var(--bevelL),var(--bevelD)}
+  .bomb-ph.dead{opacity:.28;filter:grayscale(1)}
+  .bomb-ph.dead .nm{text-decoration:line-through}
+  .bomb-stage{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(5px,1.2vh,14px);width:100%;min-height:0}
+  .bomb-turn{font-family:'Do Hyeon';font-size:clamp(18px,3vh,34px);color:var(--c,#fff);text-shadow:2px 2px 0 var(--outline)}
+  .bomb-promptbox{background:var(--board);padding:clamp(8px,2vh,24px) clamp(22px,5vw,60px);text-align:center;
+    box-shadow:0 0 0 4px var(--outline),0 0 0 8px var(--redstone),var(--bevelL),var(--bevelD)}
+  .bomb-prompt{font-family:'Black Han Sans','Do Hyeon',sans-serif;font-size:clamp(46px,11vh,132px);line-height:1;color:#fff;text-shadow:4px 4px 0 var(--outline)}
+  .bomb-rule{font-family:'Do Hyeon';font-size:clamp(15px,2.3vh,26px);color:var(--gold)}
+  .bomb-icon{font-size:clamp(30px,5vh,58px);line-height:1;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.5))}
+  .bomb-icon.shake{animation:bombShake .16s infinite}
+  @keyframes bombShake{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(-3px,1px) rotate(-7deg)}75%{transform:translate(3px,-1px) rotate(7deg)}}
+  .bomb-fuse-wrap{width:min(560px,82%);height:clamp(13px,2.1vh,22px);background:var(--stonedd);box-shadow:0 0 0 3px var(--outline),inset 3px 3px 0 rgba(0,0,0,.35)}
+  .bomb-fuse{height:100%;width:100%;background:linear-gradient(90deg,var(--gold),var(--redstone));transition:width .1s linear}
+  .bomb-fuse.danger{background:var(--redstone);animation:bombBlink .25s steps(2) infinite}
+  @keyframes bombBlink{50%{opacity:.35}}
+  .bomb-passbtn{font-size:clamp(19px,3.4vh,34px);padding:13px 38px}
+  .bomb-type{flex-direction:column;align-items:center;gap:8px;width:100%}
+  .bomb-inrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .bomb-input{font-family:'Do Hyeon';font-size:clamp(22px,4vh,40px);text-align:center;width:min(360px,66vw);padding:10px 16px;color:#13230a;background:#eef3e6;border:none;
+    box-shadow:0 0 0 4px var(--outline),inset 4px 4px 0 rgba(0,0,0,.15)}
+  .bomb-input:focus{outline:none;box-shadow:0 0 0 4px var(--outline),0 0 0 6px var(--emerald)}
+  .bomb-msg{font-family:'Do Hyeon';font-size:clamp(14px,2.2vh,22px);min-height:1.3em;color:var(--muted)}
+  .bomb-msg.ok{color:var(--emerald)}
+  .bomb-msg.err{color:#ff7a6b}
+  .bomb-override{display:none;font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);cursor:pointer;border:none;color:#13230a;background:var(--gold);padding:8px 18px;
+    box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .bomb-override.show{display:inline-block}
+  .bomb-used{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:min(760px,94%);max-height:clamp(30px,7vh,74px);overflow:hidden;flex:0 0 auto}
+  .bomb-used span{font-family:'Do Hyeon';font-size:clamp(11px,1.5vh,15px);color:#cfe0c8;background:var(--stonedd);padding:2px 8px;box-shadow:0 0 0 2px var(--outline)}
+  .bomb-boom{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:clamp(60px,18vh,200px);z-index:20;pointer-events:none}
+  .bomb-boom.show{display:flex;animation:bombBoom .55s ease}
+  @keyframes bombBoom{0%{transform:scale(.3);opacity:0}40%{transform:scale(1.15);opacity:1}100%{transform:scale(1.05);opacity:0}}
+  @keyframes bombQuake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-2px)}60%{transform:translate(-4px,2px)}80%{transform:translate(4px,-3px)}}
+
   /* ===== 안전 서약 ===== */
   .pledge-list{text-align:left;display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
   .pledge-item{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:#e8f1e1;background:var(--stonedd);padding:9px 14px;
@@ -591,6 +647,14 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v1.9 · 2026.07.12</h4>
+        <ul>
+          <li>💣 <b>단어 폭탄</b> 추가! 제시된 글자로 <b>시작·포함</b>하는 낱말을 대고 넘기기 → 시간 안에 못 대면 펑💥 하트 −1 → 마지막 한 명이 우승 🏆 (로블록스 Word Bomb 스타일)</li>
+          <li>🗣️ <b>말로 하기</b>(친구·선생님 판정) / ⌨️ <b>타이핑 자동판정</b>(한글 사전 <b>1,500+개</b> 내장·인정 버튼) 선택 · 난이도 쉬움(시작)·어려움(포함) · 선수 2~6명 · 하트 2~3개</li>
+          <li>🟩 로블록스풍 배경(스터드 잔디판+하늘) · ⏱ 라운드가 갈수록 시간이 짧아지는 긴장감 · 이미 나온 낱말 재사용 금지</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v1.8 · 2026.07.07</h4>
         <ul>
           <li>🚂 <b>줄줄이 말해요</b> 추가! 주제(과일·동물 등)에 맞는 걸 한 명씩 줄줄이 → 제한시간에 막히면 탈락 → 마지막 한 명이 승자 🏆</li>
@@ -794,6 +858,7 @@
         <span class="eg" data-desc="🤝 단합대회 · '훈민정~음!' 외치고 나타난 초성으로 낱말 대기! 끝내 못 외친 팀이 벌칙. (새 탭)">📜 훈민정음</span>
         <span class="eg" data-desc="🤝 단합대회 · 기기를 돌려가며 한 명씩 이어 그리기! 내가 그린 게 딴 그림이 되어 돌아온다. (새 탭)">🖍️ 그림 이어그리기</span>
         <span class="eg" data-desc="🤝 단합대회 · 다 같이 '오~/에이~'로 대표를 목표 행동까지 유도! 마이크 소리 크기 시각화. (새 탭)">🐮 소몰이 게임</span>
+        <span class="eg" data-desc="🤝 제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명 우승. 말로/타이핑 판정 선택.">💣 단어 폭탄 🆕</span>
       </div>
       <div class="eg-desc" id="egDesc">게임에 마우스를 올리거나 탭하면 설명이 나와요 👆</div>
       <div class="entry-legend">🏆 표시는 <b>최고기록</b>에 도전하는 게임 · 🤝 단합대회 게임은 새 탭에서 열려요</div>
@@ -814,9 +879,9 @@
 
 <section class="screen" id="menu">
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.8</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.9</span></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.07</b></span>
+      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.12</b></span>
       <button class="pillbtn tour-btn" onclick="tourOpen()">🏆 모둠 대전</button>
       <button class="pillbtn" onclick="openHOF()">🏆 명예의 전당</button>
       <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
@@ -920,6 +985,10 @@
     <div class="card" style="--accent:#ff8c42" data-link="chain.html" onclick="openLink(this)">
       <div class="top"><div class="num">19</div><div class="ico">🚂</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>줄줄이 말해요</h3><p>주제에 맞는 걸 한 명씩 줄줄이! ⏱ 시간 안에 막히면 탈락, 마지막 한 명이 승자. 최고 줄줄이 기록에 도전!</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:var(--redstone)" onclick="openGame('bomb')">
+      <div class="top"><div class="num">20</div><div class="ico">💣</div></div>
+      <div><h3>단어 폭탄</h3><p>제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명이 우승. 말로/타이핑 판정 선택!</p><div class="go">▶ PLAY</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
@@ -1278,6 +1347,54 @@
   </div>
 </section>
 
+<!-- ===================== 게임14: 단어 폭탄 ===================== -->
+<section class="screen" id="bomb">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:var(--redstone);color:#fff">GAME 20</span><h1>단어 폭탄 💣</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="bombSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="bombArena">
+    <div class="bomb-hearts" id="bombHearts"></div>
+    <div class="bomb-stage">
+      <div class="bomb-turn" id="bombTurn"></div>
+      <div class="bomb-promptbox"><div class="bomb-prompt" id="bombPrompt">구</div></div>
+      <div class="bomb-rule" id="bombRule">'구'(으)로 시작하는 낱말!</div>
+      <div class="bomb-icon" id="bombIcon">💣</div>
+      <div class="bomb-fuse-wrap"><div class="bomb-fuse" id="bombFuse"></div></div>
+      <div class="bomb-say" id="bombSayCtl"><button class="bigbtn bomb-passbtn" onclick="bombSay()">✅ 말했어! 넘기기 ▶</button></div>
+      <div class="bomb-type" id="bombTypeCtl" style="display:none">
+        <div class="bomb-inrow">
+          <input id="bombInput" class="bomb-input" maxlength="12" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="낱말 입력" onkeydown="if(event.key==='Enter')bombSubmit()">
+          <button class="bigbtn bomb-passbtn" onclick="bombSubmit()">확인 ▶</button>
+        </div>
+        <div class="bomb-msg" id="bombMsg"></div>
+        <button class="bomb-override" id="bombOverride" onclick="bombAccept()">✅ 진짜 낱말이에요 (인정)</button>
+      </div>
+      <div class="bomb-used" id="bombUsed"></div>
+    </div>
+    <div class="bomb-boom" id="bombBoom">💥</div>
+    <div class="overlay" id="bombSetupOv"><div class="panel" style="max-width:600px">
+      <h3>단어 폭탄 💣</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🔥 <b style="color:var(--gold)">규칙</b> — 제시된 <b>글자</b>로 시작(또는 포함)하는 낱말을 대고 <b>넘기기!</b> 내 차례에 시간 안에 못 대면 <b>펑! 💥</b> 하트 −1.<br>
+        💔 하트를 모두 잃으면 탈락 · <b>마지막 한 명이 우승 🏆</b> · 이미 나온 낱말은 다시 못 써요 · 라운드가 갈수록 시간이 짧아져요!<br>
+        🗣️ <b>말로 하기</b> = 소리내 말하고 버튼으로 넘기기(친구·선생님 판정) · ⌨️ <b>타이핑</b> = 낱말을 입력하면 자동 판정!
+      </p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
+      <div class="opt-row"><span class="lab">판정</span><button class="chip on" data-judge="say">🗣️ 말로 하기</button><button class="chip" data-judge="type">⌨️ 타이핑</button></div>
+      <div class="opt-row"><span class="lab">규칙</span><button class="chip on" data-level="start">쉬움 · 시작</button><button class="chip" data-level="in">어려움 · 포함</button></div>
+      <div class="opt-row"><span class="lab">하트</span><button class="chip on" data-hearts="2">2</button><button class="chip" data-hearts="3">3</button></div>
+      <button class="bigbtn" onclick="bombStart()">폭탄 점화! 💥</button>
+    </div></div>
+    <div class="overlay" id="bombCountOv"><div class="countnum" id="bombCountNum">3</div></div>
+    <div class="overlay" id="bombResultOv"><div class="panel">
+      <div class="winner-tag" id="bombWinner">🏆 우승!</div>
+      <p class="sub" id="bombResultMsg" style="margin-bottom:14px"></p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="bombStart()">🔁 다시</button><button class="bigbtn" onclick="bombSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
 
 <script>
 /* ============ 공통 ============ */
@@ -1295,7 +1412,7 @@ const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)','var(--p5)','var(
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수','5번 선수','6번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');try{if(id==='entry')spaceSet(3);else if(id==='menu')spaceSet(.8);else spaceStop()}catch(e){}}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();bombStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
 /* ===== 인기 게임 정렬 (플레이 횟수) ===== */
 function playKey(g){return 'cgw_play_'+g}
 function getPlay(g){return +(lsGet(playKey(g))||0)}
@@ -1437,7 +1554,7 @@ function renderPodium(podId,winId,scores,names){
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})
   const _rk=podId.replace('Podium','');if(REC[_rk])tryRecord(_rk,rank[0].s,false)}
-const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup};
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,bomb:bombSetup};
 let pendingGame=null,pledgeOK=false;
 function openGame(g){pendingGame=g;pledgeOK=false;
   $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
@@ -1971,7 +2088,7 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup'};
+  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup',bomb:'teamup'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
@@ -2312,6 +2429,169 @@ try{MY_NICK=localStorage.getItem('cgw_nick')||''}catch(e){}
 try{MY_SCHOOL=localStorage.getItem('cgw_school')||''}catch(e){}
 if($('entryNick'))$('entryNick').value=MY_NICK;
 if($('entrySchool'))$('entrySchool').value=MY_SCHOOL;
+/* ============ 게임14: 단어 폭탄 (Word Bomb) ============ */
+const BOMB_WORDS=[
+/* 동물 */ '사자','호랑이','토끼','코끼리','기린','원숭이','강아지','고양이','다람쥐','너구리','여우','늑대','곰','사슴','노루','멧돼지','두더지','고슴도치','하마','악어','거북이','개구리','두꺼비','뱀','도마뱀','독수리','참새','까치','까마귀','비둘기','제비','부엉이','올빼미','병아리','오리','거위','백조','공작','타조','펭귄','물개','고래','상어','문어','오징어','새우','조개','소라','불가사리','해파리','멸치','고등어','갈치','연어','붕어','잉어','메기','개미','벌','나비','잠자리','메뚜기','사마귀','거미','지렁이','달팽이','무당벌레','매미','귀뚜라미','바퀴벌레','모기','파리','소','말','돼지','닭','양','염소','수달','판다','코알라','캥거루','낙타','얼룩말','표범','치타','물소','두루미','공룡','미꾸라지',
+/* 과일·채소 */ '사과','배','포도','딸기','수박','참외','복숭아','자두','살구','앵두','바나나','오렌지','귤','레몬','키위','망고','파인애플','멜론','체리','감','대추','밤','호두','땅콩','아몬드','석류','당근','오이','호박','가지','고추','마늘','양파','배추','상추','시금치','깻잎','콩','팥','감자','고구마','옥수수','버섯','양배추','토마토','무','도라지','더덕','연근','우엉','브로콜리','파','생강','부추',
+/* 음식 */ '밥','국','찌개','김치','라면','국수','냉면','비빔밥','김밥','떡볶이','순대','튀김','만두','피자','햄버거','치킨','스파게티','샌드위치','도넛','케이크','빵','과자','사탕','초콜릿','젤리','아이스크림','우유','주스','콜라','사이다','커피','녹차','죽','부침개','계란','두부','어묵','소시지','치즈','버터','꿀','설탕','소금','간장','된장','고추장','식초','참기름','밀가루','떡','과일','반찬','도시락','보리차',
+/* 몸 */ '머리','얼굴','눈','코','입','귀','이마','볼','턱','목','어깨','팔','손','손가락','손톱','팔꿈치','가슴','배꼽','허리','엉덩이','다리','무릎','발','발가락','발톱','발목','머리카락','눈썹','속눈썹','이빨','혀','심장','근육','피부','손목','발바닥','콧구멍',
+/* 집·사물 */ '문','창문','벽','지붕','계단','마루','방','부엌','화장실','거실','침대','이불','베개','책상','의자','책장','옷장','서랍','거울','시계','달력','전등','선풍기','에어컨','냉장고','세탁기','청소기','컴퓨터','전화기','냄비','그릇','접시','숟가락','젓가락','포크','국자','도마','칼','가위','빗자루','걸레','우산','수건','비누','칫솔','치약','열쇠','자물쇠','상자','바구니','쟁반','주걱','도끼','망치','삽','호미','사다리','양동이','촛불','성냥','손전등','컵',
+/* 학교·학용품 */ '연필','지우개','볼펜','색연필','크레파스','물감','붓','자','공책','교과서','필통','가방','실내화','칠판','분필','교실','운동장','급식','도서관','강당','복도','정문','교문','선생님','학생','친구','반장','숙제','시험','방학','소풍','운동회','책','종이','풀','스케치북','알림장',
+/* 교통·장소 */ '자동차','버스','택시','트럭','기차','지하철','비행기','자전거','오토바이','소방차','경찰차','구급차','도로','다리','터널','신호등','횡단보도','주차장','정류장','공항','항구','시장','마트','백화점','병원','약국','은행','우체국','학교','유치원','공원','놀이터','수영장','목욕탕','미용실','식당','편의점','서점','빵집','극장','박물관','미술관','동물원','식물원','교회','성당','아파트','빌딩','기차역',
+/* 자연 */ '하늘','구름','해','달','별','무지개','번개','천둥','비','눈','바람','안개','이슬','서리','얼음','산','강','바다','호수','계곡','폭포','언덕','숲','나무','풀','꽃','뿌리','씨앗','열매','줄기','돌','바위','모래','흙','땅','동굴','섬','사막','논','밭','정원','화산','지진','파도','낙엽','단풍','고드름','노을',
+/* 직업 */ '의사','간호사','교사','경찰','소방관','요리사','가수','배우','화가','작가','기자','농부','어부','목수','미용사','운전사','조종사','군인','변호사','판사','과학자','발명가','우주인','대통령','왕','공주','왕자','마법사','도둑','경비원','집배원','제빵사','약사',
+/* 색·모양 */ '빨강','주황','노랑','초록','파랑','보라','검정','하양','회색','분홍','갈색','세모','네모','동그라미','하트',
+/* 운동·취미·악기·놀이 */ '축구','야구','농구','배구','탁구','테니스','배드민턴','수영','달리기','줄넘기','태권도','유도','씨름','스키','스케이트','볼링','골프','등산','낚시','캠핑','독서','노래','피아노','바이올린','기타','드럼','피리','나팔','북','장구','꽹과리','징','가야금','거문고','하모니카','실로폰','팽이','딱지','구슬','연','풍선','인형','로봇','블록','퍼즐','자석',
+/* 시간·옷 */ '봄','여름','가을','겨울','아침','점심','저녁','밤','낮','새벽','오늘','내일','어제','주말','하루','옷','바지','치마','셔츠','스웨터','외투','점퍼','코트','조끼','잠옷','양말','장갑','모자','목도리','신발','운동화','구두','슬리퍼','장화','안경','반지','목걸이','귀걸이','팔찌','벨트','넥타이','단추',
+/* '구' 등 보강 */ '구름','구두','구멍','구경','구석','구조','국자','국수','군인','굴뚝','궁궐','거북','기와','기름','나라','나침반','마차','수도','수저','수세미','미역','초원','소나무','바퀴',
+/* ===== 대량 추가 ===== */
+/* 동물+ */ '사슴벌레','장수풍뎅이','가재','소금쟁이','물방개','우렁이','전복','홍합','성게','해삼','말미잘','돌고래','범고래','물범','바다사자','코뿔소','하이에나','스컹크','오소리','족제비','박쥐','청설모','들쥐','생쥐','햄스터','이구아나','카멜레온','코브라','자라','앵무새','잉꼬','딱따구리','뻐꾸기','종달새','꾀꼬리','백로','왜가리','물총새','갈매기','기러기','청둥오리','매','솔개','수리부엉이','꿩','메추리','칠면조','원앙','두더지','살쾡이','들소','산양','물사슴','바다거북','장어','가오리','대구','명태','참치','방어','도미','광어','우럭','전어','꽁치','정어리','청어','뱀장어','미꾸라지','송사리','피라미','열대어','금붕어','자라',
+/* 과일·채소+ */ '자몽','천도복숭아','모과','유자','한라봉','방울토마토','아보카도','파프리카','피망','셀러리','아스파라거스','콜리플라워','근대','쑥갓','미나리','쑥','냉이','달래','두릅','고사리','죽순','토란','완두콩','강낭콩','녹두','메밀','보리','밀','수수','호박씨','해바라기씨','밤송이','도토리','은행','잣송이','머루','다래','오디','산딸기','블랙베리','라즈베리','크랜베리','자몽',
+/* 음식+ */ '잡채','불고기','갈비','삼겹살','제육볶음','닭갈비','찜닭','삼계탕','갈비탕','설렁탕','육개장','미역국','된장국','떡국','칼국수','수제비','우동','짜장면','짬뽕','탕수육','볶음밥','오므라이스','카레','돈가스','김치찌개','부대찌개','순두부','청국장','잔치국수','비빔국수','콩국수','쫄면','김치전','파전','감자전','호떡','붕어빵','계란빵','국화빵','뻥튀기','약과','강정','인절미','절편','시루떡','백설기','송편','가래떡','찹쌀떡','꿀떡','팥빙수','식혜','수정과','미숫가루','요구르트','푸딩','마카롱','쿠키','와플','크로켓','핫도그','떡꼬치','초밥','육회','곱창','순댓국','만둣국','콩나물국','북엇국','감자탕','매운탕','아귀찜','해물찜','물냉면','비빔냉면','막국수','국밥','비빔밥','주먹밥','유부초밥','누룽지','숭늉',
+/* 몸+ */ '관자놀이','정수리','뒤통수','콧등','인중','광대뼈','갈비뼈','척추','손바닥','손등','팔뚝','종아리','허벅지','발등','복사뼈','허파','간','위장','대장','소장','방광','쓸개','편도','주근깨','보조개','쌍꺼풀','사랑니','어금니','앞니','송곳니','발꿈치','정강이','겨드랑이','팔목','목덜미','콧방울',
+/* 집·물건+ */ '소파','식탁','화장대','신발장','옷걸이','다리미','재봉틀','바늘','실','골무','옷핀','안전핀','클립','압정','스테이플러','접착제','딱풀','형광펜','사인펜','매직','만년필','샤프','각도기','컴퍼스','삼각자','줄자','계산기','돋보기','현미경','망원경','온도계','저울','알람시계','벽시계','모래시계','리모컨','이어폰','헤드폰','스피커','마이크','카메라','프린터','키보드','마우스','모니터','노트북','태블릿','휴대폰','충전기','배터리','콘센트','플러그','스위치','전구','형광등','촛대','부채','방석','담요','커튼','블라인드','액자','화분','꽃병','어항','새장','우편함','쓰레기통','빨래통','세숫대야','바가지','주전자','보온병','텀블러','빨대','냅킨','이쑤시개','행주','고무장갑','앞치마','냄비받침','도시락통','베갯잇','이부자리','옷장','책꽂이','필기구','부싯돌','부지깽이','절구','맷돌','키','채반','소쿠리','됫박',
+/* 학교·과목+ */ '국어','수학','영어','과학','사회','음악','미술','체육','도덕','역사','지리','물리','화학','생물','지구과학','기술','가정','받아쓰기','일기','독후감','발표','토론','시험지','성적표','상장','졸업장','교복','체육복','명찰','학급','학년','학기','등교','하교','지각','결석','조퇴','청소','당번','조회','종례','방과후','학원','예습','복습','필기','문제집','참고서','지구본','표본','도화지','스케치북','물통','팔레트','파렛트','실로폰',
+/* 장소·건물+ */ '체육관','볼링장','노래방','찜질방','사우나','헬스장','골프장','야구장','축구장','경기장','놀이공원','워터파크','수족관','천문대','전망대','등대','궁궐','한옥','초가집','기와집','빌라','오피스텔','주택','별장','펜션','호텔','여관','민박','캠핑장','휴게소','주유소','세차장','정비소','공장','창고','농장','목장','과수원','온실','비닐하우스','우물','저수지','댐','육교','지하도','엘리베이터','에스컬레이터','광장','분수대','벤치','가로등','표지판','정거장','터미널','부두','선착장','시청','구청','주민센터','파출소','소방서','법원','도청',
+/* 자연·우주+ */ '은하수','유성','혜성','소행성','위성','행성','태양','지구','화성','금성','목성','토성','수성','천왕성','해왕성','블랙홀','성운','별자리','북극성','북두칠성','오로라','일식','월식','밀물','썰물','물보라','소용돌이','폭풍','태풍','회오리','돌풍','소나기','장맛비','이슬비','가랑비','함박눈','진눈깨비','우박','성에','눈사람','눈송이','빙하','빙산','온천','용암','화석','광물','보석','다이아몬드','루비','사파이어','에메랄드','진주','수정','자수정','산호','조약돌','자갈','진흙','갯벌','늪','습지','초원','정글','밀림','열대우림','수평선','지평선','절벽','벼랑','고원','평야','분지','반도','해협','만','곶','모래사장','백사장',
+/* 식물·꽃+ */ '장미','튤립','해바라기','국화','백합','카네이션','진달래','개나리','벚꽃','목련','동백','수선화','나팔꽃','채송화','봉숭아','코스모스','민들레','제비꽃','클로버','데이지','라벤더','안개꽃','무궁화','연꽃','수련','매화','철쭉','라일락','팬지','백일홍','맨드라미','나리','잣나무','전나무','향나무','대나무','은행나무','단풍나무','벚나무','느티나무','버드나무','참나무','밤나무','감나무','소철','야자수','선인장','이끼','잔디','갈대','억새','담쟁이덩굴','넝쿨','새싹','떡잎','꽃봉오리','꽃잎','꽃가루','솔방울','도토리','열매','새순',
+/* 탈것+ */ '승용차','승합차','화물차','덤프트럭','레미콘','지게차','굴착기','불도저','크레인','청소차','견인차','캠핑카','리무진','경운기','트랙터','콤바인','인력거','리어카','손수레','유모차','휠체어','킥보드','스케이트보드','인라인스케이트','세발자전거','케이블카','모노레일','고속열차','화물열차','기관차','유람선','여객선','화물선','어선','잠수함','요트','보트','카누','카약','뗏목','돛단배','나룻배','항공모함','전투기','열기구','비행선','글라이더','낙하산','로켓','우주선','인공위성','증기기관차',
+/* 직업·사람+ */ '교수','강사','원장','교장','학자','연구원','엔지니어','프로그래머','디자이너','건축가','통역사','번역가','성우','아나운서','리포터','감독','만화가','조각가','도예가','서예가','무용수','발레리나','지휘자','연주자','작곡가','작사가','개그맨','마술사','광대','곡예사','코치','심판','해설자','제과사','바리스타','웨이터','이발사','재단사','택배기사','배달원','집배원','환경미화원','경비원','안내원','상담원','은행원','회계사','세무사','공무원','형사','탐정','검사','판사','수의사','한의사','치과의사','물리치료사','광부','목동','사육사','조련사','정원사','사냥꾼','낚시꾼','대장장이','미장이','배관공','용접공','기계공','정비사','승무원','기관사','항해사','등대지기','장군','병사','경호원','해적','산타','도둑','거지','부자','손님','주인','이웃','어른','어린이','아기','청년','노인','할아버지','할머니','아버지','어머니','형','누나','오빠','언니','동생','삼촌','이모','고모','조카','사촌','쌍둥이',
+/* 감정·마음(공통 낱말)+ */ '사랑','행복','기쁨','슬픔','분노','두려움','놀람','걱정','근심','불안','외로움','그리움','미움','질투','부러움','감사','용기','자신감','희망','절망','소원','추억','상상','생각','정성','우정','약속','비밀','거짓말','진실','정직','지혜','노력','열정','인내','끈기','습관','버릇','예의','배려','양보','친절','겸손','자유','평화','행운','기적','마술','요술','마법','저주','수수께끼','비밀번호',
+/* 색·무늬+ */ '남색','청록','연두','자주','하늘색','밤색','은색','금색','상아색','줄무늬','물방울무늬','체크무늬','꽃무늬','바둑판','격자무늬','민무늬',
+/* 운동·놀이+ */ '핸드볼','럭비','하키','아이스하키','컬링','펜싱','양궁','사격','승마','조정','서핑','스노보드','피겨스케이팅','쇼트트랙','체조','리듬체조','역도','레슬링','복싱','검도','합기도','클라이밍','암벽등반','번지점프','패러글라이딩','다트','제기차기','팽이치기','연날리기','윷놀이','공기놀이','고무줄놀이','사방치기','술래잡기','숨바꼭질','얼음땡','가위바위보','딱지치기','구슬치기','비석치기','그네','시소','미끄럼틀','정글짐','뜀틀','평균대','철봉','훌라후프','트램펄린','널뛰기','줄다리기','팔씨름','닭싸움','제기','굴렁쇠','실뜨기','땅따먹기','달팽이집',
+/* 악기+ */ '비올라','첼로','하프','플루트','클라리넷','오보에','색소폰','트럼펫','트롬본','튜바','팀파니','심벌즈','마림바','탬버린','우쿨렐레','만돌린','아코디언','오르간','전자기타','단소','대금','해금','소고','태평소','오카리나','리코더','캐스터네츠','트라이앵글','멜로디언','캐스터네츠',
+/* 시간·방향·명절+ */ '오른쪽','왼쪽','가운데','동쪽','서쪽','남쪽','북쪽','오전','오후','정오','자정','한밤중','해돋이','해넘이','그믐','보름','초승달','반달','그믐달','첫눈','설날','추석','단오','동지','정월대보름','크리스마스','생일','명절','휴일','공휴일','평일','새해','연말','하루','이틀','사흘','나흘','열흘','한달','일년','계절',
+/* 옷·장신구+ */ '원피스','반바지','청바지','멜빵바지','후드티','맨투맨','가디건','블라우스','정장','양복','한복','저고리','두루마기','도포','상투','비녀','노리개','버선','고무신','나막신','짚신','부츠','샌들','축구화','등산화','안전화','우비','패딩','스카프','머리핀','머리띠','리본','가면','왕관','브로치','지갑','손지갑','배낭','백팩','손가방','핸드백','여행가방','캐리어','파우치','장화','실내화','슬리퍼','목도리','귀마개','토시',
+/* 생활가전·기타+ */ '텔레비전','라디오','김치냉장고','건조기','식기세척기','전자레인지','오븐','가스레인지','인덕션','전기밥솥','믹서기','토스터','정수기','가습기','제습기','공기청정기','히터','보일러','전기장판','진공청소기','로봇청소기','헤어드라이어','면도기','전동칫솔','체중계','혈압계','청소기','손난로','재봉틀','다리미판'
+];
+const BOMB_UNIQ=[...new Set(BOMB_WORDS)];
+const BOMB_WORDSET=new Set(BOMB_UNIQ);
+const BOMB_START={},BOMB_INCNT={};
+BOMB_UNIQ.forEach(w=>{if(!w||w.length<2)return;
+  (BOMB_START[w[0]]=BOMB_START[w[0]]||[]).push(w);
+  const seen={};for(const ch of w){if(!seen[ch]){seen[ch]=1;BOMB_INCNT[ch]=(BOMB_INCNT[ch]||0)+1}}});
+const BOMB_START_KEYS=Object.keys(BOMB_START).filter(k=>BOMB_START[k].length>=4);
+const BOMB_IN_KEYS=Object.keys(BOMB_INCNT).filter(k=>BOMB_INCNT[k]>=6);
+let bomb={players:3,judge:'say',level:'start',hearts:2,hp:[],cur:0,prompt:'',lastPrompt:'',used:new Set(),timeLeft:0,timeTotal:0,tickT:null,tk:0,turns:0,exploded:0,running:false,busy:false};
+function bombSetup(){bombStop();$('bombResultOv').classList.remove('show');$('bombCountOv').classList.remove('show');$('bombSetupOv').classList.add('show')}
+chipToggle('bombSetupOv','players');chipToggle('bombSetupOv','judge');chipToggle('bombSetupOv','level');chipToggle('bombSetupOv','hearts');
+function bombStop(){bomb.running=false;bomb.busy=false;if(bomb.tickT){clearInterval(bomb.tickT);bomb.tickT=null}const i=$('bombInput');if(i)i.blur();const ic=$('bombIcon');if(ic)ic.classList.remove('shake')}
+function bombStart(){
+  bombStop();
+  bomb.players=+getChip('bombSetupOv','players');bomb.judge=getChip('bombSetupOv','judge');
+  bomb.level=getChip('bombSetupOv','level');bomb.hearts=+getChip('bombSetupOv','hearts');
+  bomb.hp=new Array(bomb.players).fill(bomb.hearts);bomb.used=new Set();bomb.turns=0;bomb.exploded=0;bomb.lastPrompt='';bomb.cur=0;
+  $('bombSetupOv').classList.remove('show');$('bombResultOv').classList.remove('show');
+  $('bombSayCtl').style.display=bomb.judge==='say'?'flex':'none';
+  $('bombTypeCtl').style.display=bomb.judge==='type'?'flex':'none';
+  bombRenderHearts();bombRenderUsed();
+  runCountdown('bombCountOv','bombCountNum',()=>{bomb.running=true;bombStartTurn()});
+}
+function bombAlive(){const a=[];for(let i=0;i<bomb.players;i++)if(bomb.hp[i]>0)a.push(i);return a}
+function bombNextIdx(from){for(let s=1;s<=bomb.players;s++){const i=(from+s)%bomb.players;if(bomb.hp[i]>0)return i}return from}
+function bombPickPrompt(){
+  let pool=bomb.level==='in'?BOMB_IN_KEYS:BOMB_START_KEYS;
+  if(!pool||!pool.length)pool=['사','가','바','수','기','구','도','마','자','소'];
+  let p,t=0;do{p=pool[Math.floor(Math.random()*pool.length)];t++}while(p===bomb.lastPrompt&&t<8);
+  bomb.lastPrompt=p;return p;
+}
+function bombStartTurn(){
+  if(bomb.tickT){clearInterval(bomb.tickT);bomb.tickT=null}
+  bomb.prompt=bombPickPrompt();bomb.busy=false;bomb.tk=0;
+  const base=bomb.judge==='type'?14:9,min=bomb.judge==='type'?7:4.5;
+  bomb.timeTotal=Math.max(min,base-bomb.turns*0.3);bomb.timeLeft=bomb.timeTotal;
+  bombRenderTurn();
+  bomb.tickT=setInterval(bombTickFn,100);
+}
+function bombTickFn(){
+  if(!bomb.running||bomb.busy)return;
+  bomb.timeLeft-=0.1;bomb.tk++;
+  if(bomb.timeLeft<=0){bomb.timeLeft=0;bombFuseUI();bombExplode();return}
+  bombFuseUI();
+  const danger=bomb.timeLeft<2.5,every=danger?2:(bomb.timeLeft<5?5:10);
+  if(bomb.tk%every===0)beep(danger?900:520,.045,'square',.1);
+}
+function bombFuseUI(){
+  const f=$('bombFuse');if(!f)return;const pct=Math.max(0,bomb.timeLeft/bomb.timeTotal*100);
+  f.style.width=pct+'%';const danger=bomb.timeLeft<2.5;
+  f.classList.toggle('danger',danger);$('bombIcon').classList.toggle('shake',danger);
+}
+function bombPass(){bomb.turns++;bomb.cur=bombNextIdx(bomb.cur);bombStartTurn()}
+function bombSay(){if(!bomb.running||bomb.busy)return;beep(680,.08,'triangle');setTimeout(()=>beep(920,.09,'triangle'),70);bombPass()}
+function bombMsgErr(t){const m=$('bombMsg');m.className='bomb-msg err';m.textContent=t;beep(200,.12,'square',.14)}
+function bombSubmit(){
+  if(!bomb.running||bomb.busy)return;
+  const inp=$('bombInput');let w=(inp.value||'').trim();
+  $('bombOverride').classList.remove('show');
+  if(w.length<2){bombMsgErr('두 글자 이상 낱말을 입력해요');return}
+  if(!/^[가-힣]+$/.test(w)){bombMsgErr('한글 낱말만 가능해요');return}
+  const okRule=bomb.level==='in'?w.includes(bomb.prompt):w[0]===bomb.prompt;
+  if(!okRule){bombMsgErr(bomb.level==='in'?`'${bomb.prompt}'이(가) 들어가야 해요`:`'${bomb.prompt}'(으)로 시작해야 해요`);return}
+  if(bomb.used.has(w)){bombMsgErr('이미 나온 낱말이에요!');return}
+  if(BOMB_WORDSET.has(w)){bombAcceptWord(w);return}
+  const m=$('bombMsg');m.className='bomb-msg err';m.textContent='사전에 없는 낱말이에요. 진짜 낱말이면 →';
+  $('bombOverride').classList.add('show');beep(300,.12,'square',.14);
+}
+function bombAccept(){
+  const inp=$('bombInput');let w=(inp.value||'').trim();
+  if(w.length<2||!/^[가-힣]+$/.test(w))return;
+  const okRule=bomb.level==='in'?w.includes(bomb.prompt):w[0]===bomb.prompt;
+  if(!okRule||bomb.used.has(w))return;
+  bombAcceptWord(w);
+}
+function bombAcceptWord(w){
+  bomb.used.add(w);$('bombOverride').classList.remove('show');
+  const m=$('bombMsg');m.className='bomb-msg ok';m.textContent='좋아요! ✅';
+  $('bombInput').value='';beep(680,.08,'triangle');setTimeout(()=>beep(920,.09,'triangle'),70);
+  bombRenderUsed();bombPass();
+}
+function bombExplode(){
+  if(bomb.tickT){clearInterval(bomb.tickT);bomb.tickT=null}
+  bomb.busy=true;const v=bomb.cur;bomb.hp[v]=Math.max(0,bomb.hp[v]-1);bomb.exploded++;
+  beep(90,.4,'sawtooth',.28);setTimeout(()=>beep(60,.5,'sawtooth',.24),80);
+  const boom=$('bombBoom');boom.classList.add('show');$('bombIcon').classList.remove('shake');
+  const ar=$('bombArena');ar.style.animation='none';void ar.offsetWidth;ar.style.animation='bombQuake .3s 3';
+  bombRenderHearts();
+  setTimeout(()=>{
+    boom.classList.remove('show');ar.style.animation='';
+    const alive=bombAlive();
+    if(alive.length<=1){bombWin(alive[0]);return}
+    bomb.cur=bombNextIdx(v);bombStartTurn();
+  },1150);
+}
+function bombRenderTurn(){
+  const c=bomb.cur;const t=$('bombTurn');t.style.setProperty('--c',PCOLORS[c]);t.textContent=`${PNAMES[c]} 차례!`;
+  $('bombPrompt').textContent=bomb.prompt;
+  $('bombRule').textContent=bomb.level==='in'?`'${bomb.prompt}'이(가) 들어간 낱말!`:`'${bomb.prompt}'(으)로 시작하는 낱말!`;
+  bombRenderHearts();bombFuseUI();
+  const m=$('bombMsg');if(m){m.textContent='';m.className='bomb-msg'}
+  $('bombOverride').classList.remove('show');
+  if(bomb.judge==='type'){const inp=$('bombInput');inp.value='';setTimeout(()=>{if(bomb.running)inp.focus()},30)}
+}
+function bombRenderHearts(){
+  const box=$('bombHearts');box.innerHTML='';
+  for(let i=0;i<bomb.players;i++){
+    const d=document.createElement('div');d.className='bomb-ph';d.style.setProperty('--c',PCOLORS[i]);
+    if(bomb.hp[i]<=0)d.classList.add('dead');
+    if(i===bomb.cur&&bomb.hp[i]>0&&bomb.running)d.classList.add('cur');
+    const hp=bomb.hp[i]>0?'❤️'.repeat(bomb.hp[i]):'💀';
+    d.innerHTML=`<span class="nm">${PNAMES[i]}</span><span class="hp">${hp}</span>`;box.appendChild(d);
+  }
+}
+function bombRenderUsed(){
+  const box=$('bombUsed');if(!box)return;
+  const arr=[...bomb.used].slice(-14);box.innerHTML=arr.map(w=>`<span>${w}</span>`).join('');
+}
+function bombWin(idx){
+  bomb.running=false;if(bomb.tickT){clearInterval(bomb.tickT);bomb.tickT=null}
+  $('bombIcon').classList.remove('shake');$('bombFuse').classList.remove('danger');
+  $('bombWinner').textContent=idx!=null?`🏆 ${PNAMES[idx]} 우승!`:'게임 끝!';
+  const extra=bomb.judge==='type'?` · 나온 낱말 ${bomb.used.size}개`:'';
+  $('bombResultMsg').textContent=`💥 폭탄 ${bomb.exploded}번 터짐 · 끝까지 살아남았어요!`+extra;
+  beep(660,.14,'triangle');setTimeout(()=>beep(880,.14,'triangle'),140);setTimeout(()=>beep(1040,.2,'triangle'),300);
+  bombRenderHearts();$('bombResultOv').classList.add('show');
+}
+
 setSplash();
 setBiome('wild');
 sortCards();
