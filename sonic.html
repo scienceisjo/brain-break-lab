@@ -647,6 +647,13 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v2.0 · 2026.07.16</h4>
+        <ul>
+          <li>🎤 <b>나락퀴즈쇼</b> 추가! 학생이 질문·선택지를 직접 만들면 → 어떤 답을 골라도 <b>나락</b>행 → AI 진행자 음성·카운트다운 타이머·"나락 확정" 판정 연출까지 🎭</li>
+          <li>🌶️ <b>매운맛 게임</b> — 학기말 <b>담임 선생님</b> 대상으로 딱 1번 추천! 비교육적 질문 금지·서로 상처받지 않게 배려 안내 문구 포함</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v1.9 · 2026.07.12</h4>
         <ul>
           <li>💣 <b>단어 폭탄</b> 추가! 제시된 글자로 <b>시작·포함</b>하는 낱말을 대고 넘기기 → 시간 안에 못 대면 펑💥 하트 −1 → 마지막 한 명이 우승 🏆 (로블록스 Word Bomb 스타일)</li>
@@ -881,7 +888,7 @@
   <div class="topbar">
     <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.9</span></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.12</b></span>
+      <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.16</b></span>
       <button class="pillbtn tour-btn" onclick="tourOpen()">🏆 모둠 대전</button>
       <button class="pillbtn" onclick="openHOF()">🏆 명예의 전당</button>
       <button class="pillbtn ghost" onclick="toggleFull()">⛶ 전체화면</button>
@@ -990,11 +997,15 @@
       <div class="top"><div class="num">20</div><div class="ico">💣</div></div>
       <div><h3>단어 폭탄</h3><p>제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명이 우승. 말로/타이핑 판정 선택!</p><div class="go">▶ PLAY</div></div>
     </div>
+    <div class="card" style="--accent:#ff2f6e" data-link="narak.html" onclick="openLink(this)">
+      <div class="top"><div class="num">21</div><div class="ico">🎤</div><span class="ext-tag">🔗 외부</span></div>
+      <div><h3>나락퀴즈쇼</h3><p>학생이 만든 질문에 답하면… 어떤 선택지를 골라도 <b>나락</b>행! AI 진행자·타이머·나락 판정 연출. 🌶️매운맛(학기말 담임쌤께 딱 1번!)</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
   <div class="footnote">⛏ 손가락으로 동시에 누르세요 · 멀티터치 전자칠판 최적화</div>
   <div class="credit">제작 : 과학이조선생 <span class="sep">·</span> 인스타그램 : <a href="https://instagram.com/science_is_jo" target="_blank" rel="noopener">@science_is_jo</a></div>
-  <div class="mc-ver">CLASS GAME WORLD 1.7</div>
+  <div class="mc-ver">CLASS GAME WORLD 2.0</div>
   <div class="mc-copy">팬 제작 테마 · Minecraft™ / Mojang</div>
 </section>
 
@@ -2088,7 +2099,7 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup',bomb:'teamup'};
+  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup',bomb:'teamup',narak:'teamup'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
