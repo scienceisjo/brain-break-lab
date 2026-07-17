@@ -348,7 +348,7 @@
   .bomb-promptbox{background:var(--board);padding:clamp(8px,2vh,24px) clamp(22px,5vw,60px);text-align:center;
     box-shadow:0 0 0 4px var(--outline),0 0 0 8px var(--redstone),var(--bevelL),var(--bevelD)}
   .bomb-prompt{font-family:'Black Han Sans','Do Hyeon',sans-serif;font-size:clamp(46px,11vh,132px);line-height:1;color:#fff;text-shadow:4px 4px 0 var(--outline)}
-  .bomb-rule{font-family:'Do Hyeon';font-size:clamp(15px,2.3vh,26px);color:var(--gold)}
+  .bomb-rule{font-family:'Do Hyeon';font-size:clamp(20px,4vh,46px);color:var(--gold);text-shadow:2px 2px 0 var(--outline),0 0 2px rgba(0,0,0,.35)}
   .bomb-icon{font-size:clamp(30px,5vh,58px);line-height:1;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.5))}
   .bomb-icon.shake{animation:bombShake .16s infinite}
   @keyframes bombShake{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(-3px,1px) rotate(-7deg)}75%{transform:translate(3px,-1px) rotate(7deg)}}
@@ -1394,6 +1394,7 @@
       <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
       <div class="opt-row"><span class="lab">판정</span><button class="chip on" data-judge="say">🗣️ 말로 하기</button><button class="chip" data-judge="type">⌨️ 타이핑</button></div>
       <div class="opt-row"><span class="lab">규칙</span><button class="chip on" data-level="start">쉬움 · 시작</button><button class="chip" data-level="in">어려움 · 포함</button></div>
+      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-time="fast">⚡ 빠름</button><button class="chip on" data-time="normal">보통</button><button class="chip" data-time="slow">여유</button></div>
       <div class="opt-row"><span class="lab">하트</span><button class="chip on" data-hearts="2">2</button><button class="chip" data-hearts="3">3</button></div>
       <button class="bigbtn" onclick="bombStart()">폭탄 점화! 💥</button>
     </div></div>
@@ -2483,14 +2484,15 @@ BOMB_UNIQ.forEach(w=>{if(!w||w.length<2)return;
   const seen={};for(const ch of w){if(!seen[ch]){seen[ch]=1;BOMB_INCNT[ch]=(BOMB_INCNT[ch]||0)+1}}});
 const BOMB_START_KEYS=Object.keys(BOMB_START).filter(k=>BOMB_START[k].length>=4);
 const BOMB_IN_KEYS=Object.keys(BOMB_INCNT).filter(k=>BOMB_INCNT[k]>=6);
-let bomb={players:3,judge:'say',level:'start',hearts:2,hp:[],cur:0,prompt:'',lastPrompt:'',used:new Set(),timeLeft:0,timeTotal:0,tickT:null,tk:0,turns:0,exploded:0,running:false,busy:false};
+const BOMB_TIME={fast:{say:3,type:6},normal:{say:5,type:9},slow:{say:8,type:13}};
+let bomb={players:3,judge:'say',level:'start',hearts:2,time:'normal',hp:[],cur:0,prompt:'',lastPrompt:'',used:new Set(),timeLeft:0,timeTotal:0,tickT:null,tk:0,turns:0,exploded:0,running:false,busy:false};
 function bombSetup(){bombStop();$('bombResultOv').classList.remove('show');$('bombCountOv').classList.remove('show');$('bombSetupOv').classList.add('show')}
-chipToggle('bombSetupOv','players');chipToggle('bombSetupOv','judge');chipToggle('bombSetupOv','level');chipToggle('bombSetupOv','hearts');
+chipToggle('bombSetupOv','players');chipToggle('bombSetupOv','judge');chipToggle('bombSetupOv','level');chipToggle('bombSetupOv','time');chipToggle('bombSetupOv','hearts');
 function bombStop(){bomb.running=false;bomb.busy=false;if(bomb.tickT){clearInterval(bomb.tickT);bomb.tickT=null}const i=$('bombInput');if(i)i.blur();const ic=$('bombIcon');if(ic)ic.classList.remove('shake')}
 function bombStart(){
   bombStop();
   bomb.players=+getChip('bombSetupOv','players');bomb.judge=getChip('bombSetupOv','judge');
-  bomb.level=getChip('bombSetupOv','level');bomb.hearts=+getChip('bombSetupOv','hearts');
+  bomb.level=getChip('bombSetupOv','level');bomb.hearts=+getChip('bombSetupOv','hearts');bomb.time=getChip('bombSetupOv','time');
   bomb.hp=new Array(bomb.players).fill(bomb.hearts);bomb.used=new Set();bomb.turns=0;bomb.exploded=0;bomb.lastPrompt='';bomb.cur=0;
   $('bombSetupOv').classList.remove('show');$('bombResultOv').classList.remove('show');
   $('bombSayCtl').style.display=bomb.judge==='say'?'flex':'none';
@@ -2509,8 +2511,9 @@ function bombPickPrompt(){
 function bombStartTurn(){
   if(bomb.tickT){clearInterval(bomb.tickT);bomb.tickT=null}
   bomb.prompt=bombPickPrompt();bomb.busy=false;bomb.tk=0;
-  const base=bomb.judge==='type'?14:9,min=bomb.judge==='type'?7:4.5;
-  bomb.timeTotal=Math.max(min,base-bomb.turns*0.3);bomb.timeLeft=bomb.timeTotal;
+  const pr=BOMB_TIME[bomb.time]||BOMB_TIME.normal;
+  const base=bomb.judge==='type'?pr.type:pr.say,min=Math.max(bomb.judge==='type'?4:2,base-3);
+  bomb.timeTotal=Math.max(min,base-bomb.turns*0.2);bomb.timeLeft=bomb.timeTotal;
   bombRenderTurn();
   bomb.tickT=setInterval(bombTickFn,100);
 }
