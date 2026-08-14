@@ -375,6 +375,34 @@
   @keyframes bombBoom{0%{transform:scale(.3);opacity:0}40%{transform:scale(1.15);opacity:1}100%{transform:scale(1.05);opacity:0}}
   @keyframes bombQuake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-2px)}60%{transform:translate(-4px,2px)}80%{transform:translate(4px,-3px)}}
 
+  /* ===== 게임15: 인간 시계 ===== */
+  #clock .arena{flex-direction:column;align-items:center;justify-content:flex-start;gap:clamp(6px,1.4vh,16px)}
+  .clock-scores{display:flex;gap:clamp(6px,1vw,14px);flex-wrap:wrap;justify-content:center;width:100%;flex:0 0 auto}
+  .clock-ps{--c:var(--p1);display:flex;flex-direction:column;align-items:center;gap:2px;min-width:clamp(66px,9vw,120px);
+    padding:clamp(5px,1vh,11px) clamp(8px,1.3vw,15px);background:var(--stonedd);opacity:.6;transition:transform .1s;
+    box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .clock-ps.cur{opacity:1;transform:translateY(-4px) scale(1.06);background:var(--board);box-shadow:0 0 0 3px var(--outline),0 0 0 5px var(--c),var(--bevelL),var(--bevelD)}
+  .clock-ps .nm{font-family:'Do Hyeon';font-size:clamp(12px,1.7vh,18px);color:var(--c);text-shadow:1px 1px 0 var(--outline);white-space:nowrap}
+  .clock-ps .er{font-family:'Space Mono','Do Hyeon',monospace;font-size:clamp(12px,1.7vh,17px);color:#e9f1e4}
+  .clock-stage{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(3px,.9vh,10px);width:100%;min-height:0}
+  .clock-target{font-family:'Do Hyeon';font-size:clamp(18px,3vh,36px);color:var(--gold);text-shadow:2px 2px 0 var(--outline)}
+  .clock-turn{font-family:'Do Hyeon';font-size:clamp(15px,2.4vh,28px);color:var(--c,#fff);text-shadow:1px 1px 0 var(--outline)}
+  .clock-display{font-family:'Space Mono','Bebas Neue',monospace;font-weight:700;font-size:clamp(74px,21vh,230px);line-height:.95;color:#fff;text-shadow:5px 5px 0 var(--outline);letter-spacing:2px}
+  .clock-display.blind{color:var(--diamond)}
+  .clock-unit{font-family:'Do Hyeon';font-size:clamp(15px,2.2vh,26px);color:var(--muted);margin-top:-8px}
+  .clock-feedback{font-family:'Do Hyeon';font-size:clamp(16px,2.8vh,32px);min-height:1.4em;color:var(--emerald);text-shadow:1px 1px 0 var(--outline)}
+  .clock-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+  .clock-action{font-size:clamp(22px,4vh,42px);padding:14px 48px}
+  .clock-action.stop{background:var(--redstone);color:#fff}
+  .clock-hint{font-family:'Do Hyeon';font-size:clamp(12px,1.8vh,18px);color:var(--muted);min-height:1.2em}
+  .clock-rank{display:flex;flex-direction:column;gap:8px;margin:16px 0 20px;min-width:min(440px,82vw)}
+  .clock-rank-row{display:flex;align-items:center;gap:12px;font-family:'Do Hyeon';font-size:clamp(15px,2.4vh,24px);padding:8px 14px;background:var(--stonedd);
+    box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .clock-rank-row .rk{font-family:'Space Mono',monospace;min-width:2.2em;text-align:center}
+  .clock-rank-row .nm{flex:1;text-align:left;color:var(--c);text-shadow:1px 1px 0 var(--outline)}
+  .clock-rank-row .tm{font-family:'Space Mono',monospace;color:#e9f1e4}
+  .clock-rank-row .er{font-family:'Space Mono',monospace;color:var(--gold)}
+
   /* ===== 안전 서약 ===== */
   .pledge-list{text-align:left;display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
   .pledge-item{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:#e8f1e1;background:var(--stonedd);padding:9px 14px;
@@ -647,6 +675,14 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v2.1 · 2026.07.16</h4>
+        <ul>
+          <li>⏱️ <b>인간 시계</b> 추가! 목표 시간에 딱 멈추기 → 👁️보이는 시계로 정확히, 또는 🙈숨긴 시계를 마음속으로 세어 <b>가장 가까운 사람이 우승</b> (선수 1~6명·목표 3/5/10초·랜덤)</li>
+          <li>💣 <b>단어 폭탄</b> 개선 — 답변 시간 선택(⚡빠름·보통·여유) 추가로 난이도 조절 · 제시어 글씨 크게</li>
+          <li>🕵️ <b>라이어 게임</b> 제시어 대폭 확대 — 카테고리마다 16개 → <b>40~60개</b>로 (총 900+개)</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v2.0 · 2026.07.16</h4>
         <ul>
           <li>🎤 <b>나락퀴즈쇼</b> 추가! 학생이 질문·선택지를 직접 만들면 → 어떤 답을 골라도 <b>나락</b>행 → AI 진행자 음성·카운트다운 타이머·"나락 확정" 판정 연출까지 🎭</li>
@@ -865,7 +901,8 @@
         <span class="eg" data-desc="🤝 단합대회 · '훈민정~음!' 외치고 나타난 초성으로 낱말 대기! 끝내 못 외친 팀이 벌칙. (새 탭)">📜 훈민정음</span>
         <span class="eg" data-desc="🤝 단합대회 · 기기를 돌려가며 한 명씩 이어 그리기! 내가 그린 게 딴 그림이 되어 돌아온다. (새 탭)">🖍️ 그림 이어그리기</span>
         <span class="eg" data-desc="🤝 단합대회 · 다 같이 '오~/에이~'로 대표를 목표 행동까지 유도! 마이크 소리 크기 시각화. (새 탭)">🐮 소몰이 게임</span>
-        <span class="eg" data-desc="🤝 제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명 우승. 말로/타이핑 판정 선택.">💣 단어 폭탄 🆕</span>
+        <span class="eg" data-desc="🤝 제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명 우승. 말로/타이핑 판정 선택.">💣 단어 폭탄</span>
+        <span class="eg" data-desc="⏱️ 목표 시간에 딱 멈추기! 보이는 시계로 정확히, 또는 숨긴 시계를 마음속으로 세어 가장 가까운 사람이 우승.">⏱️ 인간 시계 🆕</span>
       </div>
       <div class="eg-desc" id="egDesc">게임에 마우스를 올리거나 탭하면 설명이 나와요 👆</div>
       <div class="entry-legend">🏆 표시는 <b>최고기록</b>에 도전하는 게임 · 🤝 단합대회 게임은 새 탭에서 열려요</div>
@@ -886,7 +923,7 @@
 
 <section class="screen" id="menu">
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v1.9</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v2.1</span></div>
     <div style="display:flex;gap:8px;align-items:center">
       <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.16</b></span>
       <button class="pillbtn tour-btn" onclick="tourOpen()">🏆 모둠 대전</button>
@@ -996,6 +1033,10 @@
     <div class="card" style="--accent:var(--redstone)" onclick="openGame('bomb')">
       <div class="top"><div class="num">20</div><div class="ico">💣</div></div>
       <div><h3>단어 폭탄</h3><p>제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명이 우승. 말로/타이핑 판정 선택!</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:var(--diamond)" onclick="openGame('clock')">
+      <div class="top"><div class="num">21</div><div class="ico">⏱️</div></div>
+      <div><h3>인간 시계</h3><p>목표 시간에 딱 멈추기! 👁️보이는 시계로 정확히, 또는 🙈숨긴 시계를 마음속으로 세어 가장 가까운 사람이 우승.</p><div class="go">▶ PLAY</div></div>
     </div>
     <div class="card" style="--accent:#ff2f6e" data-link="narak.html" onclick="openLink(this)">
       <div class="top"><div class="num">21</div><div class="ico">🎤</div><span class="ext-tag">🔗 외부</span></div>
@@ -1407,6 +1448,46 @@
   </div>
 </section>
 
+<!-- ===================== 게임15: 인간 시계 ===================== -->
+<section class="screen" id="clock">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:var(--diamond);color:#053">GAME 21</span><h1>인간 시계 ⏱️</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="clockSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="clockArena">
+    <div class="clock-scores" id="clockScores"></div>
+    <div class="clock-stage">
+      <div class="clock-target" id="clockTarget">🎯 목표 5.00초</div>
+      <div class="clock-turn" id="clockTurn"></div>
+      <div class="clock-display" id="clockDisplay">0.00</div>
+      <div class="clock-unit">초</div>
+      <div class="clock-feedback" id="clockFeedback"></div>
+      <div class="clock-btns">
+        <button class="bigbtn clock-action" id="clockActionBtn" onclick="clockTap()">🟢 시작</button>
+        <button class="bigbtn clock-next" id="clockNextBtn" onclick="clockNext()" style="display:none">다음 선수 ▶</button>
+      </div>
+      <div class="clock-hint" id="clockHint"></div>
+    </div>
+    <div class="overlay" id="clockSetupOv"><div class="panel" style="max-width:600px">
+      <h3>인간 시계 ⏱️</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🎯 <b style="color:var(--gold)">목표 시간에 딱 맞춰</b> 멈추면 승리! 시작을 누르면 시계가 흐르고, 목표 시간이 됐다고 생각될 때 <b>멈춤!</b><br>
+        👁️ <b>보이는 시계</b> = 숫자를 보며 정확히 멈추기 · 🙈 <b>안 보이는 시계</b> = 숫자 숨김! 마음속으로 세어 멈추기<br>
+        한 명씩 돌아가며 도전 → <b>목표에 가장 가까운 사람이 우승 🏆</b>
+      </p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-players="1">1</button><button class="chip" data-players="2">2</button><button class="chip on" data-players="3">3</button><button class="chip" data-players="4">4</button><button class="chip" data-players="5">5</button><button class="chip" data-players="6">6</button></div>
+      <div class="opt-row"><span class="lab">시계</span><button class="chip on" data-mode="show">👁️ 보이는 시계</button><button class="chip" data-mode="blind">🙈 안 보이는 시계</button></div>
+      <div class="opt-row"><span class="lab">목표</span><button class="chip" data-target="3">3초</button><button class="chip on" data-target="5">5초</button><button class="chip" data-target="10">10초</button><button class="chip" data-target="0">🎲 랜덤</button></div>
+      <button class="bigbtn" onclick="clockStart()">도전 시작!</button>
+    </div></div>
+    <div class="overlay" id="clockResultOv"><div class="panel">
+      <div class="winner-tag" id="clockWinner">🏆 우승!</div>
+      <div class="clock-rank" id="clockRank"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="clockStart()">🔁 다시</button><button class="bigbtn" onclick="clockSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
 
 <script>
 /* ============ 공통 ============ */
@@ -1424,7 +1505,7 @@ const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)','var(--p5)','var(
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수','5번 선수','6번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');try{if(id==='entry')spaceSet(3);else if(id==='menu')spaceSet(.8);else spaceStop()}catch(e){}}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();bombStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();bombStop();clockStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
 /* ===== 인기 게임 정렬 (플레이 횟수) ===== */
 function playKey(g){return 'cgw_play_'+g}
 function getPlay(g){return +(lsGet(playKey(g))||0)}
@@ -1566,7 +1647,7 @@ function renderPodium(podId,winId,scores,names){
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})
   const _rk=podId.replace('Podium','');if(REC[_rk])tryRecord(_rk,rank[0].s,false)}
-const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,bomb:bombSetup};
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,bomb:bombSetup,clock:clockSetup};
 let pendingGame=null,pledgeOK=false;
 function openGame(g){pendingGame=g;pledgeOK=false;
   $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
@@ -2097,7 +2178,7 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
   cs.addEventListener('pointerout',e=>{const c=e.target.closest('.card');
     if(c&&!c.contains(e.relatedTarget))c.style.transform=''},{passive:true})})();
 /* ===== 게임 분류 필터 ===== */
-const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',
+const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',clock:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
   liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup',bomb:'teamup',narak:'teamup'};
@@ -2604,6 +2685,101 @@ function bombWin(idx){
   $('bombResultMsg').textContent=`💥 폭탄 ${bomb.exploded}번 터짐 · 끝까지 살아남았어요!`+extra;
   beep(660,.14,'triangle');setTimeout(()=>beep(880,.14,'triangle'),140);setTimeout(()=>beep(1040,.2,'triangle'),300);
   bombRenderHearts();$('bombResultOv').classList.add('show');
+}
+
+/* ============ 게임15: 인간 시계 (Human Clock) ============ */
+let clock={players:3,mode:'show',target:5,cur:0,phase:'ready',t0:0,raf:null,results:[],running:false};
+function clockSetup(){clockStop();$('clockResultOv').classList.remove('show');$('clockSetupOv').classList.add('show')}
+chipToggle('clockSetupOv','players');chipToggle('clockSetupOv','mode');chipToggle('clockSetupOv','target');
+function clockStop(){clock.running=false;clock.phase='ready';if(clock.raf){cancelAnimationFrame(clock.raf);clock.raf=null}}
+function clockGrade(err){
+  if(err<0.05)return '🎯 완벽!';
+  if(err<0.15)return '✨ 대박!';
+  if(err<0.35)return '👍 좋았어!';
+  if(err<0.7)return '🙂 아쉬워!';
+  return '😵 많이 빗나감!';
+}
+function clockStart(){
+  clockStop();
+  clock.players=+getChip('clockSetupOv','players');
+  clock.mode=getChip('clockSetupOv','mode');
+  const tg=+getChip('clockSetupOv','target');
+  clock.target=tg>0?tg:(3+Math.floor(Math.random()*7)); // 랜덤 3~9초
+  clock.results=[];clock.cur=0;clock.running=true;
+  $('clockSetupOv').classList.remove('show');$('clockResultOv').classList.remove('show');
+  $('clockTarget').textContent=`🎯 목표 ${clock.target.toFixed(2)}초`;
+  clockTurnReady();
+}
+function clockTurnReady(){
+  clock.phase='ready';
+  const d=$('clockDisplay');d.classList.remove('blind');d.textContent='0.00';
+  $('clockFeedback').textContent='';
+  const t=$('clockTurn');t.style.setProperty('--c',PCOLORS[clock.cur]);t.textContent=`${PNAMES[clock.cur]} 차례`;
+  const b=$('clockActionBtn');b.style.display='';b.classList.remove('stop');b.textContent='🟢 시작';
+  $('clockNextBtn').style.display='none';
+  $('clockHint').textContent=clock.mode==='blind'?'🙈 시작을 누르면 시계가 숨겨져요 · 마음속으로 세어 멈춤!':'시작을 누르면 시계가 흘러가요 · 목표에 딱 멈춤!';
+  clockRenderScores();beep(520,.08,'square',.12);
+}
+function clockTap(){
+  if(!clock.running)return;
+  if(clock.phase==='ready')clockGo();
+  else if(clock.phase==='running')clockStopTurn();
+}
+function clockGo(){
+  clock.phase='running';clock.t0=performance.now();
+  const b=$('clockActionBtn');b.classList.add('stop');b.textContent='🔴 멈춤!';
+  const d=$('clockDisplay');
+  if(clock.mode==='show'){d.classList.remove('blind');d.textContent='0.00';$('clockHint').textContent='';clock.raf=requestAnimationFrame(clockRaf);}
+  else{d.classList.add('blind');d.textContent='🙈';$('clockHint').textContent='🙈 마음속으로 세는 중...';}
+  beep(760,.1,'triangle');
+}
+function clockRaf(){
+  if(clock.phase!=='running'||clock.mode!=='show')return;
+  const el=(performance.now()-clock.t0)/1000;
+  $('clockDisplay').textContent=el.toFixed(2);
+  clock.raf=requestAnimationFrame(clockRaf);
+}
+function clockStopTurn(){
+  if(clock.raf){cancelAnimationFrame(clock.raf);clock.raf=null}
+  const el=(performance.now()-clock.t0)/1000;
+  const err=Math.abs(el-clock.target);
+  clock.results.push({p:clock.cur,elapsed:el,error:err});
+  clock.phase='done';
+  const d=$('clockDisplay');d.classList.remove('blind');d.textContent=el.toFixed(2);
+  $('clockFeedback').textContent=`${clockGrade(err)}  ${el.toFixed(2)}초 · 오차 ${err.toFixed(2)}초`;
+  $('clockActionBtn').style.display='none';
+  const nx=$('clockNextBtn');nx.style.display='';nx.textContent=(clock.cur>=clock.players-1)?'🏆 결과 보기 ▶':'다음 선수 ▶';
+  $('clockHint').textContent='';
+  clockRenderScores();
+  beep(err<0.15?980:err<0.5?660:300,.14,'triangle');
+}
+function clockNext(){
+  if(!clock.running)return;
+  if(clock.cur>=clock.players-1){clockResult();return}
+  clock.cur++;clockTurnReady();
+}
+function clockRenderScores(){
+  const box=$('clockScores');if(!box)return;box.innerHTML='';
+  for(let i=0;i<clock.players;i++){
+    const r=clock.results.find(x=>x.p===i);
+    const d=document.createElement('div');d.className='clock-ps';d.style.setProperty('--c',PCOLORS[i]);
+    if(i===clock.cur&&clock.running&&clock.phase!=='done')d.classList.add('cur');
+    d.innerHTML=`<span class="nm">${PNAMES[i]}</span><span class="er">${r?r.error.toFixed(2)+'초차':'—'}</span>`;box.appendChild(d);
+  }
+}
+function clockResult(){
+  clock.running=false;
+  const sorted=clock.results.slice().sort((a,b)=>a.error-b.error);const win=sorted[0];
+  if(clock.players===1){$('clockWinner').textContent=`⏱️ ${clockGrade(win.error)} (오차 ${win.error.toFixed(2)}초)`;}
+  else{$('clockWinner').textContent=`🏆 ${PNAMES[win.p]} 우승! (오차 ${win.error.toFixed(2)}초)`;}
+  const medals=['🥇','🥈','🥉'];const box=$('clockRank');box.innerHTML='';
+  sorted.forEach((r,i)=>{
+    const row=document.createElement('div');row.className='clock-rank-row';row.style.setProperty('--c',PCOLORS[r.p]);
+    row.innerHTML=`<span class="rk">${medals[i]||((i+1)+'위')}</span><span class="nm">${PNAMES[r.p]}</span><span class="tm">${r.elapsed.toFixed(2)}초</span><span class="er">오차 ${r.error.toFixed(2)}</span>`;
+    box.appendChild(row);
+  });
+  beep(660,.14,'triangle');setTimeout(()=>beep(880,.14,'triangle'),140);setTimeout(()=>beep(1040,.2,'triangle'),300);
+  $('clockResultOv').classList.add('show');
 }
 
 setSplash();
