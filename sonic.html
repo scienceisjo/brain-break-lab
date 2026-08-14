@@ -100,29 +100,29 @@
     box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD);transition:transform .05s}
   .btab:active{transform:translate(2px,2px)}
   .btab.on{background:var(--grass);color:#13230a;box-shadow:0 0 0 3px var(--outline),0 0 0 5px #d9ffb0,var(--bevelL),var(--bevelD)}
-  #menu .hero{flex:0 0 auto;text-align:center;margin:clamp(10px,3vh,40px) auto clamp(6px,1.5vh,16px);max-width:1100px;width:100%;position:relative;padding:0 10px}
-  #menu .hero .sky{font-family:'Press Start 2P';color:#ffec5c;font-size:clamp(9px,1.4vh,13px);text-shadow:2px 2px 0 #3a2e00;letter-spacing:2px}
-  #menu .hero h2{font-family:'Press Start 2P';font-size:clamp(28px,6.8vh,74px);line-height:1.25;margin:16px 0 10px;color:#d4d4d4;letter-spacing:1px;
-    text-shadow:3px 3px 0 #4a4a4a,6px 6px 0 #383838,9px 9px 0 #262626,11px 12px 0 #141414,11px 19px 22px rgba(0,0,0,.55)}
-  #menu .hero h2 b{color:#d0bd6c;text-shadow:3px 3px 0 #6a5a20,6px 6px 0 #4a3f16,9px 9px 0 #2e2710,11px 12px 0 #181307,11px 19px 22px rgba(0,0,0,.55)}
-  #menu .hero p{font-family:'Do Hyeon';color:#e9efe0;font-size:clamp(13px,1.9vh,18px);margin-top:14px;text-shadow:2px 2px 0 #1a1a1a}
-  .splash{position:absolute;right:clamp(2%,5vw,15%);top:clamp(30px,7.5vh,82px);font-family:'Press Start 2P';color:#ffec5c;
+  #menu .hero{flex:0 0 auto;text-align:center;margin:clamp(3px,.8vh,10px) auto clamp(3px,.8vh,8px);max-width:1100px;width:100%;position:relative;padding:0 10px}
+  #menu .hero .sky{font-family:'Press Start 2P';color:#ffec5c;font-size:clamp(8px,1.2vh,12px);text-shadow:2px 2px 0 #3a2e00;letter-spacing:2px}
+  #menu .hero h2{font-family:'Press Start 2P';font-size:clamp(18px,3.2vh,38px);line-height:1.08;margin:3px 0 3px;color:#d4d4d4;letter-spacing:1px;
+    text-shadow:2px 2px 0 #3a3a3a,4px 4px 0 #222,4px 7px 9px rgba(0,0,0,.5)}
+  #menu .hero h2 b{color:#d0bd6c;text-shadow:2px 2px 0 #6a5a20,4px 4px 0 #2e2710,4px 7px 9px rgba(0,0,0,.5)}
+  #menu .hero p{font-family:'Do Hyeon';color:#e9efe0;font-size:clamp(12px,1.5vh,16px);margin-top:4px;text-shadow:2px 2px 0 #1a1a1a}
+  .splash{position:absolute;right:clamp(2%,5vw,15%);top:clamp(2px,1vh,16px);font-family:'Press Start 2P';color:#ffec5c;
     font-size:clamp(10px,1.7vh,16px);transform:rotate(-17deg);text-shadow:2px 2px 0 #3a2e00;animation:splashB 1s ease-in-out infinite;pointer-events:none;white-space:nowrap;z-index:2}
   @keyframes splashB{0%,100%{transform:rotate(-17deg) scale(1)}50%{transform:rotate(-17deg) scale(1.13)}}
   .mc-ver,.mc-copy{position:absolute;bottom:8px;font-family:'Press Start 2P';font-size:clamp(8px,1.2vh,11px);color:#e4e4e4;text-shadow:2px 2px 0 #000;z-index:2}
   .mc-ver{left:12px}.mc-copy{right:12px}
 
-  .cards{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:clamp(9px,1.4vw,15px);align-content:start;justify-content:center;min-height:0;overflow-y:auto;padding:6px 4px}
-  .card{position:relative;cursor:pointer;padding:clamp(11px,2vh,20px);display:flex;flex-direction:column;justify-content:space-between;
-    min-height:clamp(132px,22vh,230px);background:var(--stoned);transition:transform .08s;
+  .cards{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:clamp(8px,1vw,12px);align-content:start;justify-content:center;min-height:0;overflow-y:auto;padding:4px 2px}
+  .card{position:relative;cursor:pointer;padding:clamp(9px,1.5vh,15px);display:flex;flex-direction:column;justify-content:space-between;
+    min-height:clamp(120px,15.5vh,168px);background:var(--stoned);transition:transform .08s;
     box-shadow:0 0 0 4px var(--outline),inset 5px 5px 0 rgba(255,255,255,.12),inset -5px -5px 0 rgba(0,0,0,.4),7px 7px 0 rgba(0,0,0,.4)}
   .card:hover{transform:translate(-2px,-4px);background:#6b6f76;box-shadow:0 0 0 4px var(--outline),0 0 0 7px var(--accent),inset 5px 5px 0 rgba(255,255,255,.14),inset -5px -5px 0 rgba(0,0,0,.4),9px 11px 0 rgba(0,0,0,.45)}
   .card .top{display:flex;justify-content:flex-end;align-items:flex-start}
   .card .num{display:none}
-  .card .ico{font-size:clamp(36px,6vh,62px);line-height:1;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.5))}
-  .card h3{font-family:'Do Hyeon';font-size:clamp(19px,3vh,30px);margin-top:auto;line-height:1.1;text-shadow:2px 2px 0 var(--outline)}
-  .card p{font-family:'Do Hyeon';color:#d2dccb;font-size:clamp(12px,1.6vh,15px);margin-top:6px}
-  .card .go{margin-top:10px;font-family:'Press Start 2P';color:var(--accent);font-size:clamp(8px,1.2vh,11px)}
+  .card .ico{font-size:clamp(30px,4.4vh,48px);line-height:1;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.5))}
+  .card h3{font-family:'Do Hyeon';font-size:clamp(17px,2.5vh,25px);margin-top:auto;line-height:1.08;text-shadow:2px 2px 0 var(--outline)}
+  .card p{font-family:'Do Hyeon';color:#d2dccb;font-size:clamp(11px,1.45vh,14px);margin-top:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .go{margin-top:7px;font-family:'Press Start 2P';color:var(--accent);font-size:clamp(8px,1.1vh,10px)}
   .play-badge{position:absolute;right:9px;bottom:9px;font-family:'Press Start 2P';font-size:clamp(7px,1.05vh,10px);color:var(--gold);background:var(--stonedd);padding:3px 7px;box-shadow:0 0 0 2px var(--outline);z-index:3}
   .card.top1{box-shadow:0 0 0 4px var(--gold),inset 5px 5px 0 rgba(255,255,255,.14),inset -5px -5px 0 rgba(0,0,0,.4),7px 7px 0 rgba(0,0,0,.4)}
   .card.top1 .num::after{content:''}
