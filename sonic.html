@@ -403,6 +403,64 @@
   .clock-rank-row .tm{font-family:'Space Mono',monospace;color:#e9f1e4}
   .clock-rank-row .er{font-family:'Space Mono',monospace;color:var(--gold)}
 
+  /* ===== 게임16: 가위바위보 서바이벌 ===== */
+  #rps .arena{flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,1.4vh,16px)}
+  .rps-round{font-family:'Press Start 2P';font-size:clamp(11px,1.8vh,18px);color:var(--gold);text-shadow:2px 2px 0 var(--outline)}
+  .rps-call{font-family:'Do Hyeon';font-size:clamp(28px,6vh,72px);color:#fff;text-shadow:3px 3px 0 var(--outline);min-height:1.2em}
+  .rps-big{font-size:clamp(110px,30vh,320px);line-height:1;filter:drop-shadow(6px 8px 0 rgba(0,0,0,.5))}
+  .rps-big.pop{animation:rpsPop .4s}
+  @keyframes rpsPop{0%{transform:scale(.4) rotate(-20deg)}60%{transform:scale(1.15) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+  .rps-info{font-family:'Do Hyeon';font-size:clamp(20px,3.6vh,42px);color:var(--emerald);text-shadow:2px 2px 0 var(--outline);text-align:center;min-height:1.3em}
+  .rps-sub{font-family:'Do Hyeon';font-size:clamp(14px,2.2vh,24px);color:#e9f1e4;text-align:center;min-height:1.3em}
+  .rps-sub b{color:var(--gold)}
+  .rps-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+  /* ===== 게임17: 텔레파시 ===== */
+  #tele .arena{flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.6vh,18px)}
+  .tele-cat{font-family:'Press Start 2P';font-size:clamp(10px,1.6vh,16px);color:var(--diamond);text-shadow:2px 2px 0 var(--outline)}
+  .tele-q{font-family:'Do Hyeon';font-size:clamp(30px,6.5vh,80px);color:#fff;text-shadow:4px 4px 0 var(--outline);text-align:center;line-height:1.25;max-width:92%}
+  .tele-timer{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(50px,13vh,150px);line-height:1;color:var(--gold);text-shadow:4px 4px 0 var(--outline);min-height:1em}
+  .tele-timer.go{color:var(--emerald);animation:pulse .4s}
+  .tele-hint{font-family:'Do Hyeon';font-size:clamp(14px,2.2vh,24px);color:#cfe0c8;text-align:center;min-height:1.3em}
+
+  /* ===== 게임18: 스피드 퀴즈 ===== */
+  #speedq .arena{flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,1.4vh,16px)}
+  .sq-top{display:flex;gap:clamp(10px,2vw,28px);align-items:center;flex-wrap:wrap;justify-content:center}
+  .sq-team{font-family:'Do Hyeon';font-size:clamp(18px,3vh,34px);color:var(--c,#fff);text-shadow:2px 2px 0 var(--outline)}
+  .sq-score{font-family:'Press Start 2P';font-size:clamp(16px,3vh,34px);color:var(--gold);text-shadow:2px 2px 0 var(--outline)}
+  .sq-timer{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(28px,5vh,60px);color:#fff;text-shadow:3px 3px 0 var(--outline)}
+  .sq-timer.danger{color:var(--redstone);animation:bombBlink .3s steps(2) infinite}
+  .sq-word{font-family:'Black Han Sans','Do Hyeon',sans-serif;font-size:clamp(44px,11vh,130px);color:#fff;text-shadow:5px 5px 0 var(--outline);text-align:center;line-height:1.1;background:var(--board);padding:clamp(10px,2.4vh,28px) clamp(24px,5vw,70px);box-shadow:0 0 0 4px var(--outline),0 0 0 8px var(--diamond),var(--bevelL),var(--bevelD)}
+  .sq-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .sq-btns .bigbtn{font-size:clamp(20px,3.6vh,38px);padding:14px 40px}
+  .sq-btns .pass{background:var(--stone);color:var(--ink)}
+  .sq-hint{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:var(--muted);text-align:center;min-height:1.2em}
+  .sq-rank{display:flex;flex-direction:column;gap:8px;margin:14px 0 18px;min-width:min(400px,80vw)}
+  .sq-rank-row{display:flex;align-items:center;gap:12px;font-family:'Do Hyeon';font-size:clamp(15px,2.4vh,24px);padding:8px 14px;background:var(--stonedd);box-shadow:0 0 0 3px var(--outline),var(--bevelL),var(--bevelD)}
+  .sq-rank-row .nm{flex:1;text-align:left;color:var(--c)}
+  .sq-rank-row .sc{font-family:'Press Start 2P';color:var(--gold)}
+
+  /* ===== 게임19: 이구동성 ===== */
+  #chorus .arena{flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.6vh,18px)}
+  .ch-stage{font-family:'Do Hyeon';font-size:clamp(18px,3vh,34px);color:var(--gold);text-shadow:2px 2px 0 var(--outline);text-align:center;min-height:1.3em}
+  .ch-syls{display:flex;gap:clamp(8px,1.6vw,22px);flex-wrap:wrap;justify-content:center;min-height:clamp(80px,16vh,200px)}
+  .ch-syl{--c:var(--p1);display:flex;flex-direction:column;align-items:center;gap:6px;min-width:clamp(90px,12vw,170px);padding:clamp(10px,2vh,22px) clamp(12px,2vw,26px);background:var(--board);box-shadow:0 0 0 4px var(--outline),0 0 0 8px var(--c),var(--bevelL),var(--bevelD)}
+  .ch-syl .who{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:var(--c);text-shadow:1px 1px 0 var(--outline)}
+  .ch-syl .s{font-family:'Black Han Sans','Do Hyeon',sans-serif;font-size:clamp(50px,11vh,130px);line-height:1;color:#fff;text-shadow:4px 4px 0 var(--outline)}
+  .ch-syl.hide .s{color:var(--diamond)}
+  .ch-timer{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(36px,8vh,90px);color:var(--diamond);text-shadow:3px 3px 0 var(--outline);min-height:1.1em}
+  .ch-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  .ch-hint{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:#cfe0c8;text-align:center;min-height:1.2em}
+
+  /* ===== 게임20: 끝말잇기 (단어폭탄 클래스 재활용) ===== */
+  #kkeut .arena{flex-direction:column;align-items:center;justify-content:flex-start;gap:clamp(6px,1.4vh,16px)}
+  .kk-chain{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:94%;max-height:clamp(30px,8vh,80px);overflow:hidden}
+  .kk-chain span{font-family:'Do Hyeon';font-size:clamp(12px,1.8vh,18px);color:#cfe0c8;background:var(--stonedd);padding:3px 9px;box-shadow:0 0 0 2px var(--outline)}
+  .kk-chain span.last{color:#13230a;background:var(--gold)}
+  .kk-word{font-family:'Black Han Sans','Do Hyeon',sans-serif;font-size:clamp(40px,9vh,110px);color:#fff;text-shadow:4px 4px 0 var(--outline);line-height:1.1;text-align:center}
+  .kk-word b{color:var(--gold);text-decoration:underline;text-underline-offset:.12em}
+  .kk-rule{font-family:'Do Hyeon';font-size:clamp(18px,3.4vh,40px);color:var(--gold);text-shadow:2px 2px 0 var(--outline)}
+
   /* ===== 안전 서약 ===== */
   .pledge-list{text-align:left;display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
   .pledge-item{font-family:'Do Hyeon';font-size:clamp(13px,2vh,20px);color:#e8f1e1;background:var(--stonedd);padding:9px 14px;
@@ -675,6 +733,16 @@
     <div class="winner-tag">📝 패치노트</div>
     <div style="margin:14px 0 6px">
       <div class="patch-ver">
+        <h4>v2.2 · 신규 게임 5종</h4>
+        <ul>
+          <li>✊ <b>가위바위보 서바이벌</b> — 반 전체가 일어서서! 화면의 "이겨라·져라·비겨라" 지시대로 내지 못하면 앉기 → 끝까지 선 사람 우승 (인원 제한 없음)</li>
+          <li>🔮 <b>텔레파시</b> — 주제 보고 다 같이 하나만 떠올린 뒤 동시에 외치기! 우리 반 텔레파시 확인 (주제 56개)</li>
+          <li>⚡ <b>스피드 퀴즈</b> — 제시어를 설명해 팀원이 맞히기, 제한시간 팀 대항 (제시어 178개 · 전체/쉬움/과학/문화)</li>
+          <li>🗣️ <b>이구동성</b> — 낱말을 한 글자씩 나눠 갖고 동시에 외치기! 무슨 낱말인지 맞히기 (2~5명)</li>
+          <li>🔗 <b>끝말잇기</b> — 끝 글자로 이어가기, 두음법칙 인정 · 사전 1,500+개 자동판정 · 하트 탈락제</li>
+        </ul>
+      </div>
+      <div class="patch-ver">
         <h4>v2.1 · 2026.07.16</h4>
         <ul>
           <li>⏱️ <b>인간 시계</b> 추가! 목표 시간에 딱 멈추기 → 👁️보이는 시계로 정확히, 또는 🙈숨긴 시계를 마음속으로 세어 <b>가장 가까운 사람이 우승</b> (선수 1~6명·목표 3/5/10초·랜덤)</li>
@@ -903,6 +971,11 @@
         <span class="eg" data-desc="🤝 단합대회 · 다 같이 '오~/에이~'로 대표를 목표 행동까지 유도! 마이크 소리 크기 시각화. (새 탭)">🐮 소몰이 게임</span>
         <span class="eg" data-desc="🤝 제시된 글자로 시작·포함하는 낱말을 대고 넘기기! 못 대면 펑💥 하트 −1, 마지막 한 명 우승. 말로/타이핑 판정 선택.">💣 단어 폭탄</span>
         <span class="eg" data-desc="⏱️ 목표 시간에 딱 멈추기! 보이는 시계로 정확히, 또는 숨긴 시계를 마음속으로 세어 가장 가까운 사람이 우승.">⏱️ 인간 시계 🆕</span>
+        <span class="eg" data-desc="✊ 반 전체가 일어서서! 화면의 이겨라·져라 지시대로 내지 못하면 앉기. 끝까지 선 사람이 우승.">✊ 가위바위보 서바이벌 🆕</span>
+        <span class="eg" data-desc="🔮 주제를 보고 다 같이 하나만 떠올린 뒤 동시에 외치기! 같은 답이 많을수록 텔레파시 대성공.">🔮 텔레파시 🆕</span>
+        <span class="eg" data-desc="⚡ 제시어를 말·몸짓으로 설명하고 팀원이 맞히기! 제한시간 안에 많이 맞힌 팀이 승리.">⚡ 스피드 퀴즈 🆕</span>
+        <span class="eg" data-desc="🗣️ 낱말을 한 글자씩 나눠 갖고 동시에 외치기! 뒤죽박죽 소리에서 낱말 맞히기.">🗣️ 이구동성 🆕</span>
+        <span class="eg" data-desc="🔗 앞 낱말 끝 글자로 이어가기! 못 대면 하트 −1, 마지막 한 명이 우승. 두음법칙 인정.">🔗 끝말잇기 🆕</span>
       </div>
       <div class="eg-desc" id="egDesc">게임에 마우스를 올리거나 탭하면 설명이 나와요 👆</div>
       <div class="entry-legend">🏆 표시는 <b>최고기록</b>에 도전하는 게임 · 🤝 단합대회 게임은 새 탭에서 열려요</div>
@@ -923,7 +996,7 @@
 
 <section class="screen" id="menu">
   <div class="topbar">
-    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v2.1</span></div>
+    <div class="brand"><span class="cube">🟩</span><h1>CLASS GAME WORLD</h1><span class="tag">v2.2</span></div>
     <div style="display:flex;gap:8px;align-items:center">
       <span class="upd-badge" onclick="openPatch()" title="패치노트 보기">📝 업데이트 <b id="updDate">2026.07.16</b></span>
       <button class="pillbtn tour-btn" onclick="tourOpen()">🏆 모둠 대전</button>
@@ -1041,6 +1114,26 @@
     <div class="card" style="--accent:#ff2f6e" data-link="narak.html" onclick="openLink(this)">
       <div class="top"><div class="num">21</div><div class="ico">🎤</div><span class="ext-tag">🔗 외부</span></div>
       <div><h3>나락퀴즈쇼</h3><p>학생이 만든 질문에 답하면… 어떤 선택지를 골라도 <b>나락</b>행! AI 진행자·타이머·나락 판정 연출. 🌶️매운맛(학기말 담임쌤께 딱 1번!)</p><div class="go">▶ 열기 ↗</div></div>
+    </div>
+    <div class="card" style="--accent:#ff8c42" onclick="openGame('rps')">
+      <div class="top"><div class="num">22</div><div class="ico">✊</div></div>
+      <div><h3>가위바위보 서바이벌</h3><p>반 전체가 일어서서! 화면이 "이겨라·져라"를 외치면 그대로 내기. 틀리면 앉기, 끝까지 선 사람 우승.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:#a878ec" onclick="openGame('tele')">
+      <div class="top"><div class="num">23</div><div class="ico">🔮</div></div>
+      <div><h3>텔레파시</h3><p>주제 보고 다 같이 하나만 떠올린 뒤 동시에 외치기! 같은 답이 많을수록 우리 반 텔레파시 대성공.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:#34d6d6" onclick="openGame('speedq')">
+      <div class="top"><div class="num">24</div><div class="ico">⚡</div></div>
+      <div><h3>스피드 퀴즈</h3><p>제시어를 말·몸짓으로 설명하고 팀원이 맞히기! 제한시간 안에 많이 맞힌 팀이 승리. 모둠 대항전.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:#7bd64a" onclick="openGame('chorus')">
+      <div class="top"><div class="num">25</div><div class="ico">🗣️</div></div>
+      <div><h3>이구동성</h3><p>낱말을 한 글자씩 나눠 갖고 동시에 외치기! 뒤죽박죽 들리는 소리에서 무슨 낱말인지 맞혀보세요.</p><div class="go">▶ PLAY</div></div>
+    </div>
+    <div class="card" style="--accent:#f06db0" onclick="openGame('kkeut')">
+      <div class="top"><div class="num">26</div><div class="ico">🔗</div></div>
+      <div><h3>끝말잇기</h3><p>앞 낱말 끝 글자로 이어가기! 시간 안에 못 대면 하트 −1, 마지막 한 명이 우승. 두음법칙·사전 자동판정.</p><div class="go">▶ PLAY</div></div>
     </div>
   </div>
   <div class="visit-box"><span class="lbl" id="visitLabel">TOTAL 방문</span><span class="n" id="visitCount">…</span></div>
@@ -1488,6 +1581,164 @@
   </div>
 </section>
 
+<!-- ===================== 게임16: 가위바위보 서바이벌 ===================== -->
+<section class="screen" id="rps">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#ff8c42;color:#3a2200">GAME 22</span><h1>가위바위보 서바이벌 ✊</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="rpsSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="rpsArena">
+    <div class="rps-round" id="rpsRound">ROUND 1</div>
+    <div class="rps-call" id="rpsCall">준비!</div>
+    <div class="rps-big" id="rpsBig">❔</div>
+    <div class="rps-info" id="rpsInfo"></div>
+    <div class="rps-sub" id="rpsSub">전원 일어서세요! 화면 지시대로 내지 못하면 앉습니다.</div>
+    <div class="rps-btns"><button class="bigbtn" id="rpsBtn" onclick="rpsGo()">▶ 시작!</button></div>
+    <div class="overlay" id="rpsSetupOv"><div class="panel" style="max-width:620px">
+      <h3>가위바위보 서바이벌 ✊</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🙋 <b style="color:var(--gold)">반 전체가 일어서서</b> 시작! 화면이 <b>"이겨라 / 져라 / 비겨라"</b>를 외치고 셋을 센 뒤 손을 냅니다.<br>
+        ✋ 지시대로 못 낸 사람은 <b>앉기!</b> 끝까지 서 있는 사람이 우승 🏆 (인원 제한 없음 · 선생님이 라운드를 넘겨요)
+      </p>
+      <div class="opt-row"><span class="lab">지시</span><button class="chip" data-call="win">이겨라만</button><button class="chip on" data-call="winlose">이겨라·져라</button><button class="chip" data-call="all">전부(비겨라 포함)</button></div>
+      <div class="opt-row"><span class="lab">속도</span><button class="chip" data-spd="slow">느림</button><button class="chip on" data-spd="mid">보통</button><button class="chip" data-spd="fast">⚡빠름</button></div>
+      <button class="bigbtn" onclick="rpsStart()">시작!</button>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임17: 텔레파시 ===================== -->
+<section class="screen" id="tele">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#a878ec;color:#fff">GAME 23</span><h1>텔레파시 🔮</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="teleSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="teleArena">
+    <div class="tele-cat" id="teleCat">TELEPATHY</div>
+    <div class="tele-q" id="teleQ">주제 뽑기를 눌러요!</div>
+    <div class="tele-timer" id="teleTimer"></div>
+    <div class="tele-hint" id="teleHint">마음속으로 딱 하나만 떠올리세요 🔮</div>
+    <div class="rps-btns"><button class="bigbtn" id="teleBtn" onclick="teleGo()">🔮 주제 뽑기</button></div>
+    <div class="overlay" id="teleSetupOv"><div class="panel" style="max-width:620px">
+      <h3>텔레파시 🔮</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🧠 주제가 뜨면 <b style="color:var(--gold)">다 같이 마음속으로 하나만</b> 떠올려요. 셋을 세면 <b>동시에 외치기!</b><br>
+        🎉 같은 답이 많이 나올수록 성공 — 우리 반 텔레파시가 얼마나 통하는지 보는 게임이에요. (반 전체 · 점수 없음)
+      </p>
+      <div class="opt-row"><span class="lab">주제</span><button class="chip on" data-tset="all">전체</button><button class="chip" data-tset="easy">쉬움(사물·음식)</button><button class="chip" data-tset="class">우리 반 이야기</button></div>
+      <div class="opt-row"><span class="lab">생각 시간</span><button class="chip" data-tsec="3">3초</button><button class="chip on" data-tsec="5">5초</button><button class="chip" data-tsec="8">8초</button></div>
+      <button class="bigbtn" onclick="teleStart()">시작!</button>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임18: 스피드 퀴즈 ===================== -->
+<section class="screen" id="speedq">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#34d6d6;color:#053">GAME 24</span><h1>스피드 퀴즈 ⚡</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="sqSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="sqArena">
+    <div class="sq-top">
+      <span class="sq-team" id="sqTeam">1번 팀</span>
+      <span class="sq-timer" id="sqTimer">60</span>
+      <span class="sq-score" id="sqScore">0</span>
+    </div>
+    <div class="sq-word" id="sqWord">준비!</div>
+    <div class="sq-btns">
+      <button class="bigbtn" id="sqOkBtn" onclick="sqCorrect()">⭕ 정답!</button>
+      <button class="bigbtn pass" id="sqPassBtn" onclick="sqPass()">➡ 패스</button>
+    </div>
+    <div class="sq-hint" id="sqHint">설명하는 사람은 화면을 보고, 맞히는 사람은 등지고 앉아요!</div>
+    <div class="overlay" id="sqSetupOv"><div class="panel" style="max-width:620px">
+      <h3>스피드 퀴즈 ⚡</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🗣️ <b style="color:var(--gold)">설명하는 사람</b>은 화면의 제시어를 말·몸짓으로 설명하고, 팀원이 맞히면 <b>⭕ 정답</b>! 막히면 <b>➡ 패스</b>.<br>
+        ⏱ 제한시간 안에 <b>많이 맞힌 팀이 승리 🏆</b> · 팀마다 차례로 도전해요. (제시어를 직접 말하면 반칙!)
+      </p>
+      <div class="opt-row"><span class="lab">팀 수</span><button class="chip" data-teams="1">1</button><button class="chip on" data-teams="2">2</button><button class="chip" data-teams="3">3</button><button class="chip" data-teams="4">4</button><button class="chip" data-teams="5">5</button><button class="chip" data-teams="6">6</button></div>
+      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-sqt="30">30초</button><button class="chip on" data-sqt="60">60초</button><button class="chip" data-sqt="90">90초</button></div>
+      <div class="opt-row"><span class="lab">주제</span><button class="chip on" data-sqc="all">전체</button><button class="chip" data-sqc="easy">쉬움</button><button class="chip" data-sqc="sci">🧪 과학</button><button class="chip" data-sqc="fun">🎬 문화·연예</button></div>
+      <button class="bigbtn" onclick="sqStart()">시작!</button>
+    </div></div>
+    <div class="overlay" id="sqCountOv"><div class="countnum" id="sqCountNum">3</div></div>
+    <div class="overlay" id="sqResultOv"><div class="panel">
+      <div class="winner-tag" id="sqWinner">🏆 우승!</div>
+      <div class="sq-rank" id="sqRank"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="sqStart()">🔁 다시</button><button class="bigbtn" onclick="sqSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임19: 이구동성 ===================== -->
+<section class="screen" id="chorus">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#7bd64a;color:#053">GAME 25</span><h1>이구동성 🗣️</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="chSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="chArena">
+    <div class="ch-stage" id="chStage">시작을 누르면 각자 외칠 글자가 나와요</div>
+    <div class="ch-syls" id="chSyls"></div>
+    <div class="ch-timer" id="chTimer"></div>
+    <div class="ch-btns"><button class="bigbtn" id="chBtn" onclick="chGo()">▶ 시작</button></div>
+    <div class="ch-hint" id="chHint">출제팀은 각자 자기 글자만 크게! 맞히는 팀은 무슨 낱말인지 맞혀요.</div>
+    <div class="overlay" id="chSetupOv"><div class="panel" style="max-width:620px">
+      <h3>이구동성 🗣️</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🔤 낱말이 <b style="color:var(--gold)">한 글자씩 쪼개져</b> 출제팀에게 배정돼요. 셋을 세면 <b>동시에 자기 글자를 크게 외치기!</b><br>
+        👂 여러 글자가 한꺼번에 들리니 무슨 낱말인지 맞히기 어려워요. 맞히는 팀이 정답을 외치면 성공 🏆
+      </p>
+      <div class="opt-row"><span class="lab">외치는 사람</span><button class="chip" data-chn="2">2</button><button class="chip on" data-chn="3">3</button><button class="chip" data-chn="4">4</button><button class="chip" data-chn="5">5</button></div>
+      <div class="opt-row"><span class="lab">난이도</span><button class="chip on" data-chd="easy">쉬움</button><button class="chip" data-chd="hard">어려움</button></div>
+      <button class="bigbtn" onclick="chStart()">시작!</button>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===================== 게임20: 끝말잇기 ===================== -->
+<section class="screen" id="kkeut">
+  <div class="topbar">
+    <div class="brand"><span class="tag" style="background:#f06db0;color:#fff">GAME 26</span><h1>끝말잇기 🔗</h1></div>
+    <div style="display:flex;gap:10px"><button class="pillbtn" onclick="kkSetup()">⚙ 설정</button><button class="pillbtn ghost" onclick="goMenu()">← 메뉴</button></div>
+  </div>
+  <div class="arena" id="kkArena">
+    <div class="bomb-hearts" id="kkHearts"></div>
+    <div class="kk-chain" id="kkChain"></div>
+    <div class="bomb-stage">
+      <div class="bomb-turn" id="kkTurn"></div>
+      <div class="kk-word" id="kkWord">시작!</div>
+      <div class="kk-rule" id="kkRule"></div>
+      <div class="bomb-fuse-wrap"><div class="bomb-fuse" id="kkFuse"></div></div>
+      <div class="bomb-type" id="kkTypeCtl">
+        <div class="bomb-inrow">
+          <input id="kkInput" class="bomb-input" maxlength="12" autocomplete="off" spellcheck="false" placeholder="낱말 입력" onkeydown="if(event.key==='Enter')kkSubmit()">
+          <button class="bigbtn bomb-passbtn" onclick="kkSubmit()">확인 ▶</button>
+        </div>
+        <div class="bomb-msg" id="kkMsg"></div>
+        <button class="bomb-override" id="kkOverride" onclick="kkAccept()">✅ 진짜 낱말이에요 (인정)</button>
+      </div>
+    </div>
+    <div class="bomb-boom" id="kkBoom">💥</div>
+    <div class="overlay" id="kkSetupOv"><div class="panel" style="max-width:620px">
+      <h3>끝말잇기 🔗</h3>
+      <p class="sub" style="text-align:left;line-height:1.55">
+        🔗 앞사람 낱말의 <b style="color:var(--gold)">마지막 글자로 시작</b>하는 낱말을 이어 말해요! 시간 안에 못 대면 <b>펑💥 하트 −1</b>.<br>
+        💔 하트를 다 잃으면 탈락 · <b>마지막 한 명이 우승 🏆</b> · 이미 나온 낱말은 다시 못 써요 (두음법칙 인정)<br>⌨️ 낱말을 <b>입력</b>하면 사전으로 자동 판정해요 (사전에 없어도 진짜 낱말이면 인정 버튼)
+      </p>
+      <div class="opt-row"><span class="lab">선수</span><button class="chip" data-kkp="2">2</button><button class="chip on" data-kkp="3">3</button><button class="chip" data-kkp="4">4</button><button class="chip" data-kkp="5">5</button><button class="chip" data-kkp="6">6</button></div>
+      <div class="opt-row"><span class="lab">시간</span><button class="chip" data-kkt="fast">⚡ 빠름</button><button class="chip on" data-kkt="normal">보통</button><button class="chip" data-kkt="slow">여유</button></div>
+      <div class="opt-row"><span class="lab">하트</span><button class="chip on" data-kkh="2">2</button><button class="chip" data-kkh="3">3</button></div>
+      <button class="bigbtn" onclick="kkStart()">시작!</button>
+    </div></div>
+    <div class="overlay" id="kkCountOv"><div class="countnum" id="kkCountNum">3</div></div>
+    <div class="overlay" id="kkResultOv"><div class="panel">
+      <div class="winner-tag" id="kkWinner">🏆 우승!</div>
+      <p class="sub" id="kkResultMsg" style="margin-bottom:14px"></p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><button class="bigbtn red" onclick="kkStart()">🔁 다시</button><button class="bigbtn" onclick="kkSetup()">⚙ 설정</button></div>
+    </div></div>
+  </div>
+</section>
+
 
 <script>
 /* ============ 공통 ============ */
@@ -1505,7 +1756,7 @@ const PCOLORS=['var(--p1)','var(--p2)','var(--p3)','var(--p4)','var(--p5)','var(
 const PNAMES=['1번 선수','2번 선수','3번 선수','4번 선수','5번 선수','6번 선수'];
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');try{if(id==='entry')spaceSet(3);else if(id==='menu')spaceSet(.8);else spaceStop()}catch(e){}}
-function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();bombStop();clockStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
+function goMenu(){moleStop();tugStop();stroopStop();rtStop();memStop();calcStop();mineStop();stpStop();findStop();arrStop();appleStop();heliStop();bncStop();bombStop();clockStop();rpsStop();teleStop();sqStop();chStop();kkStop();setSplash();sortCards();loadGlobalPlays();try{tourRenderBar()}catch(e){}show('menu')}
 /* ===== 인기 게임 정렬 (플레이 횟수) ===== */
 function playKey(g){return 'cgw_play_'+g}
 function getPlay(g){return +(lsGet(playKey(g))||0)}
@@ -1647,7 +1898,7 @@ function renderPodium(podId,winId,scores,names){
   order.forEach(r=>{const h=60+(r.s/max)*120;const d=document.createElement('div');d.className='pod';d.style.setProperty('--c',PCOLORS[r.p]);
     d.innerHTML=`<div class="medal">${medals[r.p]||'🎽'}</div><div class="name">${names[r.p]}</div><div class="bar" style="height:${h}px">${r.s}</div>`;pod.appendChild(d)})
   const _rk=podId.replace('Podium','');if(REC[_rk])tryRecord(_rk,rank[0].s,false)}
-const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,bomb:bombSetup,clock:clockSetup};
+const SETUPMAP={mole:moleSetup,tug:tugSetup,stroop:stroopSetup,rt:rtSetup,mem:memSetup,calc:calcSetup,mine:mineSetup,stp:stpSetup,find:findSetup,arrow:arrSetup,apple:appleSetup,heli:heliSetup,bnc:bncSetup,bomb:bombSetup,clock:clockSetup,rps:rpsSetup,tele:teleSetup,speedq:sqSetup,chorus:chSetup,kkeut:kkSetup};
 let pendingGame=null,pledgeOK=false;
 function openGame(g){pendingGame=g;pledgeOK=false;
   $('pledgeCheck').classList.remove('on');$('pledgeAgree').classList.add('disabled');$('pledgeOv').classList.add('show')}
@@ -2181,7 +2432,7 @@ function cardsFlyIn(){const cs=document.querySelector('.cards');if(!cs)return;
 const GAME_CAT={mole:'react',tug:'react',rt:'react',stp:'react',arrow:'react',clock:'react',
   stroop:'brain',mem:'brain',calc:'brain',find:'brain',apple:'brain',
   mine:'arcade',heli:'arcade',bnc:'arcade',
-  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup',bomb:'teamup',narak:'teamup'};
+  liar:'teamup','5sec':'teamup',hunmin:'teamup',telestration:'teamup',somoli:'teamup',chain:'teamup',bomb:'teamup',narak:'teamup',rps:'teamup',tele:'teamup',speedq:'teamup',chorus:'teamup',kkeut:'teamup'};
 function openLink(el){const u=el.getAttribute('data-link');if(!u)return;
   beep(720,.1,'triangle');setTimeout(()=>beep(960,.14,'triangle'),90);
   setTimeout(()=>window.open(u,'_blank','noopener'),140)}
@@ -2780,6 +3031,356 @@ function clockResult(){
   });
   beep(660,.14,'triangle');setTimeout(()=>beep(880,.14,'triangle'),140);setTimeout(()=>beep(1040,.2,'triangle'),300);
   $('clockResultOv').classList.add('show');
+}
+
+
+/* ============ 게임16: 가위바위보 서바이벌 ============ */
+const RPS_HANDS=[{e:'✊',n:'바위'},{e:'✌️',n:'가위'},{e:'✋',n:'보'}];
+let rps={call:'winlose',spd:'mid',round:0,busy:false,t:null};
+function rpsSetup(){rpsStop();$('rpsSetupOv').classList.add('show')}
+chipToggle('rpsSetupOv','call');chipToggle('rpsSetupOv','spd');
+function rpsStop(){rps.busy=false;if(rps.t){clearTimeout(rps.t);rps.t=null}}
+function rpsStart(){
+  rpsStop();
+  rps.call=getChip('rpsSetupOv','call');rps.spd=getChip('rpsSetupOv','spd');
+  rps.round=0;$('rpsSetupOv').classList.remove('show');
+  $('rpsRound').textContent='ROUND 1';$('rpsCall').textContent='준비!';
+  $('rpsBig').textContent='❔';$('rpsInfo').textContent='';
+  $('rpsSub').textContent='전원 일어서세요! 화면 지시대로 못 내면 앉습니다.';
+  $('rpsBtn').textContent='▶ 시작!';
+}
+function rpsGo(){
+  if(rps.busy)return;rps.busy=true;rps.round++;
+  $('rpsRound').textContent='ROUND '+rps.round;
+  const calls=rps.call==='win'?['win']:(rps.call==='winlose'?['win','lose']:['win','lose','draw']);
+  const c=calls[Math.floor(Math.random()*calls.length)];
+  const CT={win:'✌️ 이겨라!',lose:'😵 져라!',draw:'🤝 비겨라!'};
+  $('rpsCall').textContent=CT[c];$('rpsInfo').textContent='';$('rpsBtn').textContent='...';
+  $('rpsSub').textContent='준비...';
+  const gap=rps.spd==='fast'?520:(rps.spd==='slow'?1000:760);
+  let n=3;
+  const pop=function(txt){const b=$('rpsBig');b.textContent=txt;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')};
+  const tick=function(){
+    if(n>0){pop(String(n));beep(440,.12,'square',.16);n--;rps.t=setTimeout(tick,gap)}
+    else{
+      const h=Math.floor(Math.random()*3);
+      pop(RPS_HANDS[h].e);beep(880,.25,'sawtooth',.2);
+      const beat=(h+2)%3, lose=(h+1)%3;
+      const ans=c==='win'?beat:(c==='lose'?lose:h);
+      $('rpsInfo').innerHTML='화면: '+RPS_HANDS[h].e+' '+RPS_HANDS[h].n+' → 정답은 <b style="color:var(--gold)">'+RPS_HANDS[ans].e+' '+RPS_HANDS[ans].n+'</b>!';
+      $('rpsSub').textContent='틀린 사람은 앉으세요! 남은 사람끼리 계속 →';
+      $('rpsBtn').textContent='▶ 다음 라운드';rps.busy=false;
+    }
+  };
+  rps.t=setTimeout(tick,320);
+}
+
+/* ============ 게임17: 텔레파시 ============ */
+const TELE_Q={
+easy:['떠오르는 과일 하나!','좋아하는 음식 하나!','떠오르는 동물 하나!','빨간색 하면 떠오르는 것!','급식에 나오면 좋은 반찬!','편의점에서 살 간식!','떠오르는 색깔 하나!','치킨 하면 떠오르는 것!','여름 하면 떠오르는 것!','겨울 하면 떠오르는 것!','바다 하면 떠오르는 것!','학교 하면 떠오르는 것!','1~10 중 숫자 하나!','떠오르는 운동 하나!','비 오는 날 떠오르는 것!','떠오르는 과목 하나!','문구점에서 살 것!','아침에 먹고 싶은 것!','떠오르는 음료수 하나!','놀이공원 하면 떠오르는 것!','떠오르는 분식 메뉴!','생일 하면 떠오르는 것!','떠오르는 꽃 하나!','밤하늘 하면 떠오르는 것!'],
+cls:['우리 반에서 제일 웃긴 사람!','우리 반에서 제일 조용한 사람!','우리 학교에서 제일 좋아하는 장소!','우리 반 급식 인기 메뉴!','우리 반 하면 떠오르는 한 단어!','체육시간 하면 떠오르는 것!','쉬는 시간에 제일 많이 하는 것!','우리 학교 자랑거리 하나!','시험 하면 떠오르는 감정!','방학에 제일 하고 싶은 것!','우리 반 유행어 하나!','선생님 하면 떠오르는 것!','수학여행 하면 떠오르는 것!','교실에서 제일 좋은 자리!','청소시간 하면 떠오르는 것!','우리 반 별명을 지으면!'],
+gen:['무인도에 하나만 가져간다면!','초능력을 하나 갖는다면!','로또에 당첨되면 살 것!','타임머신으로 가고 싶은 시대!','키우고 싶은 반려동물!','가보고 싶은 나라!','되고 싶은 직업 하나!','유명해지면 하고 싶은 것!','투명인간이 되면 하고 싶은 것!','떠오르는 케이팝 그룹 하나!','떠오르는 게임 하나!','떠오르는 캐릭터 하나!','좋아하는 계절 하나!','떠오르는 영화 하나!','순간이동으로 가고 싶은 곳!','내일 하루 쉰다면 할 일!']
+};
+let tele={set:'all',sec:5,busy:false,t:null,last:''};
+function teleSetup(){teleStop();$('teleSetupOv').classList.add('show')}
+chipToggle('teleSetupOv','tset');chipToggle('teleSetupOv','tsec');
+function teleStop(){tele.busy=false;if(tele.t){clearTimeout(tele.t);tele.t=null}}
+function teleStart(){
+  teleStop();tele.set=getChip('teleSetupOv','tset');tele.sec=+getChip('teleSetupOv','tsec');
+  $('teleSetupOv').classList.remove('show');
+  $('teleQ').textContent='주제 뽑기를 눌러요!';$('teleTimer').textContent='';$('teleTimer').classList.remove('go');
+  $('teleHint').textContent='마음속으로 딱 하나만 떠올리세요 🔮';
+  $('teleBtn').textContent='🔮 주제 뽑기';
+}
+function telePool(){
+  if(tele.set==='easy')return TELE_Q.easy;
+  if(tele.set==='class')return TELE_Q.cls;
+  return TELE_Q.easy.concat(TELE_Q.cls,TELE_Q.gen);
+}
+function teleGo(){
+  if(tele.busy)return;tele.busy=true;
+  const pool=telePool();let q,t=0;
+  do{q=pool[Math.floor(Math.random()*pool.length)];t++}while(q===tele.last&&t<8);
+  tele.last=q;
+  $('teleQ').textContent=q;$('teleHint').textContent='🧠 마음속으로 하나만 떠올려요!';
+  $('teleBtn').textContent='...';$('teleTimer').classList.remove('go');
+  let n=tele.sec;$('teleTimer').textContent=n;beep(600,.1,'triangle');
+  const tick=function(){
+    n--;
+    if(n>0){$('teleTimer').textContent=n;beep(520,.08,'square',.14);tele.t=setTimeout(tick,1000)}
+    else{$('teleTimer').textContent='외쳐!';$('teleTimer').classList.add('go');
+      $('teleHint').textContent='📣 지금 다 같이 외치세요!';
+      beep(880,.3,'sawtooth',.22);setTimeout(function(){beep(1100,.3,'sawtooth',.2)},120);
+      $('teleBtn').textContent='🔮 다음 주제';tele.busy=false}
+  };
+  tele.t=setTimeout(tick,1000);
+}
+
+/* ============ 게임18: 스피드 퀴즈 ============ */
+const SQ_WORDS={
+easy:['사과','강아지','축구','연필','비행기','우산','아이스크림','휴대폰','피아노','자전거','냉장고','선생님','병원','케이크','안경','거울','수영','라면','고양이','공룡','지하철','놀이터','책가방','신호등','계단','엘리베이터','치킨','떡볶이','수박','바나나','토끼','호랑이','코끼리','기린','펭귄','상어','거북이','개구리','나비','자동차','버스','기차','로켓','달','태양','별','구름','무지개','눈사람','장갑','목도리','모자','신발','양말','청소기','세탁기','텔레비전','컴퓨터','시계','달력','칫솔','비누','수건','베개','이불','의자','책상','칠판','지우개','가위','도시락','젓가락','숟가락','접시','냄비','프라이팬','빗자루','쓰레기통','우체국','소방차','경찰차','구급차','놀이공원','수영장','도서관','편의점'],
+sci:['광합성','중력','자석','현미경','화산','지진','전구','건전지','온도계','증발','응결','태양계','블랙홀','유전자','세포','심장','근육','산소','이산화탄소','얼음','수증기','반사','굴절','프리즘','망원경','로봇','인공위성','우주비행사','지층','나침반','전자석','도르래','지레','마찰력','부력','관성','화석','항체','백신','적혈구','염색체','오존층','미세먼지','태풍','오로라','은하수','유성','혜성','운석','현무암','퇴적암','플랑크톤','먹이사슬','생태계'],
+fun:['아이유','방탄소년단','뉴진스','포켓몬','피카츄','짱구','도라에몽','마인크래프트','로블록스','겨울왕국','해리포터','어벤져스','스파이더맨','미니언즈','유튜브','틱톡','인스타그램','넷플릭스','노래방','아이돌','먹방','브이로그','웹툰','이모티콘','셀카','마술','개그','기타','드럼','축구선수','야구선수','올림픽','월드컵','방탈출','인생네컷','탕후루','댄스챌린지','스마트폰']
+};
+let sq={teams:2,time:60,cat:'all',cur:0,scores:[],left:0,t:null,pool:[],used:new Set(),running:false};
+function sqSetup(){sqStop();$('sqResultOv').classList.remove('show');$('sqCountOv').classList.remove('show');$('sqSetupOv').classList.add('show')}
+chipToggle('sqSetupOv','teams');chipToggle('sqSetupOv','sqt');chipToggle('sqSetupOv','sqc');
+function sqStop(){sq.running=false;if(sq.t){clearInterval(sq.t);sq.t=null}}
+function sqPool(){
+  if(sq.cat==='easy')return SQ_WORDS.easy.slice();
+  if(sq.cat==='sci')return SQ_WORDS.sci.slice();
+  if(sq.cat==='fun')return SQ_WORDS.fun.slice();
+  return SQ_WORDS.easy.concat(SQ_WORDS.sci,SQ_WORDS.fun);
+}
+function sqStart(){
+  sqStop();
+  sq.teams=+getChip('sqSetupOv','teams');sq.time=+getChip('sqSetupOv','sqt');sq.cat=getChip('sqSetupOv','sqc');
+  sq.scores=new Array(sq.teams).fill(0);sq.cur=0;sq.used=new Set();
+  $('sqSetupOv').classList.remove('show');$('sqResultOv').classList.remove('show');
+  sqTurnStart();
+}
+function sqTurnStart(){
+  sq.pool=sqPool();sq.left=sq.time;
+  const t=$('sqTeam');t.textContent=(sq.cur+1)+'번 팀';t.style.setProperty('--c',PCOLORS[sq.cur]);
+  $('sqScore').textContent=sq.scores[sq.cur];
+  $('sqTimer').textContent=sq.left;$('sqTimer').classList.remove('danger');
+  $('sqWord').textContent='준비!';
+  $('sqHint').textContent='설명하는 사람만 화면을 봐요!';
+  runCountdown('sqCountOv','sqCountNum',function(){
+    sq.running=true;sqNextWord();
+    sq.t=setInterval(function(){
+      if(!sq.running)return;
+      sq.left--;$('sqTimer').textContent=Math.max(0,sq.left);
+      if(sq.left<=10)$('sqTimer').classList.add('danger');
+      if(sq.left<=5&&sq.left>0)beep(880,.08,'square',.14);
+      if(sq.left<=0)sqEndTurn();
+    },1000);
+  });
+}
+function sqNextWord(){
+  if(!sq.pool.length)sq.pool=sqPool();
+  let w=null,guard=0;
+  while(sq.pool.length&&guard<80){
+    const i=Math.floor(Math.random()*sq.pool.length);
+    const cand=sq.pool.splice(i,1)[0];guard++;
+    if(!sq.used.has(cand)){w=cand;break}
+  }
+  if(!w){sq.used=new Set();sq.pool=sqPool();w=sq.pool[Math.floor(Math.random()*sq.pool.length)]}
+  sq.used.add(w);$('sqWord').textContent=w;
+}
+function sqCorrect(){if(!sq.running)return;sq.scores[sq.cur]++;$('sqScore').textContent=sq.scores[sq.cur];
+  beep(900,.1,'triangle');setTimeout(function(){beep(1150,.1,'triangle')},70);sqNextWord()}
+function sqPass(){if(!sq.running)return;beep(260,.12,'square',.14);sqNextWord()}
+function sqEndTurn(){
+  sqStop();$('sqTimer').classList.remove('danger');$('sqTimer').textContent='0';
+  beep(200,.4,'sawtooth',.24);
+  if(sq.cur>=sq.teams-1){setTimeout(sqResult,700);return}
+  sq.cur++;
+  $('sqWord').textContent='다음 팀 준비!';
+  $('sqHint').textContent=(sq.cur+1)+'번 팀 차례예요';
+  setTimeout(sqTurnStart,1300);
+}
+function sqResult(){
+  sq.running=false;
+  const rank=sq.scores.map(function(s,i){return {i:i,s:s}}).sort(function(a,b){return b.s-a.s});
+  $('sqWinner').textContent=sq.teams===1?('⚡ '+sq.scores[0]+'개 성공!'):('🏆 '+(rank[0].i+1)+'번 팀 우승! ('+rank[0].s+'개)');
+  const medals=['🥇','🥈','🥉'];const box=$('sqRank');box.innerHTML='';
+  rank.forEach(function(r,i){
+    const row=document.createElement('div');row.className='sq-rank-row';row.style.setProperty('--c',PCOLORS[r.i]);
+    row.innerHTML='<span>'+(medals[i]||((i+1)+'위'))+'</span><span class="nm">'+(r.i+1)+'번 팀</span><span class="sc">'+r.s+'개</span>';
+    box.appendChild(row);
+  });
+  beep(660,.14,'triangle');setTimeout(function(){beep(880,.14,'triangle')},140);setTimeout(function(){beep(1040,.2,'triangle')},300);
+  $('sqResultOv').classList.add('show');
+}
+
+/* ============ 게임19: 이구동성 ============ */
+const CH_WORDS={
+easy:{
+2:['사과','바다','학교','친구','가방','연필','우산','시계','구름','나무','하늘','토끼','수박','딸기','라면','김치','축구','농구','피자','치킨','커피','우유','모자','신발','양말','의자','책상','거울','베개','이불','창문','계단','공원','병원','은행','시장','공항','기차','버스','사자','여우','오리','돼지','나비','개미','바위','모래','양파','당근','감자','호박','두부','만두','국수','과자','사탕','인형','풍선','노래','수건'],
+3:['자전거','냉장고','놀이터','도서관','선생님','고양이','강아지','코끼리','바나나','수영장','미용실','편의점','백화점','운동장','경찰관','소방관','요리사','과학자','지하철','비행기','무지개','눈사람','장난감','색연필','지우개','고구마','옥수수','초콜릿','아이돌','피아노','햄버거','떡볶이','분식집','문구점','체육관','미술관','박물관','천문대','수족관','동물원','식물원','중학생','운동화','손수건','물안경','줄넘기','책가방','실내화'],
+4:['놀이공원','체육대회','수학여행','인공위성','초등학교','과학실험','점심시간','쉬는시간','여름방학','겨울방학','생일파티','스파게티','샌드위치','바이올린','헬리콥터','고슴도치','놀이동산','번지점프','마시멜로','초코우유','딸기우유'],
+5:['아이스크림','크리스마스','엘리베이터','롤러코스터','바나나우유','컴퓨터게임','수학선생님','과학선생님','체육선생님','초콜릿과자']
+},
+hard:{
+2:['정성','인내','겸손','질투','용기','지혜','평화','자유','행운','기적','전설','신화','운명','고독','향수','낭만','절망','희망','감탄','침묵','고백','추억','예감','본능','의지','열정','냉정'],
+3:['현미경','망원경','나침반','광합성','전자석','도르래','마찰력','초신성','은하수','블랙홀','오로라','퇴적암','변성암','화강암','현무암','종유석','적혈구','백혈구','염색체','미생물','항생제'],
+4:['인공지능','가상현실','전자기파','태양전지','풍력발전','수력발전','화석연료','예방주사','유전공학','양자역학'],
+5:['이산화탄소','지구온난화','전자기유도','태양광발전','광합성작용','유전자조작']
+}
+};
+let ch={n:3,diff:'easy',word:'',busy:false,t:null,phase:'ready'};
+function chSetup(){chStop();$('chSetupOv').classList.add('show')}
+chipToggle('chSetupOv','chn');chipToggle('chSetupOv','chd');
+function chStop(){ch.busy=false;if(ch.t){clearTimeout(ch.t);ch.t=null}}
+function chStart(){
+  chStop();ch.n=+getChip('chSetupOv','chn');ch.diff=getChip('chSetupOv','chd');
+  $('chSetupOv').classList.remove('show');ch.phase='ready';
+  $('chStage').textContent='시작을 누르면 각자 외칠 글자가 나와요';
+  $('chSyls').innerHTML='';$('chTimer').textContent='';
+  $('chBtn').textContent='▶ 시작';
+  $('chHint').textContent='출제팀은 각자 자기 글자만 크게!';
+}
+function chPick(){
+  const g=(CH_WORDS[ch.diff]&&CH_WORDS[ch.diff][ch.n])||CH_WORDS.easy[ch.n]||CH_WORDS.easy[3];
+  return g[Math.floor(Math.random()*g.length)];
+}
+function chGo(){
+  if(ch.busy)return;
+  if(ch.phase==='shout'){chReveal();return}
+  chRound();
+}
+function chRound(){
+  ch.busy=true;ch.word=chPick();
+  const box=$('chSyls');box.innerHTML='';
+  ch.word.split('').forEach(function(s,i){
+    const d=document.createElement('div');d.className='ch-syl';d.style.setProperty('--c',PCOLORS[i%6]);
+    d.innerHTML='<span class="who">'+(i+1)+'번</span><span class="s">'+s+'</span>';box.appendChild(d);
+  });
+  $('chStage').textContent='각자 자기 글자를 확인하세요!';
+  $('chHint').textContent='카운트다운 후 동시에 외칩니다!';
+  $('chBtn').textContent='...';
+  let n=3;$('chTimer').textContent=n;beep(500,.12,'square',.16);
+  const tick=function(){
+    n--;
+    if(n>0){$('chTimer').textContent=n;beep(500,.12,'square',.16);ch.t=setTimeout(tick,1000)}
+    else{
+      $('chTimer').textContent='외쳐!';beep(950,.3,'sawtooth',.22);
+      $('chStage').textContent='📣 지금 동시에 외치세요!';
+      $('chHint').textContent='맞히는 팀은 무슨 낱말인지 맞혀보세요!';
+      $('chBtn').textContent='👀 정답 공개';ch.phase='shout';ch.busy=false;
+    }
+  };
+  ch.t=setTimeout(tick,1400);
+}
+function chReveal(){
+  $('chStage').innerHTML='정답은 <b style="color:var(--gold)">'+ch.word+'</b>!';
+  $('chTimer').textContent='🎉';
+  $('chBtn').textContent='▶ 다음 낱말';ch.phase='ready';
+  beep(700,.14,'triangle');setTimeout(function(){beep(950,.18,'triangle')},130);
+}
+
+/* ============ 게임20: 끝말잇기 ============ */
+const KK_DUEUM={'라':'나','란':'난','랑':'낭','래':'내','려':'여','료':'요','류':'유','리':'이','림':'임','립':'입','로':'노','록':'녹','론':'논','뢰':'뇌','룡':'용','루':'누','륙':'육','률':'율','르':'느','릉':'능','략':'약','량':'양','련':'연','렬':'열','렴':'염','령':'영','례':'예','력':'역','린':'인','롱':'농','륭':'융','렵':'엽','렁':'넝','늄':'늄','녀':'여','뇨':'요','뉴':'유','니':'이','냐':'야','녕':'영','뉼':'율'};
+let kk={players:3,time:'normal',hearts:2,hp:[],cur:0,last:'',chain:[],used:new Set(),timeLeft:0,timeTotal:0,tickT:null,tk:0,turns:0,exploded:0,running:false,busy:false};
+function kkSetup(){kkStop();$('kkResultOv').classList.remove('show');$('kkCountOv').classList.remove('show');$('kkSetupOv').classList.add('show')}
+chipToggle('kkSetupOv','kkp');chipToggle('kkSetupOv','kkt');chipToggle('kkSetupOv','kkh');
+function kkStop(){kk.running=false;kk.busy=false;if(kk.tickT){clearInterval(kk.tickT);kk.tickT=null}const i=$('kkInput');if(i)i.blur()}
+function kkNextChars(w){
+  const last=w[w.length-1];const a=[last];
+  if(KK_DUEUM[last]&&KK_DUEUM[last]!==last)a.push(KK_DUEUM[last]);
+  return a;
+}
+function kkStart(){
+  kkStop();
+  kk.players=+getChip('kkSetupOv','kkp');kk.time=getChip('kkSetupOv','kkt');kk.hearts=+getChip('kkSetupOv','kkh');
+  kk.hp=new Array(kk.players).fill(kk.hearts);kk.used=new Set();kk.turns=0;kk.exploded=0;kk.cur=0;
+  const pool=BOMB_UNIQ.filter(function(w){return w.length>=2&&w.length<=4});
+  kk.last=pool[Math.floor(Math.random()*pool.length)];
+  kk.used.add(kk.last);kk.chain=[kk.last];
+  $('kkSetupOv').classList.remove('show');$('kkResultOv').classList.remove('show');
+  kkRenderHearts();kkRenderChain();
+  runCountdown('kkCountOv','kkCountNum',function(){kk.running=true;kkStartTurn()});
+}
+function kkAlive(){const a=[];for(let i=0;i<kk.players;i++)if(kk.hp[i]>0)a.push(i);return a}
+function kkNextIdx(from){for(let s=1;s<=kk.players;s++){const i=(from+s)%kk.players;if(kk.hp[i]>0)return i}return from}
+function kkStartTurn(){
+  if(kk.tickT){clearInterval(kk.tickT);kk.tickT=null}
+  kk.busy=false;kk.tk=0;
+  const pr=BOMB_TIME[kk.time]||BOMB_TIME.normal;
+  const base=pr.type,min=Math.max(4,base-3);
+  kk.timeTotal=Math.max(min,base-kk.turns*0.2);kk.timeLeft=kk.timeTotal;
+  kkRenderTurn();
+  kk.tickT=setInterval(kkTickFn,100);
+}
+function kkTickFn(){
+  if(!kk.running||kk.busy)return;
+  kk.timeLeft-=0.1;kk.tk++;
+  if(kk.timeLeft<=0){kk.timeLeft=0;kkFuseUI();kkExplode();return}
+  kkFuseUI();
+  const danger=kk.timeLeft<2.5,every=danger?2:(kk.timeLeft<5?5:10);
+  if(kk.tk%every===0)beep(danger?900:520,.045,'square',.1);
+}
+function kkFuseUI(){
+  const f=$('kkFuse');if(!f)return;
+  f.style.width=Math.max(0,kk.timeLeft/kk.timeTotal*100)+'%';
+  f.classList.toggle('danger',kk.timeLeft<2.5);
+}
+function kkRenderTurn(){
+  const t=$('kkTurn');t.style.setProperty('--c',PCOLORS[kk.cur]);t.textContent=PNAMES[kk.cur]+' 차례!';
+  const chars=kkNextChars(kk.last);
+  $('kkWord').innerHTML=kk.last.slice(0,-1)+'<b>'+kk.last.slice(-1)+'</b>';
+  $('kkRule').textContent=chars.length>1?("'"+chars[0]+"' 또는 '"+chars[1]+"'(으)로 시작!"):("'"+chars[0]+"'(으)로 시작!");
+  kkRenderHearts();kkRenderChain();kkFuseUI();
+  const m=$('kkMsg');if(m){m.textContent='';m.className='bomb-msg'}
+  $('kkOverride').classList.remove('show');
+  const inp=$('kkInput');inp.value='';setTimeout(function(){if(kk.running)inp.focus()},30);
+}
+function kkRenderHearts(){
+  const box=$('kkHearts');box.innerHTML='';
+  for(let i=0;i<kk.players;i++){
+    const d=document.createElement('div');d.className='bomb-ph';d.style.setProperty('--c',PCOLORS[i]);
+    if(kk.hp[i]<=0)d.classList.add('dead');
+    if(i===kk.cur&&kk.hp[i]>0&&kk.running)d.classList.add('cur');
+    d.innerHTML='<span class="nm">'+PNAMES[i]+'</span><span class="hp">'+(kk.hp[i]>0?'❤️'.repeat(kk.hp[i]):'💀')+'</span>';
+    box.appendChild(d);
+  }
+}
+function kkRenderChain(){
+  const box=$('kkChain');if(!box)return;
+  const arr=kk.chain.slice(-12);
+  box.innerHTML=arr.map(function(w,i){return '<span'+(i===arr.length-1?' class="last"':'')+'>'+w+'</span>'}).join('');
+}
+function kkMsgErr(t){const m=$('kkMsg');m.className='bomb-msg err';m.textContent=t;beep(200,.12,'square',.14)}
+function kkSubmit(){
+  if(!kk.running||kk.busy)return;
+  const inp=$('kkInput');const w=(inp.value||'').trim();
+  $('kkOverride').classList.remove('show');
+  if(w.length<2){kkMsgErr('두 글자 이상 낱말을 입력해요');return}
+  if(!/^[가-힣]+$/.test(w)){kkMsgErr('한글 낱말만 가능해요');return}
+  const chars=kkNextChars(kk.last);
+  if(chars.indexOf(w[0])<0){kkMsgErr("'"+chars.join("' 또는 '")+"'(으)로 시작해야 해요");return}
+  if(kk.used.has(w)){kkMsgErr('이미 나온 낱말이에요!');return}
+  if(BOMB_WORDSET.has(w)){kkAcceptWord(w);return}
+  const m=$('kkMsg');m.className='bomb-msg err';m.textContent='사전에 없는 낱말이에요. 진짜 낱말이면 →';
+  $('kkOverride').classList.add('show');beep(300,.12,'square',.14);
+}
+function kkAccept(){
+  const w=(($('kkInput').value)||'').trim();
+  if(w.length<2||!/^[가-힣]+$/.test(w))return;
+  const chars=kkNextChars(kk.last);
+  if(chars.indexOf(w[0])<0||kk.used.has(w))return;
+  kkAcceptWord(w);
+}
+function kkAcceptWord(w){
+  $('kkOverride').classList.remove('show');
+  const m=$('kkMsg');m.className='bomb-msg ok';m.textContent='좋아요! ✅';
+  $('kkInput').value='';
+  beep(680,.08,'triangle');setTimeout(function(){beep(920,.09,'triangle')},70);
+  kk.used.add(w);kk.last=w;kk.chain.push(w);kk.turns++;
+  kk.cur=kkNextIdx(kk.cur);kkStartTurn();
+}
+function kkExplode(){
+  if(kk.tickT){clearInterval(kk.tickT);kk.tickT=null}
+  kk.busy=true;const v=kk.cur;kk.hp[v]=Math.max(0,kk.hp[v]-1);kk.exploded++;
+  beep(90,.4,'sawtooth',.28);setTimeout(function(){beep(60,.5,'sawtooth',.24)},80);
+  const boom=$('kkBoom');boom.classList.add('show');
+  const ar=$('kkArena');ar.style.animation='none';void ar.offsetWidth;ar.style.animation='bombQuake .3s 3';
+  kkRenderHearts();
+  setTimeout(function(){
+    boom.classList.remove('show');ar.style.animation='';
+    const alive=kkAlive();
+    if(alive.length<=1){kkWin(alive[0]);return}
+    kk.cur=kkNextIdx(v);kkStartTurn();
+  },1150);
+}
+function kkWin(idx){
+  kk.running=false;if(kk.tickT){clearInterval(kk.tickT);kk.tickT=null}
+  $('kkFuse').classList.remove('danger');
+  $('kkWinner').textContent=(idx!=null)?('🏆 '+PNAMES[idx]+' 우승!'):'게임 끝!';
+  $('kkResultMsg').textContent='🔗 낱말 '+kk.chain.length+'개를 이었어요 · 💥 '+kk.exploded+'번 실패';
+  beep(660,.14,'triangle');setTimeout(function(){beep(880,.14,'triangle')},140);setTimeout(function(){beep(1040,.2,'triangle')},300);
+  kkRenderHearts();$('kkResultOv').classList.add('show');
 }
 
 setSplash();
